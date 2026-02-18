@@ -28,4 +28,39 @@ declare global {
         },
         result: T[]
     }
+
+    // Otruyen api
+
+    interface ISeoOnPage {
+        og_type: string;
+        titleHead: string;
+        descriptionHead: string;
+        og_image: string[];
+        og_url: string;
+    }
+
+
+    interface IApiOtruyenRes<T> {
+        status: number | string;
+        message: string;
+        data?: {
+            items: T;
+            seoOnPage: ISeoOnPage;
+        };
+    }
+
+    interface IApiOtruyenResWPagination<T> {
+        params: {
+            pagination ?: {
+                totalItems: number;
+                totalItemsPerPage: number;
+                currentPage: number;
+                pageRange: number;
+            }
+        };
+        data?: {
+            items: T;
+            seoOnPage: ISeoOnPage;
+        };
+    }
 }

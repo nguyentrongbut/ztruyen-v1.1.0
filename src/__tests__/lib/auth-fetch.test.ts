@@ -5,11 +5,11 @@ import { ApiError } from '@/lib/api-error'
 import { getAccessToken, removeAccessToken } from '@/lib/localStorage'
 
 // ** Services
-import { AuthService } from '@/services/auth'
+import { AuthService } from '@/services/api/auth'
 
 jest.mock('@/lib/fetcher')
 jest.mock('@/lib/localStorage')
-jest.mock('@/services/auth')
+jest.mock('@/services/api/auth')
 
 describe('authFetcher', () => {
 

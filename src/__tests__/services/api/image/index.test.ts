@@ -1,5 +1,5 @@
 // ** Service
-import { ImageService } from '@/services/image'
+import { ImageService } from '@/services/api/image'
 
 // ** Lib
 import { authFetcherWithRefresh } from '@/lib/auth-fetch'

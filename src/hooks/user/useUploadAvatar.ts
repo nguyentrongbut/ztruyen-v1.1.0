@@ -7,8 +7,8 @@ import useSWRMutation from 'swr/mutation'
 import toast from 'react-hot-toast'
 
 // ** Services
-import {ImageService} from '@/services/image'
-import { UserService } from '@/services/user'
+import {ImageService} from '../../services/api/image'
+import { UserService } from '../../services/api/user'
 
 // ** Config
 import {CONFIG_TAG} from "@/configs/tag";

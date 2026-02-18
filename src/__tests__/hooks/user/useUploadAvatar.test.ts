@@ -11,20 +11,20 @@ import toast from 'react-hot-toast'
 import { useUploadAvatar } from '@/hooks/user/useUploadAvatar'
 
 // ** Services
-import { ImageService } from '@/services/image'
-import { UserService } from '@/services/user'
+import { ImageService } from '../../../services/api/image'
+import { UserService } from '../../../services/api/user'
 
 // ** Config
 import { CONFIG_TAG } from '@/configs/tag'
 
 // ================= MOCKS =================
 jest.mock('swr/mutation')
-jest.mock('@/services/image', () => ({
+jest.mock('../../../services/api/image', () => ({
     ImageService: {
         upload: jest.fn(),
     },
 }))
-jest.mock('@/services/user', () => ({
+jest.mock('../../../services/api/user', () => ({
     UserService: {
         updateProfileImage: jest.fn(),
     },

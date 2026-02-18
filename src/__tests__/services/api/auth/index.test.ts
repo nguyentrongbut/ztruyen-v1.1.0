@@ -1,5 +1,5 @@
 // ** Services
-import { AuthService } from '@/services/auth'
+import { AuthService } from '@/services/api/auth'
 
 // ** Libs
 import { fetcher } from '@/lib/fetcher'

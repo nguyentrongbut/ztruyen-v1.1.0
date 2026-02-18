@@ -17,6 +17,8 @@ const buttonVariants = cva(
             shape: {
                 normal: "rounded-md",
                 pill: "rounded-full",
+                verticalRectangle: 'w-8 h-20 rounded-none',
+                circle: 'size-12 sm:size-[60px] md:size-[64px] lg:size-[74px] rounded-full',
             },
             width: {
                 auto: "",

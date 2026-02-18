@@ -8,10 +8,10 @@ import toast from 'react-hot-toast'
 import { useLogin } from '@/hooks/auth/useLogin'
 
 // ** Services
-import { AuthService } from '@/services/auth'
+import { AuthService } from '../../../services/api/auth'
 
 // ================= MOCKS =================
-jest.mock('@/services/auth', () => ({
+jest.mock('../../../services/api/auth', () => ({
     AuthService: {
         login: jest.fn(),
     },

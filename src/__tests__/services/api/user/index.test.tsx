@@ -5,7 +5,7 @@ import {authFetcherWithRefresh} from '@/lib/auth-fetch'
 import {CONFIG_API} from '@/configs/api'
 
 // ** Services & Types
-import {TUploadProfileImagePayload, UserService} from '@/services/user'
+import {TUploadProfileImagePayload, UserService} from '@/services/api/user'
 import {TUpdateProfilePayload} from "@/modules/tai-khoan/thong-tin-ca-nhan/FormUpdateProfile";
 
 // =============================== Mocks =============================//

@@ -1,6 +1,7 @@
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const authUrl = baseUrl + '/auth';
+const userUrl = baseUrl + '/user';
 
 export const CONFIG_API = {
     AUTH: {
@@ -14,7 +15,7 @@ export const CONFIG_API = {
         FACEBOOK: `${authUrl}/facebook`,
     },
     USER: {
-        PROFILE: `${baseUrl}/user/profile`,
+        PROFILE: `${userUrl}/profile`,
     },
     IMAGE: {
         UPLOAD: `${baseUrl}/upload`,

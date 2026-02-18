@@ -7,7 +7,7 @@ import useSWRMutation from 'swr/mutation'
 import toast from 'react-hot-toast'
 
 // ** Services
-import { UserService } from '@/services/user'
+import { UserService } from '../../services/api/user'
 
 // ** Config
 import { CONFIG_TAG } from '@/configs/tag'

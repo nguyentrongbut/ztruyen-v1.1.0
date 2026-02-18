@@ -118,12 +118,12 @@
 
 @utility container {
     width: 1160px;
-    max-width: calc(100% - 100px);
+    max-width: calc(100% - 60px);
     margin-left: auto;
     margin-right: auto;
 
     @media (min-width: theme('screens.sm')) {
-        max-width: calc(100% - 60px);
+        max-width: calc(100% - 100px);
     }
 }
 
@@ -144,6 +144,10 @@
         overflow: hidden;
         scrollbar-gutter: stable;
     }
+
+    .swiper-pagination-bullet-active {
+        @apply !bg-white
+    }
 }
 
 @layer utilities {
@@ -152,6 +156,7 @@
         @apply font-title text-xl py-5 lg:text-[26px] text-primary dark:text-white
     }
 
+    /* header */
     .text-header {
         @apply text-[15px]
     }
@@ -160,10 +165,49 @@
         @apply mt-[56px];
     }
 
+    /* footer */
     .shadow-layout {
         @apply shadow-[0_0_5px_1px_rgba(158,179,193,0.5)]
     }
 
+    /* home */
+    .section-home {
+        @apply container pb-[30px] sm:pb-10 md:pb-[50px] lg:pb-[65px] mt-5 sm:mt-[30px] md:mt-10 lg:mt-[50px]
+    }
+
+    .section-header {
+        @apply flex items-baseline gap-4
+    }
+
+    .heading-home {
+        @apply font-title text-xl sm:text-2xl py-5 lg:text-3xl text-primary dark:text-white inline
+    }
+
+    .desc-home {
+        @apply text-xs sm:text-sm text-muted-foreground
+    }
+
+    /*  Carousel  */
+    .btn-carousel {
+        @apply absolute z-20 top-[40%] -translate-y-[40%] shadow-[0_0_19px_0_rgba(0,0,0,0.251)] bg-white/80 hover:bg-white/90
+    }
+
+    .btn-carousel-skeleton {
+        @apply absolute z-20 top-[40%] -translate-y-[40%]
+    }
+
+    /*  End Carousel  */
+    /*  Grid carousel  */
+    .bg-grid-carousel {
+        @apply absolute top-0 h-full w-[12.5%] z-10 bg-[linear-gradient(90deg,rgba(0,0,0,0.8),rgba(43,43,43,0))];
+    }
+
+    .btn-grid-carousel {
+        @apply absolute top-1/2 z-20 -translate-y-1/2 hidden sm:flex bg-black/50 hover:bg-black/60;
+    }
+
+    /*  End Grid carousel  */
+    /* End home */
     /* scroll bar */
     .scroll-bar {
         @apply overflow-y-auto
@@ -178,6 +222,7 @@
         @apply bg-no-repeat bg-cover bg-center bg-[url('/auth-bg.png')];
     }
 
+    /* Shadcn ui component*/
     /* form */
     .form {
         @apply w-full flex flex-col gap-y-4;
@@ -246,6 +291,7 @@
     }
 
     /*  End Dropdown  */
+    /* End Shadcn ui component*/
 }
 
 

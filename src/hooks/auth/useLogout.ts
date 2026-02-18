@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 
 // ** Services
-import { AuthService } from '@/services/auth'
+import { AuthService } from '../../services/api/auth'
 
 // ** Configs
 import { CONFIG_TAG } from '@/configs/tag'

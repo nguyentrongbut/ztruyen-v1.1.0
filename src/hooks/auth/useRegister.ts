@@ -7,7 +7,7 @@ import useSWRMutation from 'swr/mutation'
 import toast from 'react-hot-toast'
 
 // ** Services
-import { AuthService } from '@/services/auth'
+import { AuthService } from '../../services/api/auth'
 
 // Module
 import { TRegisterPayload } from '@/modules/dang-ky/FormRegister'

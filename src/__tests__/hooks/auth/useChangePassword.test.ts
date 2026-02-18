@@ -14,7 +14,7 @@ import { useChangePassword } from '@/hooks/auth/useChangePassword'
 import { CONFIG_TAG } from '@/configs/tag'
 
 // ** Services
-import {AuthService} from "@/services/auth";
+import {AuthService} from "../../../services/api/auth";
 
 // ================= MOCKS =================
 
@@ -23,7 +23,7 @@ jest.mock('swr/mutation', () => ({
     default: jest.fn(),
 }))
 
-jest.mock('@/services/auth', () => ({
+jest.mock('../../../services/api/auth', () => ({
     AuthService: {
         resetPassword: jest.fn(),
     },

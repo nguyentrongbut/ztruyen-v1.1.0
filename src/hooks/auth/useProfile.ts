@@ -7,7 +7,7 @@ import useSWR from 'swr'
 import { IUserProfile } from '@/types/api'
 
 // ** Services
-import { UserService } from '@/services/user'
+import { UserService } from '../../services/api/user'
 
 // ** Configs
 import {CONFIG_TAG} from "@/configs/tag";

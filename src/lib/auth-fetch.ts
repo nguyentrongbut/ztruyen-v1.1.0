@@ -3,7 +3,7 @@ import {fetcher, FetchOptions} from "@/lib/fetcher"
 import {ApiError} from "@/lib/api-error";
 
 // ** Services
-import {AuthService} from "@/services/auth";
+import {AuthService} from "@/services/api/auth";
 
 // ** lib
 import {getAccessToken, removeAccessToken} from "@/lib/localStorage";

@@ -18,7 +18,7 @@ import { useLogout } from '@/hooks/auth/useLogout'
 import { CONFIG_TAG } from '@/configs/tag'
 
 // ================= MOCKS =================
-jest.mock('@/services/auth', () => ({
+jest.mock('../../../services/api/auth', () => ({
     AuthService: {
         logout: jest.fn(),
     },
