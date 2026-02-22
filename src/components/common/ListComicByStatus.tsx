@@ -58,7 +58,7 @@ const ListComicByStatus = async ({slug, pageQuery, sortQuery}: TListComicByStatu
     if (!listComic) return <ErrorText/>
 
     return (
-        <section className="container pt-2 pb-20">
+        <section className="section-list-comic">
             <div
                 className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-y-4 gap-2 md:gap-2.5 lg:gap-3 mb-4">
                 {listComic.map((item, index) => {

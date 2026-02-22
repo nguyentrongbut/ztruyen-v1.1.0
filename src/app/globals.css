@@ -297,6 +297,11 @@
 
 @layer components {
 
+    /* common */
+    .section-list-comic {
+        @apply container pt-2 pb-20
+    }
+
     .text-subtle {
         @apply text-orange-400
     }
@@ -305,6 +310,11 @@
         @apply font-title text-xl py-5 lg:text-[26px] text-primary dark:text-white tracking-wide
     }
 
+    .text-link {
+        @apply text-destructive hover:underline leading-none
+    }
+
+    /* common */
     /* header */
     .text-header {
         @apply text-[15px]

@@ -93,7 +93,7 @@ const StatusComic = async ({params, searchParams}: TStatusComic) => {
 
     return (
         <>
-            <div className='section-header gap-2.5 sm:gap-4 flex-col sm:flex-row container py-5'>
+            <div className='section-header gap-2.5 sm:gap-4 flex-col md:flex-row container py-5'>
                 <h1 className='heading py-0'>{statusComic.title}</h1>
                 <p className='desc'>{statusComic.description}</p>
             </div>

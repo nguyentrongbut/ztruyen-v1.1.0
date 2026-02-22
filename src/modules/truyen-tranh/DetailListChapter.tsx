@@ -11,13 +11,11 @@ type TDetailListChapterProps = {
 const DetailListChapter = ({listChapter, slug}: TDetailListChapterProps) => {
 
     if (listChapter.length === 0) return (
-        <div className="container flex flex-col justify-between gap-4 lg:gap-0 lg:flex-row mt-3">
-            <section className='p-5 lg:w-[70%] xl:w-[76%] h-min bg-section-detail'>
-                <p className="text-center m-6 text-sm">
-                    Hiện tại truyện đang cập nhật, hãy quay lại sau nhé !
-                </p>
-            </section>
-        </div>
+        <section className='p-5 lg:w-[70%] xl:w-[76%] h-min bg-section-detail'>
+            <p className="text-center m-6 text-sm">
+                Hiện tại truyện đang cập nhật, hãy quay lại sau nhé !
+            </p>
+        </section>
     );
 
     return (

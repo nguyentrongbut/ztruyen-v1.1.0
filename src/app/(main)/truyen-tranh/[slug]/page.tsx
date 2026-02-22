@@ -1,3 +1,6 @@
+// ** Next
+import {Metadata} from "next";
+
 // ** React
 import {Suspense} from "react";
 
@@ -36,7 +39,7 @@ type TDetailComicProps = {
     params: Promise<{ slug: string }>
 }
 
-export async function generateMetadata({params}: TDetailComicProps) {
+export async function generateMetadata({params}: TDetailComicProps): Promise<Metadata> {
     const {slug} = await params
 
     const slugComic = removeExtension(slug, '.html')
@@ -135,13 +138,15 @@ const DetailComic = async ({params}: TDetailComicProps) => {
                     <DetailDesc desc={detailComic.content}/>
 
                     {/* Buttons */}
-                    <div className='flex gap-3 mt-4 w-full'>
-                        <ReadingBtn slug={slugComic}
-                                    chapter={detailComic.chapters[0].server_data?.[0] as TOtruyenChapter}/>
-                        <Button size='icon' variant='outline'>
-                            <Heart/>
-                        </Button>
-                    </div>
+                    {detailComic.chapters[0] && (
+                        <div className='flex gap-3 mt-4 w-full'>
+                            <ReadingBtn slug={slugComic}
+                                        chapter={detailComic.chapters[0].server_data?.[0] as TOtruyenChapter}/>
+                            <Button size='icon' variant='outline'>
+                                <Heart/>
+                            </Button>
+                        </div>
+                    )}
                 </div>
             </section>
 

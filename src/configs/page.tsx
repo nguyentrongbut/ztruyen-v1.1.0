@@ -92,7 +92,7 @@ export const buildMetaList = (detailComic: IOtruyenDetailComic) => [
                 {detailComic.category.map((category, index) => (
                     <li
                         key={index}
-                        className="text-destructive hover:underline leading-none"
+                        className="text-link"
                     >
                         <Link href={`/${CONFIG_SLUG.GENRE}/${category.slug}.html`}>
                             {category.name}

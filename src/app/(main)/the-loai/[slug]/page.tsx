@@ -25,7 +25,7 @@ import ListComicByStatusSkeleton from "@/skeletons/common/ListComicByStatusSkele
 import {ESortOrder} from "@/types/enum";
 
 type TGenreComic = {
-    params : Promise<{ slug: string }>;
+    params: Promise<{ slug: string }>;
     searchParams: Promise<{
         trang?: string
         'sap-xep'?: ESortOrder
@@ -40,7 +40,7 @@ export async function generateMetadata({
 
     const slugComic = removeExtension(slug, '.html')
 
-    const { trang } = await searchParams
+    const {trang} = await searchParams
 
     const pageQuery = parseInt((trang as string) || '1') || 1;
 
@@ -82,7 +82,7 @@ const GenreComic = async ({params, searchParams}: TGenreComic) => {
 
     const slugComic = removeExtension(slug, '.html')
 
-    const { trang, 'sap-xep': sort } = await searchParams
+    const {trang, 'sap-xep': sort} = await searchParams
 
     const pageQuery = parseInt((trang as string) || '1') || 1;
     const sortQuery = sort || ESortOrder.UPDATED_AT_DESC

@@ -58,3 +58,15 @@ export interface IOtruyenDetailComic {
     category: TOtruyenCategory[];
     chapters: TOtruyenChapterServer[]
 }
+
+export interface IOtruyenSearchComic {
+    name: string;
+    slug: string;
+    status: TStatus
+    thumb_url: string;
+    author: string[];
+    category: TOtruyenCategory[];
+    chapters: TOtruyenChapterServer[]
+    updatedAt: string;
+    chaptersLatest: TOtruyenChapterLatest[];
+}
