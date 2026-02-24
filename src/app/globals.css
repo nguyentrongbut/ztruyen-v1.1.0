@@ -80,6 +80,8 @@
     --sidebar-accent-foreground: hsl(0, 0%, 13%);
     --sidebar-border: oklch(0.929 0.013 255.508);
     --sidebar-ring: oklch(0.704 0.04 256.788);
+
+    --removed-body-scroll-bar-size: 0px;
 }
 
 .dark {
@@ -155,6 +157,10 @@
 
     .swiper-pagination-bullet-active {
         @apply !bg-white
+    }
+
+    body[data-scroll-locked] header {
+        margin-right: var(--removed-body-scroll-bar-size, 0px);
     }
 }
 

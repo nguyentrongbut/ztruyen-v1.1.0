@@ -6,6 +6,9 @@ import Image from 'next/image';
 // ** Shadcn ui
 import Button from "@/components/common/Button";
 
+// ** Config
+import {CONFIG_IMAGE} from "@/configs/image";
+
 export const metadata: Metadata = {
     title: '404 - Không tìm thấy trang này',
     description: 'Trang bạn đang tìm kiếm không tồn tại.',
@@ -19,6 +22,7 @@ export default function NotFound() {
                 width={192}
                 height={192}
                 alt="404 - Ztruyện | ztruyen.io.vn"
+                placeholder={CONFIG_IMAGE.BLUR_DATA_URL as 'data:image/'}
                 className="hover:scale-105 transition-transform"
             />
             <h1 className="text-lg sm:text-2xl mt-4 font-title tracking-wide">

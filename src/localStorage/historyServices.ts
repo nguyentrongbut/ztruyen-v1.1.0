@@ -4,7 +4,7 @@ import {IHistory} from "@/types/api";
 const KEY = "ZTC-history-v1.1";
 const MAX_COMIC_IN_HISTORY = 30;
 
-type IHistoryStorage = Omit<IHistory, "_id">
+export type IHistoryStorage = Omit<IHistory, "_id">
 
 const getAll = (): IHistoryStorage[] => {
     try {

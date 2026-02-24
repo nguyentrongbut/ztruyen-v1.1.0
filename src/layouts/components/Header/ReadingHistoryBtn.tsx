@@ -12,7 +12,7 @@ import { History } from 'lucide-react';
 
 const ReadingHistoryBtn = () => {
     const pathCurrent = usePathname();
-    const pathName = '/lich-su.html'
+    const pathName = '/lich-su'
     const isReadingHistoryPage = pathCurrent === pathName
 
     return (
