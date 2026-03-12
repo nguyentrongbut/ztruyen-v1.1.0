@@ -54,7 +54,7 @@ const AccountMenu = () => {
                     <DropdownMenuGroup>
                         <DropdownMenuLabel
                             className='text-black dark:text-white font-bold text-center truncate'>{user.name}</DropdownMenuLabel>
-                        <Link href="/tai-khoan/trang-chu">
+                        <Link href="/tai-khoan">
                             <DropdownMenuItem>
                                 <User className="text-inherit" />
                                 Tài khoản

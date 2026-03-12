@@ -4,23 +4,19 @@ import {ReactNode} from "react";
 // ** Module
 import NavAccount from "@/modules/tai-khoan/NavAccount";
 
-type TAccountWrapperProps = {
+type TAccountLayoutProps = {
     children: ReactNode
-    title?: string
 }
 
-const AccountWrapper = ({children, title}: TAccountWrapperProps) => {
+const AccountLayout = ({children}: TAccountLayoutProps) => {
     return (
         <div className='container flex flex-col md:flex-row my-8 rounded-md shadow-sm border overflow-hidden'>
             <NavAccount/>
             <div className='px-5 pb-5 flex-1 h-screen'>
-                {title && (
-                    <h1 className='heading'>{title}</h1>
-                )}
                 {children}
             </div>
         </div>
     )
 }
 
-export default AccountWrapper
+export default AccountLayout

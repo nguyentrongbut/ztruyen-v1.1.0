@@ -2,7 +2,6 @@
 import type { Metadata } from "next"
 
 // ** Module component
-import AccountWrapper from "@/modules/tai-khoan/AccountWrapper";
 import FormUploadAvatar from "@/modules/tai-khoan/anh-dai-dien/FormUploadAvatar";
 
 export const metadata: Metadata = {
@@ -12,9 +11,10 @@ export const metadata: Metadata = {
 
 const AvatarAccount = () => {
     return (
-        <AccountWrapper title='Cập nhật avatar'>
-           <FormUploadAvatar/>
-        </AccountWrapper>
+        <>
+            <h1 className='heading'>Cập nhật avatar</h1>
+            <FormUploadAvatar/>
+        </>
     );
 }
 

@@ -19,7 +19,7 @@ import {ESortOrder} from "@/types/enum";
 export const navAccount: TLinkWithIcon[] = [
     {
         title: 'Trang chủ tài khoản',
-        href: '/tai-khoan/trang-chu',
+        href: '/tai-khoan',
         icon: Home,
     },
     {

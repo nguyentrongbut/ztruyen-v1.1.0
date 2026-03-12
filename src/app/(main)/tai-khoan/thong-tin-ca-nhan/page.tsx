@@ -2,7 +2,6 @@
 import type {Metadata} from "next";
 
 // ** Module components
-import AccountWrapper from "@/modules/tai-khoan/AccountWrapper";
 import ProfileClient from "@/modules/tai-khoan/thong-tin-ca-nhan/ProfileClient";
 
 export const metadata: Metadata = {
@@ -12,9 +11,10 @@ export const metadata: Metadata = {
 
 const Profile = () => {
     return (
-       <AccountWrapper title='Thông tin của tôi'>
-          <ProfileClient/>
-       </AccountWrapper>
+        <>
+            <h1 className='heading'>Thông tin của tôi</h1>
+            <ProfileClient/>
+        </>
     )
 }
 
