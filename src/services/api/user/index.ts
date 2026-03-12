@@ -1,5 +1,6 @@
 // ** lib
 import {authFetcherWithRefresh} from "@/lib/auth-fetch";
+import {removeAccessToken} from "@/lib/localStorage";
 
 // ** Configs
 import {CONFIG_API} from "@/configs/api";
@@ -35,6 +36,15 @@ export const UserService = {
             method: 'PATCH',
             body: JSON.stringify(payload),
         })
+
+        return res
+    },
+    deleteProfile: async (): Promise<IApiRes<void>> => {
+        const res = await authFetcherWithRefresh<IApiRes<void>>(CONFIG_API.USER.PROFILE, {
+            method: 'DELETE',
+        })
+
+        removeAccessToken();
 
         return res
     }

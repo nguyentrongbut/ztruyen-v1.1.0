@@ -5,7 +5,7 @@ import { renderHook, act } from '@testing-library/react'
 import { useForgotPassword } from '@/hooks/auth/useForgotPassword'
 
 // ** Services
-import { AuthService } from '../../../services/api/auth'
+import { AuthService } from '@/services/api/auth'
 
 // ** Toast
 import toast from 'react-hot-toast'
@@ -15,7 +15,7 @@ import { useRouter } from 'next/navigation'
 
 // ================= MOCKS =================
 
-jest.mock('../../../services/api/auth', () => ({
+jest.mock('@/services/api/auth', () => ({
     AuthService: {
         forgotPassword: jest.fn(),
     },

@@ -8,6 +8,7 @@ export const CONFIG_TAG = {
     },
     USER: {
         PROFILE: 'profile',
+        DELETE_PROFILE: 'delete-profile',
     },
     IMAGE: {
         UPLOAD: 'upload-image',

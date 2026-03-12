@@ -13,14 +13,14 @@ import toast from 'react-hot-toast'
 import { useUpdateProfile } from '@/hooks/user/useUpdateProfile'
 
 // ** Service
-import { UserService } from '../../../services/api/user'
+import { UserService } from '@/services/api/user'
 
 // ** Config
 import { CONFIG_TAG } from '@/configs/tag'
 
 // ================= MOCKS =================
 jest.mock('swr/mutation')
-jest.mock('../../../services/api/user', () => ({
+jest.mock('@/services/api/user', () => ({
     UserService: {
         updateProfile: jest.fn(),
     },

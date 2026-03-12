@@ -8,7 +8,7 @@ import useSWR from 'swr'
 import {useProfile} from '@/hooks/auth/useProfile'
 
 // ** Services
-import {UserService} from '../../../services/api/user'
+import {UserService} from '@/services/api/user'
 
 // ** Configs
 import {CONFIG_TAG} from '@/configs/tag'
@@ -22,7 +22,7 @@ jest.mock('swr', () => ({
     default: jest.fn(),
 }))
 
-jest.mock('../../../services/api/user', () => ({
+jest.mock('@/services/api/user', () => ({
     UserService: {
         getProfile: jest.fn(),
     },

@@ -11,13 +11,10 @@ import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 
 // ** Services
-import { AuthService } from '../../services/api/auth'
+import { AuthService } from '@/services/api/auth'
 
 // ** Configs
 import { CONFIG_TAG } from '@/configs/tag'
-
-// ** Utils
-import { sleep } from '@/utils/sleep'
 
 export const useLogout = () => {
     const router = useRouter()
@@ -27,7 +24,6 @@ export const useLogout = () => {
         async () => {
             const [res] = await Promise.all([
                 AuthService.logout(),
-                sleep(600),
             ])
 
             return res

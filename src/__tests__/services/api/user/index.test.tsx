@@ -1,5 +1,6 @@
 // ** Libs
 import {authFetcherWithRefresh} from '@/lib/auth-fetch'
+import {removeAccessToken} from '@/lib/localStorage'
 
 // ** Configs
 import {CONFIG_API} from '@/configs/api'
@@ -12,6 +13,11 @@ import {TUpdateProfilePayload} from "@/modules/tai-khoan/thong-tin-ca-nhan/FormU
 jest.mock('@/lib/auth-fetch', () => ({
     authFetcherWithRefresh: jest.fn(),
 }))
+
+jest.mock('@/lib/localStorage', () => ({
+    removeAccessToken: jest.fn(),
+}))
+
 
 // ============================== Tests =============================//
 describe('UserService', () => {
@@ -181,6 +187,55 @@ describe('UserService', () => {
             await expect(UserService.updateProfileImage(payload))
                 .rejects
                 .toThrow('Upload failed')
+        })
+    })
+
+    describe('deleteProfile', () => {
+        beforeEach(() => {
+            jest.clearAllMocks()
+        })
+
+        it('calls authFetcherWithRefresh with correct params', async () => {
+            (authFetcherWithRefresh as jest.Mock).mockResolvedValueOnce({
+                message: 'Profile deleted successfully',
+            })
+
+            await UserService.deleteProfile()
+
+            expect(authFetcherWithRefresh).toHaveBeenCalledTimes(1)
+            expect(authFetcherWithRefresh).toHaveBeenCalledWith(
+                CONFIG_API.USER.PROFILE,
+                {
+                    method: 'DELETE',
+                }
+            )
+        })
+
+        it('calls removeAccessToken after successful deletion', async () => {
+            (authFetcherWithRefresh as jest.Mock).mockResolvedValueOnce({
+                message: 'Profile deleted successfully',
+            })
+
+            await UserService.deleteProfile()
+
+            expect(removeAccessToken).toHaveBeenCalledTimes(1)
+        })
+
+        it('removes access token before returning response', async () => {
+            const callOrder: string[] = []
+
+            ;(removeAccessToken as jest.Mock).mockImplementation(() => {
+                callOrder.push('removeAccessToken')
+            })
+
+            ;(authFetcherWithRefresh as jest.Mock).mockImplementation(async () => {
+                callOrder.push('authFetcherWithRefresh')
+                return { message: 'Success' }
+            })
+
+            await UserService.deleteProfile()
+
+            expect(callOrder).toEqual(['authFetcherWithRefresh', 'removeAccessToken'])
         })
     })
 

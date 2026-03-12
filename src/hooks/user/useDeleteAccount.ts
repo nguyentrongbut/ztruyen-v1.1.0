@@ -2,6 +2,10 @@
 
 // ** SWR
 import useSWRMutation from 'swr/mutation'
+import {mutate} from "swr";
+
+// ** Next
+import { useRouter } from 'next/navigation'
 
 // ** Toast
 import toast from 'react-hot-toast'
@@ -12,25 +16,28 @@ import { UserService } from '@/services/api/user'
 // ** Config
 import { CONFIG_TAG } from '@/configs/tag'
 
-// ** Module type
-import {TUpdateProfilePayload} from "@/modules/tai-khoan/thong-tin-ca-nhan/FormUpdateProfile";
-
-export const useUpdateProfile = () => {
+export const useDeleteAccount = () => {
+    const router = useRouter()
 
     return useSWRMutation(
-        CONFIG_TAG.USER.PROFILE,
-        async (_, { arg }: { arg: TUpdateProfilePayload }) => {
-            return await UserService.updateProfile(arg)
+        CONFIG_TAG.USER.DELETE_PROFILE,
+        async () => {
+            return await UserService.deleteProfile()
         },
         {
             onSuccess: (data) => {
                 toast.success(data.message)
+
+                // clear profile cache
+                mutate(CONFIG_TAG.USER.PROFILE, null, false)
+
+                router.refresh()
             },
             onError(error) {
                 toast.error(
                     error instanceof Error
                         ? error.message
-                        : 'Đã có lỗi xảy ra khi câp nhật thông tin cá nhân'
+                        : 'Đã có lỗi xảy ra khi xoá tài khoản cá nhân'
                 )
             },
         }

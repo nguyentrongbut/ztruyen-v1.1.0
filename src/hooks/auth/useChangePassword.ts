@@ -7,7 +7,7 @@ import useSWRMutation from 'swr/mutation'
 import toast from 'react-hot-toast'
 
 // ** Services
-import { AuthService } from '../../services/api/auth'
+import { AuthService } from '@/services/api/auth'
 
 // ** Modules
 import {TChangePasswordPayload} from "@/modules/quen-mat-khau/FormChangePassword";

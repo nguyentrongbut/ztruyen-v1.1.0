@@ -15,7 +15,7 @@ jest.mock('next/navigation', () => ({
 // ================ TESTS =================
 describe('<ReadingHistoryBtn />', () => {
     const linkName = 'Lịch sử đọc truyện'
-    const pathHistory = '/lich-su.html'
+    const pathHistory = '/lich-su'
 
     it("Render link to reading history page", () => {
         (usePathname as jest.Mock).mockReturnValue('/');

@@ -11,7 +11,7 @@ import useSWRMutation from 'swr/mutation'
 import { useRegister } from '@/hooks/auth/useRegister'
 
 // ** Services
-import { AuthService } from '../../../services/api/auth'
+import { AuthService } from '@/services/api/auth'
 
 // ** Configs
 import { CONFIG_TAG } from '@/configs/tag'
@@ -20,7 +20,7 @@ import { CONFIG_TAG } from '@/configs/tag'
 import { TRegisterPayload } from '@/modules/dang-ky/FormRegister'
 
 // ================= MOCKS =================
-jest.mock('../../../services/api/auth', () => ({
+jest.mock('@/services/api/auth', () => ({
     AuthService: {
         register: jest.fn(),
     },

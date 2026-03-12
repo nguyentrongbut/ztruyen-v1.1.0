@@ -8,7 +8,7 @@ import toast from 'react-hot-toast'
 import {useRouter} from 'next/navigation'
 
 // ** Services
-import {AuthService} from '../../services/api/auth'
+import {AuthService} from '@/services/api/auth'
 
 // ** Modules
 import {TForgotPassForm} from '@/modules/quen-mat-khau/FormSendMail'
