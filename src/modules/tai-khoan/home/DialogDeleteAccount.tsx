@@ -1,51 +1,81 @@
 'use client'
 
 // ** React
-import {useState} from "react";
+import { useState } from "react"
+
+// ** Zod
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
+
+// ** React hook form
+import { Controller, useForm } from "react-hook-form"
 
 // ** Shadcn ui
 import {
-    Dialog, DialogClose,
+    Dialog,
+    DialogClose,
     DialogContent,
-    DialogDescription, DialogFooter,
+    DialogDescription,
+    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import {Input} from "@/components/ui/input";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
 
-// ** Components
-import Button from "@/components/common/Button";
+// ** Component
+import Button from "@/components/common/Button"
 
-// ** Icons
-import {UserRoundX} from "lucide-react";
+// ** Icon
+import { UserRoundX } from "lucide-react"
 
-// ** Hooks
-import {useDeleteAccount} from "@/hooks/user/useDeleteAccount";
+// ** Hook
+import { useDeleteAccount } from "@/hooks/user/useDeleteAccount"
 
+export const confirmDeleteSchema = (userName: string) =>
+    z.object({
+        confirm: z.string().min(1, "Vui lòng nhập tên xác nhận"),
+    })
+        .refine((data) => data.confirm === userName, {
+            message: "Tên xác nhận không đúng",
+            path: ["confirm"],
+        })
+
+export type TDeleteAccountForm = z.infer<
+    ReturnType<typeof confirmDeleteSchema>
+>
 
 type TDialogDeleteAccount = {
     userName: string
 }
 
-const DialogDeleteAccount = ({userName}: TDialogDeleteAccount) => {
+const DialogDeleteAccount = ({ userName }: TDialogDeleteAccount) => {
 
-    const [confirm, setConfirm] = useState("")
     const [open, setOpen] = useState(false)
-    const {trigger, isMutating} = useDeleteAccount()
 
-    const handleDelete = async () => {
+    const { trigger, isMutating } = useDeleteAccount()
+
+    const form = useForm<TDeleteAccountForm>({
+        resolver: zodResolver(confirmDeleteSchema(userName)),
+        defaultValues: {
+            confirm: "",
+        },
+    })
+
+    const onSubmit = async () => {
         await trigger()
         setOpen(false)
     }
 
     return (
-        <Dialog open={open} onOpenChange={handleDelete}>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button size='icon-sm' variant='destructive'>
-                    <UserRoundX/>
+                <Button size="icon-sm" variant="destructive">
+                    <UserRoundX />
                 </Button>
             </DialogTrigger>
+
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Xoá tài khoản cá nhân</DialogTitle>
@@ -54,33 +84,58 @@ const DialogDeleteAccount = ({userName}: TDialogDeleteAccount) => {
                     </DialogDescription>
                 </DialogHeader>
 
-                <div className="space-y-4">
+                <form
+                    id="form-delete-account"
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="space-y-4"
+                >
                     <p className="text-sm text-muted-foreground">
-                        Vui lòng nhập <span className="font-bold text-destructive">{userName}</span> để xác nhận xoá
-                        tài khoản.
+                        Vui lòng nhập{" "}
+                        <span className="font-bold text-destructive">{userName}</span>{" "}
+                        để xác nhận xoá tài khoản.
                     </p>
-                    <Input
-                        placeholder={`Nhập "${userName}" để xác nhận`}
-                        value={confirm}
-                        onChange={(e) => setConfirm(e.target.value)}
-                    />
-                </div>
 
-                <DialogFooter>
-                    <DialogClose asChild>
-                        <Button variant="outline">Huỷ</Button>
-                    </DialogClose>
-                    <Button
-                        variant="destructive"
-                        isLoading={isMutating}
-                        onClick={handleDelete}
-                    >
-                        Xoá tài khoản
-                    </Button>
-                </DialogFooter>
+                    <Controller
+                        name="confirm"
+                        control={form.control}
+                        render={({ field, fieldState }) => (
+                            <Field data-invalid={fieldState.invalid}>
+                                <FieldLabel htmlFor="delete-account-confirm">
+                                    Xác nhận tên
+                                </FieldLabel>
+
+                                <Input
+                                    {...field}
+                                    id="delete-account-confirm"
+                                    placeholder={`Nhập "${userName}" để xác nhận`}
+                                />
+
+                                {fieldState.invalid && (
+                                    <FieldError errors={[fieldState.error]} />
+                                )}
+                            </Field>
+                        )}
+                    />
+
+                    <DialogFooter>
+                        <DialogClose asChild>
+                            <Button type="button" variant="outline">
+                                Huỷ
+                            </Button>
+                        </DialogClose>
+
+                        <Button
+                            type="submit"
+                            variant="destructive"
+                            isLoading={isMutating}
+                        >
+                            Xoá tài khoản
+                        </Button>
+                    </DialogFooter>
+                </form>
             </DialogContent>
         </Dialog>
     )
 }
 
-export default DialogDeleteAccount;
+export default DialogDeleteAccount
