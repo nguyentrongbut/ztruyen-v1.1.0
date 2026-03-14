@@ -10,10 +10,11 @@ import { Separator } from "@/components/ui/separator"
 import { ImagePlus, Loader2 } from "lucide-react"
 
 // ** Hooks
-import { useUploadAvatar } from "@/hooks/user/useUploadAvatar"
+import useMutateMethod from "@/hooks/common/useMutateMethod"
 import useGetMethod from "@/hooks/common/useGetMethod"
 
 // ** Services
+import { ImageService } from "@/services/api/image"
 import { UserService } from "@/services/api/user"
 
 // ** Config
@@ -23,7 +24,15 @@ import { CONFIG_TAG } from "@/configs/tag"
 import AvatarAcc from "@/modules/tai-khoan/anh-dai-dien/AvatarAcc"
 
 // ** Type
-import { IUserProfile } from "@/types/api"
+import {IUserProfile} from "@/types/api"
+
+// ** Toast
+import toast from "react-hot-toast"
+
+type TUploadAvatarArgs = {
+    file: File
+    userName?: string
+}
 
 const FormUploadAvatar = () => {
     const inputRef = useRef<HTMLInputElement>(null)
@@ -33,8 +42,27 @@ const FormUploadAvatar = () => {
         key: CONFIG_TAG.USER.PROFILE,
     })
 
-    const { trigger, isMutating } = useUploadAvatar(async () => {
-        await mutate()
+    const { trigger, isMutating } = useMutateMethod<IUserProfile, TUploadAvatarArgs>({
+        api: async (arg) => {
+            const uploadRes = await ImageService.upload({
+                file: arg.file,
+                caption: `avatar ${arg.userName ?? ''} ${Date.now()}`,
+            })
+
+            const imageId = uploadRes.data?._id
+
+            if (!imageId) {
+                throw new Error('Upload thất bại')
+            }
+
+            return UserService.updateProfileImage({ avatar: imageId })
+        },
+        key: CONFIG_TAG.IMAGE.UPLOAD,
+        showToast: false,
+        onSuccess: async () => {
+            toast.success('Cập nhật ảnh đại diện thành công')
+            await mutate()
+        }
     })
 
     const handleChooseFile = () => {

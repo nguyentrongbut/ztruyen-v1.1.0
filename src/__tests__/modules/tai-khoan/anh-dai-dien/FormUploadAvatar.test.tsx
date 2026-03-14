@@ -3,10 +3,11 @@ import { render, screen, fireEvent } from '@testing-library/react'
 
 // ** Hooks
 import useGetMethod from '@/hooks/common/useGetMethod'
-import { useUploadAvatar } from '@/hooks/user/useUploadAvatar'
+import useMutateMethod from '@/hooks/common/useMutateMethod'
 
 // ** Services
 import { UserService } from '@/services/api/user'
+import { ImageService } from '@/services/api/image'
 
 // ** Module component
 import FormUploadAvatar from '@/modules/tai-khoan/anh-dai-dien/FormUploadAvatar'
@@ -14,12 +15,44 @@ import FormUploadAvatar from '@/modules/tai-khoan/anh-dai-dien/FormUploadAvatar'
 // ** Types
 import { IUserProfile } from '@/types/api'
 
+// ** Toast
+import toast from 'react-hot-toast'
+
+// ---------------- TYPES ----------------
+type TUploadAvatarArgs = {
+    file: File
+    userName?: string
+}
+
+type TMutateOptions = {
+    onSuccess?: () => Promise<void>
+    onError?: (error: BackendError) => void
+    api?: (arg: TUploadAvatarArgs) => Promise<IApiRes<IUserProfile>>
+}
+
+type TUseGetMethodReturn = {
+    data: IUserProfile | undefined
+    isLoading: boolean
+    error: unknown
+    mutate: jest.Mock
+}
+
 // ---------------- MOCKS ----------------
 jest.mock('@/hooks/common/useGetMethod')
-jest.mock('@/hooks/user/useUploadAvatar')
+jest.mock('@/hooks/common/useMutateMethod')
+jest.mock('react-hot-toast', () => ({
+    success: jest.fn(),
+    error: jest.fn(),
+}))
 jest.mock('@/services/api/user', () => ({
     UserService: {
         getProfile: jest.fn(),
+        updateProfileImage: jest.fn().mockResolvedValue({ data: {} }),
+    },
+}))
+jest.mock('@/services/api/image', () => ({
+    ImageService: {
+        upload: jest.fn().mockResolvedValue({ data: { _id: 'image-123' } }),
     },
 }))
 jest.mock('@/modules/tai-khoan/anh-dai-dien/AvatarAcc', () => ({
@@ -30,24 +63,10 @@ jest.mock('@/components/ui/separator', () => ({
     Separator: () => <div data-testid="separator" />,
 }))
 
-// ---------------- TYPES ----------------
-type TUseGetMethodReturn = {
-    data: IUserProfile | undefined
-    isLoading: boolean
-    error: unknown
-    mutate: jest.Mock
-}
-
-type TUseUploadAvatarReturn = {
-    trigger: jest.Mock
-    isMutating: boolean
-}
-
 // ---------------- TESTS ----------------
 describe('FormUploadAvatar', () => {
     const mockTrigger = jest.fn()
     const mockMutate = jest.fn()
-
     const mockUser: IUserProfile = { name: 'John' } as IUserProfile
 
     beforeEach(() => {
@@ -58,15 +77,28 @@ describe('FormUploadAvatar', () => {
             mutate: mockMutate,
         } as TUseGetMethodReturn)
 
-        ;(useUploadAvatar as jest.Mock).mockReturnValue({
+        ;(useMutateMethod as jest.Mock).mockReturnValue({
             trigger: mockTrigger,
             isMutating: false,
-        } as TUseUploadAvatarReturn)
+        })
     })
 
     afterEach(() => {
         jest.clearAllMocks()
     })
+
+    const captureMutateOptions = () => {
+        let captured: TMutateOptions = {}
+
+        ;(useMutateMethod as jest.Mock).mockImplementation((options: TMutateOptions) => {
+            captured = options
+            return { trigger: mockTrigger, isMutating: false }
+        })
+
+        render(<FormUploadAvatar />)
+
+        return captured
+    }
 
     it('renders upload button and avatar', () => {
         render(<FormUploadAvatar />)
@@ -77,10 +109,10 @@ describe('FormUploadAvatar', () => {
     })
 
     it('shows loading state when isMutating is true', () => {
-        ;(useUploadAvatar as jest.Mock).mockReturnValue({
+        ;(useMutateMethod as jest.Mock).mockReturnValue({
             trigger: mockTrigger,
             isMutating: true,
-        } as TUseUploadAvatarReturn)
+        })
 
         render(<FormUploadAvatar />)
 
@@ -125,10 +157,10 @@ describe('FormUploadAvatar', () => {
     })
 
     it('does not click file input when button is clicked while mutating', () => {
-        ;(useUploadAvatar as jest.Mock).mockReturnValue({
+        ;(useMutateMethod as jest.Mock).mockReturnValue({
             trigger: mockTrigger,
             isMutating: true,
-        } as TUseUploadAvatarReturn)
+        })
 
         render(<FormUploadAvatar />)
 
@@ -141,14 +173,38 @@ describe('FormUploadAvatar', () => {
         expect(clickSpy).not.toHaveBeenCalled()
     })
 
-    it('calls mutate after successful upload', async () => {
-        render(<FormUploadAvatar />)
+    it('onSuccess: shows toast and calls mutate', async () => {
+        const { onSuccess } = captureMutateOptions()
 
-        const onSuccessCallback = (useUploadAvatar as jest.Mock).mock.calls[0][0]
+        await onSuccess?.()
 
-        await onSuccessCallback?.()
-
+        expect(toast.success).toHaveBeenCalledWith('Cập nhật ảnh đại diện thành công')
         expect(mockMutate).toHaveBeenCalled()
+    })
+
+    it('api: uploads image and updates profile', async () => {
+        const { api } = captureMutateOptions()
+
+        const file = new File(['avatar'], 'avatar.png', { type: 'image/png' })
+
+        await api?.({ file, userName: 'John' })
+
+        expect(ImageService.upload).toHaveBeenCalledWith(
+            expect.objectContaining({ file })
+        )
+        expect(UserService.updateProfileImage).toHaveBeenCalledWith({
+            avatar: 'image-123',
+        })
+    })
+
+    it('api: throws error when imageId is missing', async () => {
+        ;(ImageService.upload as jest.Mock).mockResolvedValue({ data: null })
+
+        const { api } = captureMutateOptions()
+
+        const file = new File(['avatar'], 'avatar.png', { type: 'image/png' })
+
+        await expect(api?.({ file })).rejects.toThrow('Upload thất bại')
     })
 
     it('passes correct key and api to useGetMethod', () => {
@@ -160,7 +216,7 @@ describe('FormUploadAvatar', () => {
         expect(typeof options.api).toBe('function')
     })
 
-    it('calls UserService.getProfile when api is invoked', async () => {
+    it('calls UserService.getProfile when getMethod api is invoked', async () => {
         render(<FormUploadAvatar />)
 
         const options = (useGetMethod as jest.Mock).mock.calls[0][0]

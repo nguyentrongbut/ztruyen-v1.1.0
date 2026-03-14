@@ -1,7 +1,16 @@
 'use client'
 
+// ** Next
+import {useRouter} from "next/navigation";
+
 // ** React
 import { useState } from "react"
+
+// ** React hot toast
+import toast from "react-hot-toast";
+
+// ** Swr
+import {mutate} from "swr";
 
 // ** Zod
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -31,7 +40,13 @@ import Button from "@/components/common/Button"
 import { UserRoundX } from "lucide-react"
 
 // ** Hook
-import { useDeleteAccount } from "@/hooks/user/useDeleteAccount"
+import useMutateMethod from "@/hooks/common/useMutateMethod";
+
+// ** Service
+import {UserService} from "@/services/api/user";
+
+// ** Config
+import {CONFIG_TAG} from "@/configs/tag";
 
 export const confirmDeleteSchema = (userName: string) =>
     z.object({
@@ -52,9 +67,19 @@ type TDialogDeleteAccount = {
 
 const DialogDeleteAccount = ({ userName }: TDialogDeleteAccount) => {
 
+    const router = useRouter()
     const [open, setOpen] = useState(false)
 
-    const { trigger, isMutating } = useDeleteAccount()
+    const { trigger, isMutating } = useMutateMethod<void, void>({
+        api: () => UserService.deleteProfile(),
+        key: CONFIG_TAG.USER.DELETE_PROFILE,
+        showToast: false,
+        onSuccess: (data) => {
+            toast.success(data.message)
+            mutate(CONFIG_TAG.USER.PROFILE, null, false)
+            router.refresh()
+        },
+    })
 
     const form = useForm<TDeleteAccountForm>({
         resolver: zodResolver(confirmDeleteSchema(userName)),

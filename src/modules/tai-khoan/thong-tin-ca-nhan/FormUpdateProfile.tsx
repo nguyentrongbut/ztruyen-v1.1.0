@@ -1,5 +1,8 @@
 'use client'
 
+// ** React hot toast
+import toast from "react-hot-toast";
+
 // ** zod
 import {z} from "zod";
 
@@ -33,8 +36,14 @@ import {getAgeToBirthday, getDefaultBirthdayMonth, isBirthdayValid} from "@/util
 // ** Types
 import {IUserProfile} from "@/types/api";
 
-// ** Hooks
-import {useUpdateProfile} from "@/hooks/user/useUpdateProfile";
+// ** Hook
+import useMutateMethod from "@/hooks/common/useMutateMethod";
+
+// ** Service
+import {UserService} from "@/services/api/user";
+
+// ** Config
+import {CONFIG_TAG} from "@/configs/tag";
 
 const formSchema = z.object({
     name: z.string().min(1, 'Tên không được để trống'),
@@ -76,7 +85,13 @@ type TFormUpdateProfileProps = {
 
 const FormUpdateProfile = ({user}: TFormUpdateProfileProps) => {
 
-    const {trigger, isMutating} = useUpdateProfile()
+    const {trigger, isMutating} = useMutateMethod<IUserProfile, TUpdateProfilePayload>({
+        api: (payload) => UserService.updateProfile(payload),
+        key: CONFIG_TAG.USER.PROFILE,
+        onSuccess: data => {
+            toast.success(data.message)
+        }
+    })
 
     const form = useForm<TUpdateProfileForm>({
         resolver: zodResolver(formSchema),
@@ -91,7 +106,7 @@ const FormUpdateProfile = ({user}: TFormUpdateProfileProps) => {
     const birthday = form.watch('birthday')
 
     const onSubmit = async (values: TUpdateProfileForm) => {
-        const { birthday, ...rest } = values
+        const {birthday, ...rest} = values
 
         const payload = {
             ...rest,
