@@ -171,7 +171,7 @@ const FormUpdateFrame = () => {
                             >
                                 <div className="relative">
                                     <AvatarWithFrame
-                                        className="size-16 sm:size-20"
+                                        size={80}
                                         avatarName={user?.name}
                                         avatarUrl={user?.avatar?.url}
                                         frameUrl={frame.image.url}
@@ -179,7 +179,7 @@ const FormUpdateFrame = () => {
                                     />
                                     {isSelected && (
                                         <span
-                                            className="absolute -bottom-5 -right-5 flex items-center justify-center size-5 bg-primary rounded-full">
+                                            className="absolute top-0 -right-8 hidden md:flex items-center justify-center size-5 bg-primary rounded-full">
                                             <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
                                                 <polyline
                                                     points="1.5,5 4,7.5 8.5,2.5"

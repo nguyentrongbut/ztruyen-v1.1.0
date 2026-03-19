@@ -11,7 +11,7 @@ import ComicImage from "@/components/common/ComicImage";
 // ** Module components
 import DetailDesc from "@/modules/truyen-tranh/DetailDesc";
 import DetailListChapter from "@/modules/truyen-tranh/DetailListChapter";
-import DetailRecommendedComic from "@/modules/truyen-tranh/DetailRecommendedComic";
+import DetailRecommendedComic from "@/modules/truyen-tranh/Recommend/DetailRecommendedComic";
 import ReadingBtn from "@/modules/truyen-tranh/ReadingBtn";
 import FavoriteBtn from "@/modules/truyen-tranh/FavoriteBtn";
 
@@ -158,7 +158,7 @@ const DetailComic = async ({params}: TDetailComicProps) => {
             </section>
 
             <div className="container flex flex-col justify-between gap-4 lg:gap-0 lg:flex-row mt-3">
-                <DetailListChapter listChapter={detailComic.chapters} slug={slugComic}/>
+                <DetailListChapter listChapter={detailComic.chapters} slug={slugComic} name={detailComic.name}/>
 
                 <Suspense fallback={<DetailRecommendedComicSkeleton/>}>
                     <DetailRecommendedComic/>

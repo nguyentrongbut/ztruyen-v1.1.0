@@ -21,6 +21,9 @@ export const CONFIG_TAG = {
         DELETE: 'delete-favorite',
         DELETE_MULTI: 'delete-multi-favorite'
     },
+    COMMENT: {
+        LIST: 'comment-list',
+    },
     IMAGE: {
         UPLOAD: 'upload-image',
     }

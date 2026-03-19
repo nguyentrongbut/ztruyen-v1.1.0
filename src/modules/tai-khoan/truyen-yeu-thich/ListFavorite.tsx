@@ -150,7 +150,7 @@ const ListFavorite = () => {
             </div>
 
             {/* List */}
-            <div className="max-h-[65vh] overflow-y-auto custom-scroll pr-2 -mr-3">
+            <div className="max-h-[65vh] overflow-y-auto pr-2 -mr-3">
                 {renderContent()}
             </div>
 

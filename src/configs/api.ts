@@ -4,6 +4,7 @@ const authUrl = baseUrl + '/auth';
 const userUrl = baseUrl + '/user';
 const frameUrl = baseUrl + '/frame';
 const favoriteUrl = baseUrl + '/favorite';
+const commentUrl = baseUrl + '/comment';
 
 export const CONFIG_API = {
     AUTH: {
@@ -28,6 +29,9 @@ export const CONFIG_API = {
         TOGGLE: `${favoriteUrl}/toggle`,
         DELETE: `${favoriteUrl}/delete`,
         DELETE_MULTI: `${favoriteUrl}/delete-multi`
+    },
+    COMMENT: {
+        INDEX: commentUrl,
     },
     IMAGE: {
         UPLOAD: `${baseUrl}/upload`,

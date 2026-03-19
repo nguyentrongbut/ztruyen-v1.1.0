@@ -1,7 +1,8 @@
 // ** React
 import React from 'react';
 
-const DefaultLayout = ({ children }: { children: React.ReactNode }) => {
+const ReadingLayout = async ({children}: { children: React.ReactNode }) => {
+
     return (
         <>
             <main className='flex flex-col min-h-[70vh] mt-header'>
@@ -11,4 +12,4 @@ const DefaultLayout = ({ children }: { children: React.ReactNode }) => {
     );
 };
 
-export default DefaultLayout;
+export default ReadingLayout;

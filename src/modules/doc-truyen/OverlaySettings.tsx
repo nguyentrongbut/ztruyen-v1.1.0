@@ -183,19 +183,21 @@ const OverlaySettings = ({
                     }}
                 >
                     <DropdownMenuTrigger asChild>
-                        <div className="flex flex-col items-center gap-1 p-2 cursor-pointer ">
+                        <div
+                            onClick={(e) => e.stopPropagation()}
+                            className="flex flex-col items-center gap-1 p-2 cursor-pointer ">
                             <Menu className="size-5 text-setting"/>
                             <span className="text-xs">Mục lục</span>
                         </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent asChild>
                         <div
-                            className="p-4 rounded-2xl w-[240px] sm:w-[280px] !bg-[#272727e6] border-none text-white mb-2">
+                            className="p-4 rounded-2xl w-[240px] sm:w-[280px] !bg-[#272727e6] border-none text-white mb-2 ">
                             <div
                                 className="text-sm sm:text-base mb-4 ml-3">{`Tất cả các chương (${chapters[chapters.length - 1].chapter_name})`}</div>
                             <ul
                                 ref={listRef}
-                                className="bg-[#121212] rounded-2xl overflow-auto max-h-[320px] sm:max-h-[400px] scroll-hidden"
+                                className="bg-[#121212] rounded-2xl overflow-auto max-h-[320px] sm:max-h-[400px] no-scrollbar"
                             >
                                 {chapters?.map((item, index) => {
                                     const activeChapter = getIdFromUrl(item.chapter_api_data, '/') === currentChapterId;

@@ -40,8 +40,7 @@ const AvatarHome = () => {
         <div className='flex justify-between items-center'>
             <div className='flex items-center gap-2'>
                 <AvatarWithFrame
-                    className='size-14 lg:size-20'
-                    classAvatar='size-10 lg:size-14'
+                    size={60}
                     avatarUrl={user.avatar?.url}
                     avatarName={user.name}
                     frameUrl={frameUrl}

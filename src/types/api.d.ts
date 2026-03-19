@@ -84,3 +84,27 @@ export interface IFavorite {
 export interface IFavoriteToggle {
     isFavorite: boolean
 }
+
+
+// Comment
+export interface IUserComment {
+    _id: string;
+    name: string;
+    avatar: IImage;
+    avatar_frame: IFrame;
+}
+
+export interface IComment {
+    _id: string;
+    userId: IUserComment;
+    comicSlug: string;
+    comicName: string;
+    chapterId: string;
+    page: string;
+    parent: string;
+    content: string;
+    likeCount: number;
+    replyCount: number;
+    createdAt: string;
+    updatedAt: string;
+}

@@ -27,18 +27,19 @@ import AvatarSkeleton from "@/skeletons/layouts/AvatarSkeletons";
 import useGetMethod from "@/hooks/common/useGetMethod"
 
 // ** Services
-import { UserService } from "@/services/api/user"
+import {UserService} from "@/services/api/user"
 
 // ** Config
-import { CONFIG_TAG } from "@/configs/tag"
+import {CONFIG_TAG} from "@/configs/tag"
 
 // ** Type
-import { IUserProfile } from "@/types/api"
+import {IUserProfile} from "@/types/api"
 import AvatarWithFrame from "@/components/common/AvatarWithFrame";
+import {cn} from "@/lib/utils";
 
 const AccountMenu = () => {
 
-    const { data: user, isLoading } = useGetMethod<IUserProfile>({
+    const {data: user, isLoading} = useGetMethod<IUserProfile>({
         api: () => UserService.getProfile(),
         key: CONFIG_TAG.USER.PROFILE,
     })
@@ -58,8 +59,8 @@ const AccountMenu = () => {
             <DropdownMenu modal={false}>
                 <DropdownMenuTrigger>
                     <AvatarWithFrame
-                        className='cursor-pointer size-10'
-                        classAvatar='mt-1'
+                        className='mt-1'
+                        size={40}
                         avatarName={user.name}
                         avatarUrl={user.avatar?.url}
                         frameName={user.avatar_frame?.name}
@@ -72,13 +73,13 @@ const AccountMenu = () => {
                             className='text-black dark:text-white font-bold text-center truncate'>{user.name}</DropdownMenuLabel>
                         <Link href="/tai-khoan">
                             <DropdownMenuItem>
-                                <User className="text-inherit" />
+                                <User className="text-inherit"/>
                                 Tài khoản
                             </DropdownMenuItem>
                         </Link>
                         <Link href="/tai-khoan/truyen-yeu-thich">
                             <DropdownMenuItem>
-                                <Heart className="text-inherit" />
+                                <Heart className="text-inherit"/>
                                 Yêu thích
                             </DropdownMenuItem>
                         </Link>
@@ -86,7 +87,7 @@ const AccountMenu = () => {
                     <DropdownMenuSeparator/>
                     <DropdownMenuGroup>
                         <DropdownMenuItem>
-                            <Logout />
+                            <Logout/>
                         </DropdownMenuItem>
                     </DropdownMenuGroup>
                 </DropdownMenuContent>

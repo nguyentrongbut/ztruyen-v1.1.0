@@ -36,7 +36,7 @@ const NavListGenre = ({listGenre, slug}: INavListGenreProps) => {
     }, [slug, isSm]);
 
     return (
-        <ul className="flex flex-wrap gap-2 text-sm h-[122px] sm:h-auto overflow-y-auto sm:overflow-visible custom-scroll">
+        <ul className="flex flex-wrap gap-2 text-sm h-[122px] sm:h-auto overflow-y-auto sm:overflow-visible">
             {listGenre.map((item, index) => (
                 <li key={index}>
                     {item.slug === slug ? (
