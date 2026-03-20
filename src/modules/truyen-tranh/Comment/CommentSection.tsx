@@ -5,12 +5,14 @@ import SendComment from "@/modules/truyen-tranh/Comment/SendComment";
 import ListComment from "@/modules/truyen-tranh/Comment/ListComment";
 import {CommentService} from "@/services/api/comment";
 import {cn} from "@/lib/utils";
-import {IComment} from "@/types/api";
+import {IComment, IUserProfile} from "@/types/api";
 import {TSortOption} from "@/types/component";
 import {CONFIG_TAG} from "@/configs/tag";
 import useLazyLoad from "@/hooks/common/useLazyLoad";
 import useInfiniteLoad from "@/hooks/common/useInfiniteLoad";
 import useSentinel from "@/hooks/common/useSentinel";
+import useGetMethod from "@/hooks/common/useGetMethod";
+import {UserService} from "@/services/api/user";
 
 type TCommentSection = {
     slug: string;
@@ -22,12 +24,17 @@ const SORT_OPTIONS: TSortOption[] = [
     {label: "Nổi bật", value: "-likeCount"},
 ];
 
-const LIMIT = 5;
+const LIMIT = 10;
 
 const CommentSection = ({name, slug}: TCommentSection) => {
     const [sort, setSort] = useState("-updatedAt");
 
     const {ref: containerRef, enabled} = useLazyLoad({threshold: 0.1});
+
+    const { data: profile } = useGetMethod<IUserProfile>({
+        api: () => UserService.getProfile(),
+        key: CONFIG_TAG.USER.PROFILE,
+    })
 
     const {
         data: comments,
@@ -90,9 +97,15 @@ const CommentSection = ({name, slug}: TCommentSection) => {
                 <div className="mt-4 text-sm text-third text-center">Đang tải...</div>
             ) : (
                 <>
-                    <SendComment comicName={name} comicSlug={slug} mutate={() => mutate()}/>
+                    <SendComment comicName={name} comicSlug={slug} mutate={() => mutate()} user={profile}/>
 
-                    <ListComment listComment={comments}/>
+                    <ListComment
+                        listComment={comments}
+                        comicSlug={slug}
+                        comicName={name}
+                        mutate={() => mutate()}
+                        profile={profile}
+                    />
 
                     {/* Sentinel */}
                     <div ref={sentinelRef} className="mt-16 mb-[100px] text-sm text-third text-center">

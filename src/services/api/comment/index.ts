@@ -11,7 +11,7 @@ import {IComment} from "@/types/api";
 import {buildQueryString, TQueryParams} from "@/utils/buildQueryString";
 
 // ** Type
-import {TSendCommentPayload} from "@/modules/truyen-tranh/Comment/SendComment";
+import {TSendCommentPayload, TSendReplyPayload} from "@/modules/truyen-tranh/Comment/SendComment";
 
 export const CommentService = {
     list: (params: TQueryParams): Promise<IApiRes<IModelPaginate<IComment>>> => {
@@ -31,5 +31,11 @@ export const CommentService = {
         return authFetcherWithRefresh<IApiRes<IModelPaginate<IComment>>>(
             `${CONFIG_API.COMMENT.REPLIES}/${id}?${query}`
         )
+    },
+    createReply: (payload: TSendReplyPayload): Promise<IApiRes<void>> => {
+        return authFetcherWithRefresh<IApiRes<void>>(CONFIG_API.COMMENT.REPLY, {
+            method: 'POST',
+            body: JSON.stringify(payload),
+        })
     },
 }

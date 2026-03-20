@@ -7,9 +7,11 @@ import dayjs from "dayjs";
 
 type TReplyItem = {
     reply: IComment;
+    isReplyOpen: boolean;
+    onToggleReply: () => void;
 }
 
-const ReplyItem = ({ reply }: TReplyItem) => {
+const ReplyItem = ({ reply, isReplyOpen, onToggleReply }: TReplyItem) => {
     return (
         <li>
             <div className='flex items-start'>
@@ -39,7 +41,12 @@ const ReplyItem = ({ reply }: TReplyItem) => {
                         <ThumbsUp className='size-3.5' />
                         {reply.likeCount > 0 && <span>{reply.likeCount}</span>}
                     </div>
-                    <span className='cursor-pointer hover:text-primary'>Phản hồi</span>
+                    <span
+                        onClick={onToggleReply}
+                        className='cursor-pointer hover:text-primary'
+                    >
+                        {isReplyOpen ? 'Huỷ' : 'Phản hồi'}
+                    </span>
                 </div>
             </div>
         </li>

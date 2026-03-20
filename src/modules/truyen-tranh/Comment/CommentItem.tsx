@@ -1,22 +1,72 @@
 'use client'
 
-import {useState} from "react";
+import {useRef, useState} from "react";
 import {Separator} from "@/components/ui/separator";
 import AvatarWithFrame from "@/components/common/AvatarWithFrame";
-import {IComment, IUserComment} from "@/types/api";
+import {IComment, IUserComment, IUserProfile} from "@/types/api";
 import {ThumbsUp, ChevronDown, ChevronUp} from "lucide-react";
 import dayjs from "dayjs";
 import ReplyList from "@/modules/truyen-tranh/Comment/ReplyList";
+import SendComment from "@/modules/truyen-tranh/Comment/SendComment";
+import useGetMethod from "@/hooks/common/useGetMethod";
+import {CommentService} from "@/services/api/comment";
 
 type TCommentItem = {
     user: IUserComment;
     comment: IComment;
+    comicSlug: string;
+    comicName: string;
+    mutate: () => void;
+    activeCommentId: string | null;
+    onSetActiveCommentId: (id: string | null) => void;
+    profile?: IUserProfile
 }
 
-const CommentItem = ({user, comment}: TCommentItem) => {
-    const [showReplies, setShowReplies] = useState(false);
+const REPLY_LIMIT = 2;
+const PARENT_REPLY_ID = (commentId: string) => `parent-${commentId}`;
 
-    const handleToggle = () => setShowReplies(prev => !prev);
+const CommentItem = ({
+                         user, comment, comicSlug, comicName, profile,
+                         mutate, activeCommentId, onSetActiveCommentId
+                     }: TCommentItem) => {
+    const [showReplies, setShowReplies] = useState(false);
+    const [page, setPage] = useState(1);
+    const hasFetchedRef = useRef(false);
+    const [fetchEnabled, setFetchEnabled] = useState(false);
+
+    // replyTo tương ứng với activeReplyId
+    const [activeReplyTo, setActiveReplyTo] = useState<string | null>(null);
+    const [activeReplyName, setActiveReplyName] = useState<string | null>(null);
+
+    const {data, isValidating, mutate: mutateReply} = useGetMethod<IModelPaginate<IComment>>({
+        api: () => CommentService.listReplies(comment._id, {page, limit: REPLY_LIMIT}),
+        key: [`replies-${comment._id}`, page.toString()],
+        enabled: fetchEnabled,
+        keepPreviousData: true,
+    });
+
+    const replies = data?.result ?? [];
+    const totalPages = data?.meta?.totalPages ?? 1;
+
+    const handleToggleReply = (id: string, replyTo: string, name: string) => {
+        if (activeCommentId === id) {
+            onSetActiveCommentId(null);
+            setActiveReplyTo(null);
+            setActiveReplyName(null);
+        } else {
+            onSetActiveCommentId(id);
+            setActiveReplyTo(replyTo);
+            setActiveReplyName(name);
+        }
+    };
+
+    const handleToggleShowReplies = () => {
+        setShowReplies(prev => !prev);
+        if (!hasFetchedRef.current) {
+            hasFetchedRef.current = true;
+            setFetchEnabled(true); // chỉ bật 1 lần duy nhất
+        }
+    };
 
     return (
         <li>
@@ -46,12 +96,21 @@ const CommentItem = ({user, comment}: TCommentItem) => {
                         <ThumbsUp className='size-3.5'/>
                         {comment.likeCount > 0 && <span>{comment.likeCount}</span>}
                     </div>
-                    <span className='cursor-pointer hover:text-primary'>Phản hồi</span>
+                    <span
+                        onClick={() => handleToggleReply(
+                            PARENT_REPLY_ID(comment._id),
+                            comment.userId._id,
+                            comment.userId.name
+                        )}
+                        className='cursor-pointer'
+                    >
+                        {activeCommentId === PARENT_REPLY_ID(comment._id) ? 'Huỷ' : 'Phản hồi'}
+                    </span>
                 </div>
 
                 {comment.replyCount > 0 && (
                     <button
-                        onClick={handleToggle}
+                        onClick={handleToggleShowReplies}
                         className='flex items-center gap-1 text-sm text-primary mt-2 hover:underline'
                     >
                         {showReplies
@@ -61,7 +120,30 @@ const CommentItem = ({user, comment}: TCommentItem) => {
                     </button>
                 )}
 
-                <ReplyList commentId={comment._id} show={showReplies}/>
+                <ReplyList
+                    show={showReplies}
+                    replies={replies}
+                    totalPages={totalPages}
+                    page={page}
+                    isValidating={isValidating}
+                    onPageChange={setPage}
+                    activeReplyId={activeCommentId}
+                    onToggleReply={handleToggleReply}
+                />
+
+                {activeCommentId && activeCommentId.startsWith(`parent-${comment._id}`) ||
+                (activeCommentId && replies.some(r => r._id === activeCommentId)) ? (
+                    <SendComment
+                        comicSlug={comicSlug}
+                        comicName={comicName}
+                        mutate={mutate}
+                        mutateReply={() => mutateReply()}
+                        parent={comment._id}
+                        replyTo={activeReplyTo ?? undefined}
+                        user={profile}
+                        replyName={activeReplyName ?? comment.userId.name}
+                    />
+                ) : null}
 
                 <Separator className='bg-[#E3E5E7] dark:bg-zinc-700 mt-6'/>
             </div>

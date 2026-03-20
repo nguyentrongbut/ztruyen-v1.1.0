@@ -1,39 +1,42 @@
 'use client'
 
-import { useState } from "react";
-import { IComment } from "@/types/api";
-import { CommentService } from "@/services/api/comment";
-import useGetMethod from "@/hooks/common/useGetMethod";
+import {IComment, IUserProfile} from "@/types/api";
 import ReplyItem from "@/modules/truyen-tranh/Comment/ReplyItem";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { getPaginationPages } from "@/utils/pagination";
+import {ChevronLeft, ChevronRight} from "lucide-react";
+import {cn} from "@/lib/utils";
+import {getPaginationPages} from "@/utils/pagination";
 
 type TReplyList = {
-    commentId: string;
     show: boolean;
+    replies: IComment[];
+    totalPages: number;
+    page: number;
+    isValidating: boolean;
+    onPageChange: (page: number) => void;
+    activeReplyId: string | null;
+    onToggleReply: (id: string, replyTo: string, name: string) => void;
 }
 
-const REPLY_LIMIT = 2;
-
-const ReplyList = ({ commentId, show }: TReplyList) => {
-    const [page, setPage] = useState(1);
-
-    const { data, isValidating } = useGetMethod<IModelPaginate<IComment>>({
-        api: () => CommentService.listReplies(commentId, { page, limit: REPLY_LIMIT }),
-        key: [`replies-${commentId}`, page.toString()],
-        enabled: show,
-        keepPreviousData: true,
-    });
-
-    const replies = data?.result ?? [];
-    const totalPages = data?.meta?.totalPages ?? 1;
-
+const ReplyList = ({
+                       show,
+                       replies,
+                       totalPages,
+                       page,
+                       isValidating,
+                       onPageChange,
+                       activeReplyId,
+                       onToggleReply,
+                   }: TReplyList) => {
     return (
         <div className={cn('mt-4', !show && 'hidden')}>
             <ul className={cn('flex flex-col gap-y-5', isValidating && 'opacity-50 pointer-events-none')}>
                 {replies.map((reply) => (
-                    <ReplyItem key={reply._id} reply={reply} />
+                    <ReplyItem
+                        key={reply._id}
+                        reply={reply}
+                        isReplyOpen={activeReplyId === reply._id}
+                        onToggleReply={() => onToggleReply(reply._id, reply.userId._id, reply.userId.name)}
+                    />
                 ))}
             </ul>
 
@@ -44,14 +47,11 @@ const ReplyList = ({ commentId, show }: TReplyList) => {
                     </span>
 
                     <button
-                        onClick={() => setPage(p => p - 1)}
+                        onClick={() => onPageChange(page - 1)}
                         disabled={page === 1 || isValidating}
-                        className={cn(
-                            'hover:text-primary',
-                            (page === 1 || isValidating) && 'opacity-50 pointer-events-none'
-                        )}
+                        className={cn('hover:text-primary', (page === 1 || isValidating) && 'opacity-50 pointer-events-none')}
                     >
-                        <ChevronLeft className='size-4' />
+                        <ChevronLeft className='size-4'/>
                     </button>
 
                     {getPaginationPages(page, totalPages).map((p, index) =>
@@ -60,7 +60,7 @@ const ReplyList = ({ commentId, show }: TReplyList) => {
                         ) : (
                             <button
                                 key={p}
-                                onClick={() => setPage(p as number)}
+                                onClick={() => onPageChange(p as number)}
                                 disabled={isValidating}
                                 className={cn(
                                     'w-7 h-7 rounded text-xs',
@@ -74,14 +74,11 @@ const ReplyList = ({ commentId, show }: TReplyList) => {
                     )}
 
                     <button
-                        onClick={() => setPage(p => p + 1)}
+                        onClick={() => onPageChange(page + 1)}
                         disabled={page === totalPages || isValidating}
-                        className={cn(
-                            'hover:text-primary',
-                            (page === totalPages || isValidating) && 'opacity-50 pointer-events-none'
-                        )}
+                        className={cn('hover:text-primary', (page === totalPages || isValidating) && 'opacity-50 pointer-events-none')}
                     >
-                        <ChevronRight className='size-4' />
+                        <ChevronRight className='size-4'/>
                     </button>
                 </div>
             )}
