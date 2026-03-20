@@ -25,5 +25,11 @@ export const CommentService = {
             method: 'POST',
             body: JSON.stringify(payload),
         })
-    }
+    },
+    listReplies: (id: string, params: TQueryParams): Promise<IApiRes<IModelPaginate<IComment>>> => {
+        const query = buildQueryString(params)
+        return authFetcherWithRefresh<IApiRes<IModelPaginate<IComment>>>(
+            `${CONFIG_API.COMMENT.REPLIES}/${id}?${query}`
+        )
+    },
 }

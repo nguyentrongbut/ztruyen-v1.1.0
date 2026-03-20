@@ -1,9 +1,6 @@
 'use client'
 
-// ** React
 import { type ReactNode } from 'react'
-
-// ** Shadcn ui
 import {
     Pagination as ShadcnPagination,
     PaginationContent,
@@ -20,9 +17,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-
-// ** Utils
 import { cn } from '@/lib/utils'
+import { getPaginationPages } from '@/utils/pagination'
 
 interface PaginationLocalProps {
     totalCount: number
@@ -31,6 +27,7 @@ interface PaginationLocalProps {
     onPageChange: (page: number) => void
     pageSizeOptions?: number[]
     onPageSizeChange?: (size: number) => void
+    maxVisiblePages?: number
 }
 
 export function PaginationLocal({
@@ -40,109 +37,34 @@ export function PaginationLocal({
                                     onPageChange,
                                     pageSizeOptions,
                                     onPageSizeChange,
+                                    maxVisiblePages = 7,
                                 }: PaginationLocalProps) {
     const totalPageCount = Math.ceil(totalCount / pageSize)
 
-    const renderPageNumbers = () => {
-        const items: ReactNode[] = []
-        const maxVisiblePages = 7
-
-        if (totalPageCount <= maxVisiblePages) {
-            for (let i = 1; i <= totalPageCount; i++) {
-                items.push(
-                    <PaginationItem key={i}>
-                        <PaginationLink
-                            isActive={page === i}
-                            onClick={() => onPageChange(i)}
-                            className="cursor-pointer"
-                        >
-                            {i}
-                        </PaginationLink>
-                    </PaginationItem>
-                )
-            }
-            return items
-        }
-
-        let start: number
-        let end: number
-
-        switch (true) {
-            case page <= 3:
-                start = 2
-                end = Math.min(5, totalPageCount - 1)
-                break
-            case page >= totalPageCount - 2:
-                start = Math.max(2, totalPageCount - 4)
-                end = totalPageCount - 1
-                break
-            default:
-                start = page - 1
-                end = page + 1
-        }
-
-        items.push(
-            <PaginationItem key={1}>
-                <PaginationLink
-                    isActive={page === 1}
-                    onClick={() => onPageChange(1)}
-                    className="cursor-pointer"
-                >
-                    1
-                </PaginationLink>
-            </PaginationItem>
-        )
-
-        if (start > 2) {
-            items.push(
-                <PaginationItem key="ellipsis-start">
+    const renderPageNumbers = (): ReactNode[] => {
+        return getPaginationPages(page, totalPageCount, maxVisiblePages).map((p, index) =>
+            p === '...' ? (
+                <PaginationItem key={`ellipsis-${index}`}>
                     <PaginationEllipsis />
                 </PaginationItem>
-            )
-        }
-
-        for (let i = start; i <= end; i++) {
-            items.push(
-                <PaginationItem key={i}>
+            ) : (
+                <PaginationItem key={p}>
                     <PaginationLink
-                        isActive={page === i}
-                        onClick={() => onPageChange(i)}
+                        isActive={page === p}
+                        onClick={() => onPageChange(p as number)}
                         className="cursor-pointer"
                     >
-                        {i}
+                        {p}
                     </PaginationLink>
                 </PaginationItem>
             )
-        }
-
-        if (end < totalPageCount - 1) {
-            items.push(
-                <PaginationItem key="ellipsis-end">
-                    <PaginationEllipsis />
-                </PaginationItem>
-            )
-        }
-
-        items.push(
-            <PaginationItem key={totalPageCount}>
-                <PaginationLink
-                    isActive={page === totalPageCount}
-                    onClick={() => onPageChange(totalPageCount)}
-                    className="cursor-pointer"
-                >
-                    {totalPageCount}
-                </PaginationLink>
-            </PaginationItem>
         )
-
-        return items
     }
 
     if (totalPageCount <= 1 && !pageSizeOptions) return null
 
     return (
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 w-full">
-            {/* Page size select */}
             {pageSizeOptions && onPageSizeChange && (
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <span className="whitespace-nowrap">Hiển thị</span>
@@ -168,7 +90,6 @@ export function PaginationLocal({
                 </div>
             )}
 
-            {/* Pagination */}
             {totalPageCount > 1 && (
                 <ShadcnPagination className={cn(pageSizeOptions && "sm:justify-end")}>
                     <PaginationContent>
