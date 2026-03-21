@@ -20,14 +20,14 @@ type TCommentSection = {
 };
 
 const SORT_OPTIONS: TSortOption[] = [
-    {label: "Mới nhất", value: "-updatedAt"},
+    {label: "Mới nhất", value: "-createdAt"},
     {label: "Nổi bật", value: "-replyCount"},
 ];
 
 const LIMIT = 10;
 
 const CommentSection = ({name, slug}: TCommentSection) => {
-    const [sort, setSort] = useState("-updatedAt");
+    const [sort, setSort] = useState("-createdAt");
 
     const {ref: containerRef, enabled} = useLazyLoad({threshold: 0.1});
 
@@ -86,9 +86,10 @@ const CommentSection = ({name, slug}: TCommentSection) => {
                                     "cursor-pointer hover:!text-primary",
                                     sort === item.value && "text-black dark:text-white"
                                 )}
-                                onClick={() => {
+                                onClick={async () => {
                                     setSort(item.value);
-                                    reset();
+                                    await reset();
+                                    await mutate();
                                 }}
                             >
                                 {item.label}

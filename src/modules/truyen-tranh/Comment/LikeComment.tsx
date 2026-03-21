@@ -1,5 +1,11 @@
 'use client'
 
+// ** Next
+import {useRouter} from "next/navigation";
+
+// ** React hot toast
+import toast from "react-hot-toast";
+
 // ** Icon
 import {ThumbsUp} from "lucide-react";
 
@@ -15,14 +21,21 @@ import {CommentService} from "@/services/api/comment";
 // ** Utils
 import {cn} from "@/lib/utils";
 
+// ** Type
+import {IUserProfile} from "@/types/api";
+
 type TLikeComment = {
     commentId: string;
     likeCount: number;
     isLiked: boolean;
     mutate: () => void;
+    profile?: IUserProfile
 }
 
-const LikeComment = ({likeCount, commentId, isLiked, mutate}: TLikeComment) => {
+const LikeComment = ({likeCount, commentId, isLiked, mutate, profile}: TLikeComment) => {
+
+
+    const router = useRouter();
 
     const { trigger, isMutating } = useMutateMethod<void, void>({
         api: () => CommentService.toggleLike(commentId),
@@ -33,6 +46,11 @@ const LikeComment = ({likeCount, commentId, isLiked, mutate}: TLikeComment) => {
     })
 
     const handleToggleLike = async () => {
+        if (!profile?._id) {
+            router.push('/dang-nhap')
+            return toast.error("Bạn cần đăng nhập để thích bình luận này")
+        }
+
         await trigger()
     }
 

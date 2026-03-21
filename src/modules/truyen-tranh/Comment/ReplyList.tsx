@@ -1,10 +1,11 @@
 'use client'
 
-import {IComment} from "@/types/api";
+import {IComment, IUserProfile} from "@/types/api";
 import ReplyItem from "@/modules/truyen-tranh/Comment/ReplyItem";
 import {ChevronLeft, ChevronRight} from "lucide-react";
 import {cn} from "@/lib/utils";
 import {getPaginationPages} from "@/utils/pagination";
+import {useEffect, useRef} from "react";
 
 type TReplyList = {
     show: boolean;
@@ -16,6 +17,7 @@ type TReplyList = {
     activeReplyId: string | null;
     onToggleReply: (id: string, replyTo: string, name: string) => void;
     mutateReply: () => void;
+    profile?: IUserProfile
 }
 
 const ReplyList = ({
@@ -28,10 +30,20 @@ const ReplyList = ({
                        activeReplyId,
                        onToggleReply,
                        mutateReply,
+                       profile
                    }: TReplyList) => {
+
+    const listRef = useRef<HTMLUListElement>(null);
+
+    useEffect(() => {
+        if (listRef.current) {
+            listRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }, [page]);
+
     return (
         <div className={cn('mt-4', !show && 'hidden')}>
-            <ul className={cn('flex flex-col gap-y-5', isValidating && 'opacity-50 pointer-events-none')}>
+            <ul ref={listRef} className={cn('flex flex-col gap-y-5', isValidating && 'opacity-50 pointer-events-none')}>
                 {replies.map((reply) => (
                     <ReplyItem
                         key={reply._id}
@@ -39,6 +51,7 @@ const ReplyList = ({
                         isReplyOpen={activeReplyId === reply._id}
                         onToggleReply={() => onToggleReply(reply._id, reply.userId._id, reply.userId.name)}
                         mutateReply={mutateReply}
+                        profile={profile}
                     />
                 ))}
             </ul>

@@ -43,7 +43,7 @@ const CommentItem = ({
         api: () => CommentService.listReplies(comment._id, {
             page,
             limit: REPLY_LIMIT,
-            userId: profile?._id,
+            userId: profile?._id
         }),
         key: [`replies-${comment._id}-${profile?._id ?? 'guest'}`, page.toString()],
         enabled: fetchEnabled,
@@ -71,6 +71,12 @@ const CommentItem = ({
             hasFetchedRef.current = true;
             setFetchEnabled(true);
         }
+    };
+
+    const handleMutateReply = async () => {
+        const res = await mutateReply();
+        const newTotalPages = res?.meta?.totalPages ?? totalPages;
+        setPage(newTotalPages);
     };
 
     return (
@@ -102,6 +108,7 @@ const CommentItem = ({
                         mutate={mutate}
                         commentId={comment._id}
                         isLiked={comment.isLiked}
+                        profile={profile}
                     />
                     <span
                         onClick={() => handleToggleReply(
@@ -136,7 +143,8 @@ const CommentItem = ({
                     onPageChange={setPage}
                     activeReplyId={activeCommentId}
                     onToggleReply={handleToggleReply}
-                    mutateReply={mutateReply}
+                    mutateReply={handleMutateReply}
+                    profile={profile}
                 />
 
                 {activeCommentId && activeCommentId.startsWith(`parent-${comment._id}`) ||
@@ -145,7 +153,7 @@ const CommentItem = ({
                         comicSlug={comicSlug}
                         comicName={comicName}
                         mutate={mutate}
-                        mutateReply={() => mutateReply()}
+                        mutateReply={handleMutateReply}
                         parent={comment._id}
                         replyTo={activeReplyTo ?? undefined}
                         user={profile}

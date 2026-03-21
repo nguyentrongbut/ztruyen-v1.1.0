@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react";
+import {useState} from "react";
 import {IComment, IUserProfile} from "@/types/api";
 import CommentItem from "@/modules/truyen-tranh/Comment/CommentItem";
 
@@ -12,7 +12,7 @@ type TListComment = {
     profile?: IUserProfile
 }
 
-const ListComment = ({ listComment, comicName, comicSlug, mutate, profile }: TListComment) => {
+const ListComment = ({listComment, comicName, comicSlug, mutate, profile}: TListComment) => {
     const [activeCommentId, setActiveCommentId] = useState<string | null>(null);
 
     return (

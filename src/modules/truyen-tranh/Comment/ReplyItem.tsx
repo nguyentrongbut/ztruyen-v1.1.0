@@ -1,7 +1,7 @@
 'use client'
 
 import AvatarWithFrame from "@/components/common/AvatarWithFrame";
-import {IComment} from "@/types/api";
+import {IComment, IUserProfile} from "@/types/api";
 import dayjs from "dayjs";
 import LikeComment from "@/modules/truyen-tranh/Comment/LikeComment";
 
@@ -10,27 +10,28 @@ type TReplyItem = {
     isReplyOpen: boolean;
     onToggleReply: () => void;
     mutateReply: () => void;
+    profile?: IUserProfile
 }
 
-const ReplyItem = ({reply, isReplyOpen, onToggleReply, mutateReply}: TReplyItem) => {
+const ReplyItem = ({reply, isReplyOpen, onToggleReply, mutateReply, profile}: TReplyItem) => {
     return (
         <li>
             <div className='flex items-start'>
                 <div className='mr-2'>
                     <AvatarWithFrame
-                        size={60}
+                        size={40}
                         avatarName={reply.userId.name}
                         avatarUrl={reply.userId.avatar?.url}
                         frameName={reply.userId.avatar_frame?.name}
                         frameUrl={reply.userId.avatar_frame?.image?.url}
                     />
                 </div>
-                <div className='text-[#61666D] mt-3 text-[15px] truncate dark:text-gray-300'>
+                <div className='text-[#61666D] mt-1 text-[15px] truncate dark:text-gray-300'>
                     {reply.userId.name}
                 </div>
             </div>
-            <div className='ml-[68px]'>
-                <div className='-mt-6 dark:text-gray-200'>
+            <div className='ml-[46px]'>
+                <div className='-mt-3 dark:text-gray-200 text-[15px]'>
                     {reply.replyTo && (
                         <span className='text-primary mr-1.5'>@{reply.replyTo.name}</span>
                     )}
@@ -43,6 +44,7 @@ const ReplyItem = ({reply, isReplyOpen, onToggleReply, mutateReply}: TReplyItem)
                         commentId={reply._id}
                         mutate={mutateReply}
                         isLiked={reply.isLiked}
+                        profile={profile}
                     />
                     <span
                         onClick={onToggleReply}

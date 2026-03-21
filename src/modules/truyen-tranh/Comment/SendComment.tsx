@@ -80,7 +80,7 @@ const SendComment = ({
         api: (arg) => parent
             ? CommentService.createReply(arg as TSendReplyPayload)
             : CommentService.create(arg as TSendCommentPayload),
-        key: CONFIG_TAG.COMMENT.LIST,
+        key: CONFIG_TAG.COMMENT.CREATE,
         onSuccess: async (data) => {
             toast.success(data.message)
             if (parent) {
