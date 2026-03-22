@@ -86,7 +86,7 @@ const ListFavorite = () => {
 
         return (
             <FormDeleteFavorite
-                listFavorite={list} mutate={mutate}
+                listFavorite={list}
                 deleteMulti={deleteMulti}
                 setSelected={setSelected}
                 selected={selected}

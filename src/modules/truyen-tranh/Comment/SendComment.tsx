@@ -33,6 +33,12 @@ import {Send} from "lucide-react";
 // ** Toast
 import toast from "react-hot-toast";
 
+// ** Shadcn ui
+import {Textarea} from "@/components/ui/textarea";
+
+// ** Lib
+import {cn} from "@/lib/utils";
+
 export type TSendCommentPayload = {
     comicSlug: string
     comicName: string
@@ -74,7 +80,7 @@ const SendComment = ({
     const [comment, setComment] = useState<string>("");
     const wrapperRef = useRef<HTMLDivElement>(null);
     const popoverRef = useRef<HTMLDivElement>(null);
-    const inputRef = useRef<HTMLInputElement>(null);
+    const inputRef = useRef<HTMLTextAreaElement>(null);
 
     const {trigger, isMutating} = useMutateMethod<void, TSendCommentPayload | TSendReplyPayload>({
         api: (arg) => parent
@@ -161,21 +167,24 @@ const SendComment = ({
                                 frameUrl={user.avatar_frame?.image?.url}
                             />
                         </div>
-                        <input
+                        <Textarea
                             ref={inputRef}
                             onFocus={() => setIsFocus(true)}
                             value={comment}
                             onChange={(e) => setComment(e.target.value)}
                             placeholder={parent ? `Phản hồi @${replyName ?? ""}: ...` : "Viết bình luận..."}
-                            className="
-                                w-full py-2 px-4 text-sm outline-none rounded-md
-                                bg-[#f1f2f3] dark:bg-zinc-800
-                                border border-transparent
-                                hover:bg-white hover:border-gray-300
-                                dark:hover:bg-zinc-700 dark:hover:border-zinc-600
-                                focus:bg-white focus:border-gray-300
-                                dark:focus:bg-zinc-700 dark:focus:border-zinc-500
-                                transition-all duration-200"
+                            rows={1}
+                            className={cn(
+                                "w-full py-5 px-4 text-sm outline-none rounded-md resize-none",
+                                "bg-[#f1f2f3] dark:bg-zinc-800",
+                                "border border-transparent",
+                                "hover:bg-white hover:border-gray-300",
+                                "dark:hover:bg-zinc-700 dark:hover:border-zinc-600",
+                                "focus:bg-white focus:border-gray-300",
+                                "dark:focus:bg-zinc-700 dark:focus:border-zinc-500",
+                                "focus-visible:ring-0 focus-visible:ring-offset-0",
+                                "transition-all duration-200"
+                            )}
                         />
                     </div>
                     {isFocus && (

@@ -149,16 +149,18 @@ const CommentItem = ({
 
                 {activeCommentId && activeCommentId.startsWith(`parent-${comment._id}`) ||
                 (activeCommentId && replies.some(r => r._id === activeCommentId)) ? (
-                    <SendComment
-                        comicSlug={comicSlug}
-                        comicName={comicName}
-                        mutate={mutate}
-                        mutateReply={handleMutateReply}
-                        parent={comment._id}
-                        replyTo={activeReplyTo ?? undefined}
-                        user={profile}
-                        replyName={activeReplyName ?? comment.userId.name}
-                    />
+                    <div className='-ml-3'>
+                        <SendComment
+                            comicSlug={comicSlug}
+                            comicName={comicName}
+                            mutate={mutate}
+                            mutateReply={handleMutateReply}
+                            parent={comment._id}
+                            replyTo={activeReplyTo ?? undefined}
+                            user={profile}
+                            replyName={activeReplyName ?? comment.userId.name}
+                        />
+                    </div>
                 ) : null}
 
                 <Separator className='bg-[#E3E5E7] dark:bg-zinc-700 mt-6'/>

@@ -104,7 +104,7 @@ const CommentSection = ({name, slug}: TCommentSection) => {
             </div>
 
             {!enabled || isLoading ? (
-                <div className="mt-4 text-sm text-third text-center">Đang tải...</div>
+                <CommentSectionSkeleton/>
             ) : (
                 <>
                     <SendComment comicName={name} comicSlug={slug} mutate={() => mutate()} user={profile}/>

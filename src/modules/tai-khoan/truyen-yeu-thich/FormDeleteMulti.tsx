@@ -34,6 +34,9 @@ import {KeyedMutator} from "swr";
 // ** Type
 import {IFavorite} from "@/types/api";
 
+// ** Lib
+import {invalidateFavoriteMulti} from "@/lib/invalidate-cache/invalidateFavorite";
+
 type TDeleteMultiBtn = {
     listFavorite: IFavorite[];
     deleteMulti: boolean;
@@ -45,7 +48,7 @@ type TDeleteMultiBtn = {
 
 const FormDeleteMulti = (
     {
-        deleteMulti, setDeleteMulti, selected, setSelected, mutate, listFavorite
+        deleteMulti, setDeleteMulti, selected, setSelected, listFavorite
     }: TDeleteMultiBtn) => {
 
     const {trigger: deleteMultiTrigger, isMutating} = useMutateMethod<void, string[]>({
@@ -55,7 +58,10 @@ const FormDeleteMulti = (
         onSuccess: async (data) => {
             toast.success(data.message)
             setSelected([])
-            await mutate()
+            const slugs = listFavorite
+                .filter(item => selected.includes(item._id))
+                .map(item => item.comic_slug)
+            await invalidateFavoriteMulti(slugs)
         }
     })
 

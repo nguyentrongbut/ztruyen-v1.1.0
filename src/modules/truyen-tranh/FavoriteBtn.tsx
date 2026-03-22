@@ -27,6 +27,9 @@ import toast from "react-hot-toast"
 // ** Skeleton
 import FavoriteBtnSkeleton from "@/skeletons/truyen-tranh/FavoriteBtnSkeleton";
 
+// ** Lib
+import {invalidateFavorite} from "@/lib/invalidate-cache/invalidateFavorite";
+
 
 type TFavoriteBtn = {
     slug: string
@@ -45,7 +48,7 @@ const FavoriteBtn = ({slug, comicName, comicCover, isLogin}: TFavoriteBtn) => {
 
     const router = useRouter()
 
-    const {data: favorite, isLoading, mutate} = useGetMethod<IFavoriteToggle>({
+    const {data: favorite, isLoading} = useGetMethod<IFavoriteToggle>({
         api: () => FavoriteService.check(slug),
         key: `${CONFIG_TAG.FAVORITE.INDEX}-${slug}`,
         revalidateIfStale: false,
@@ -56,7 +59,7 @@ const FavoriteBtn = ({slug, comicName, comicCover, isLogin}: TFavoriteBtn) => {
         key: CONFIG_TAG.FAVORITE.TOGGLE,
         showToast: false,
         onSuccess: async () => {
-            await mutate()
+            await invalidateFavorite(slug)
         }
     })
 

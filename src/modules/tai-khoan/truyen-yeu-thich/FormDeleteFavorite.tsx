@@ -7,9 +7,6 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import {Dispatch, SetStateAction} from "react";
 
-// ** Swr
-import {KeyedMutator} from "swr";
-
 // ** Component
 import ComicImage from "@/components/common/ComicImage";
 import Button from "@/components/common/Button";
@@ -41,14 +38,16 @@ import useMutateMethod from "@/hooks/common/useMutateMethod";
 // ** Service
 import {FavoriteService} from "@/services/api/favorite";
 
+// ** Lib
+import {invalidateFavorite} from "@/lib/invalidate-cache/invalidateFavorite";
+
 type TFormDeleteFavorite = {
     listFavorite: IFavorite[]
-    mutate: KeyedMutator<IModelPaginate<IFavorite>>
     deleteMulti: boolean
     selected: string[]
     setSelected: Dispatch<SetStateAction<string[]>>
 }
-const FormDeleteFavorite = ({listFavorite, mutate, deleteMulti, setSelected, selected}: TFormDeleteFavorite) => {
+const FormDeleteFavorite = ({listFavorite, deleteMulti, setSelected, selected}: TFormDeleteFavorite) => {
 
     const {trigger: deleteOne, isMutating} = useMutateMethod<void, string>({
         api: (id) => FavoriteService.delete(id),
@@ -56,12 +55,12 @@ const FormDeleteFavorite = ({listFavorite, mutate, deleteMulti, setSelected, sel
         showToast: false,
         onSuccess: async (data) => {
             toast.success(data.message)
-            await mutate()
         }
     })
 
-    const handleDelete = async (id: string) => {
+    const handleDelete = async (id: string, slug: string) => {
         await deleteOne(id)
+        await invalidateFavorite(slug)
     }
 
     const toggleSelect = (id: string, checked: boolean) => {
@@ -163,7 +162,7 @@ const FormDeleteFavorite = ({listFavorite, mutate, deleteMulti, setSelected, sel
                                                     sizeCustom='xs'
                                                     className='bg-red-600 hover:bg-red-500'
                                                     isLoading={isMutating}
-                                                    onClick={() => handleDelete(item._id)}
+                                                    onClick={() => handleDelete(item._id, item.comic_slug)}
                                                 >
                                                     Đúng vậy! (=^･ｪ･^=)/
                                                 </Button>
