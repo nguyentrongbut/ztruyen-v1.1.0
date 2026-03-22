@@ -38,6 +38,7 @@ import {Textarea} from "@/components/ui/textarea";
 
 // ** Lib
 import {cn} from "@/lib/utils";
+import {sanitizeComment} from "@/utils/sanitizeComment";
 
 export type TSendCommentPayload = {
     comicSlug: string
@@ -126,10 +127,15 @@ const SendComment = ({
             return toast.error('Bình luận không được để trống !')
         }
 
+        const result = sanitizeComment(comment)
+        if (!result.ok) {
+            return toast.error(result.error)
+        }
+
         await trigger(
             parent
-                ? {parent, replyTo, content: comment} satisfies TSendReplyPayload
-                : {comicName, comicSlug, content: comment} satisfies TSendCommentPayload
+                ? {parent, replyTo, content: result.value} satisfies TSendReplyPayload
+                : {comicName, comicSlug, content: result.value} satisfies TSendCommentPayload
         )
     }
 

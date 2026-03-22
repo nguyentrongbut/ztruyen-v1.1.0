@@ -18,6 +18,7 @@ type TReplyList = {
     onToggleReply: (id: string, replyTo: string, name: string) => void;
     mutateReply: () => void;
     profile?: IUserProfile
+    mutateDeleteReply: () => void;
 }
 
 const ReplyList = ({
@@ -30,7 +31,8 @@ const ReplyList = ({
                        activeReplyId,
                        onToggleReply,
                        mutateReply,
-                       profile
+                       profile,
+                       mutateDeleteReply
                    }: TReplyList) => {
 
     const listRef = useRef<HTMLUListElement>(null);
@@ -52,6 +54,7 @@ const ReplyList = ({
                         onToggleReply={() => onToggleReply(reply._id, reply.userId._id, reply.userId.name)}
                         mutateReply={mutateReply}
                         profile={profile}
+                        mutateDeleteReply={mutateDeleteReply}
                     />
                 ))}
             </ul>

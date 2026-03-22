@@ -10,8 +10,9 @@ import {IComment} from "@/types/api";
 // ** Util and type
 import {buildQueryString, TQueryParams} from "@/utils/buildQueryString";
 
-// ** Type
+// ** Types
 import {TSendCommentPayload, TSendReplyPayload} from "@/modules/truyen-tranh/Comment/SendComment";
+import {TFormReportCommentPayload} from "@/modules/truyen-tranh/Comment/FormReportComment";
 
 export const CommentService = {
     list: (params: TQueryParams): Promise<IApiRes<IModelPaginateComment<IComment>>> => {
@@ -42,6 +43,17 @@ export const CommentService = {
         return authFetcherWithRefresh<IApiRes<void>>(CONFIG_API.COMMENT.LIKE, {
             method: 'POST',
             body: JSON.stringify({commentId: id}),
+        })
+    },
+    delete: (id: string): Promise<IApiRes<void>> => {
+        return authFetcherWithRefresh<IApiRes<void>>(`${CONFIG_API.COMMENT.INDEX}/${id}`, {
+            method: 'DELETE'
+        })
+    },
+    report: (payload: TFormReportCommentPayload): Promise<IApiRes<void>> => {
+        return authFetcherWithRefresh<IApiRes<void>>(CONFIG_API.COMMENT.REPORT, {
+            method: 'POST',
+            body: JSON.stringify(payload),
         })
     },
 }

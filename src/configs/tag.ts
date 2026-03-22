@@ -25,6 +25,8 @@ export const CONFIG_TAG = {
         LIST: 'comment-list',
         LIKE: 'comment-like',
         CREATE: 'create-comment',
+        DELETE: 'delete-comment',
+        REPORT: 'report-comment',
     },
     IMAGE: {
         UPLOAD: 'upload-image',

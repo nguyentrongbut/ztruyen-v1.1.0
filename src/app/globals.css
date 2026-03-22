@@ -184,6 +184,10 @@
 
 @layer utilities {
 
+    .icon-text {
+        @apply whitespace-nowrap ml-1
+    }
+
     /*  Carousel  */
     .btn-carousel {
         @apply absolute z-20 top-[40%] -translate-y-[40%] shadow-[0_0_19px_0_rgba(0,0,0,0.251)] bg-white/80 hover:bg-white/90
@@ -341,8 +345,8 @@
     .h-header {
         height: var(--header-height, 62px)
     }
-    /* End Header*/
 
+    /* End Header*/
     /* common */
     .section-list-comic {
         @apply container pt-2 pb-20

@@ -35,6 +35,7 @@ export const CONFIG_API = {
         REPLIES: `${commentUrl}/replies`,
         REPLY: `${commentUrl}/reply`,
         LIKE: `${commentUrl}/like`,
+        REPORT: `${commentUrl}/report`
     },
     IMAGE: {
         UPLOAD: `${baseUrl}/upload`,

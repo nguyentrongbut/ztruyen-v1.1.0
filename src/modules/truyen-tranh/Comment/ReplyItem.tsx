@@ -1,9 +1,10 @@
 'use client'
 
-import AvatarWithFrame from "@/components/common/AvatarWithFrame";
 import {IComment, IUserProfile} from "@/types/api";
 import dayjs from "dayjs";
 import LikeComment from "@/modules/truyen-tranh/Comment/LikeComment";
+import AvatarWithName from "@/modules/truyen-tranh/Comment/AvatarWithName";
+import CommentAction from "@/modules/truyen-tranh/Comment/CommentAction";
 
 type TReplyItem = {
     reply: IComment;
@@ -11,25 +12,22 @@ type TReplyItem = {
     onToggleReply: () => void;
     mutateReply: () => void;
     profile?: IUserProfile
+    mutateDeleteReply: () => void;
 }
 
-const ReplyItem = ({reply, isReplyOpen, onToggleReply, mutateReply, profile}: TReplyItem) => {
+const ReplyItem = ({reply, isReplyOpen, onToggleReply, mutateReply, profile, mutateDeleteReply}: TReplyItem) => {
+
+    const isOwner = profile?._id === reply.userId._id
+
     return (
-        <li>
-            <div className='flex items-start'>
-                <div className='mr-2'>
-                    <AvatarWithFrame
-                        size={40}
-                        avatarName={reply.userId.name}
-                        avatarUrl={reply.userId.avatar?.url}
-                        frameName={reply.userId.avatar_frame?.name}
-                        frameUrl={reply.userId.avatar_frame?.image?.url}
-                    />
-                </div>
-                <div className='text-[#61666D] mt-1 text-[15px] truncate dark:text-gray-300'>
-                    {reply.userId.name}
-                </div>
-            </div>
+        <li className='group/header'>
+            <AvatarWithName
+                size={40}
+                name={reply.userId.name}
+                avatarUrl={reply.userId.avatar?.url}
+                frameName={reply.userId.avatar_frame?.name}
+                frameUrl={reply.userId.avatar_frame?.image?.url}
+            />
             <div className='ml-[46px]'>
                 <div className='-mt-3 dark:text-gray-200 text-[15px]'>
                     {reply.replyTo && (
@@ -52,6 +50,7 @@ const ReplyItem = ({reply, isReplyOpen, onToggleReply, mutateReply, profile}: TR
                     >
                         {isReplyOpen ? 'Huỷ' : 'Phản hồi'}
                     </span>
+                    <CommentAction isOwner={isOwner} commentId={reply._id} mutate={mutateDeleteReply}/>
                 </div>
             </div>
         </li>

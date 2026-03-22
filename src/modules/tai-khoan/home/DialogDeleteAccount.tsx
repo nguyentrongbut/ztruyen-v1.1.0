@@ -74,9 +74,9 @@ const DialogDeleteAccount = ({ userName }: TDialogDeleteAccount) => {
         api: () => UserService.deleteProfile(),
         key: CONFIG_TAG.USER.DELETE_PROFILE,
         showToast: false,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             toast.success(data.message)
-            mutate(CONFIG_TAG.USER.PROFILE, null, false)
+            await mutate(CONFIG_TAG.USER.PROFILE, null, false)
             router.refresh()
         },
     })

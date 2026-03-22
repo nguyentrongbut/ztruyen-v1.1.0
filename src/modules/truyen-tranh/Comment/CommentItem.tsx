@@ -2,7 +2,6 @@
 
 import {useRef, useState} from "react";
 import {Separator} from "@/components/ui/separator";
-import AvatarWithFrame from "@/components/common/AvatarWithFrame";
 import {IComment, IUserComment, IUserProfile} from "@/types/api";
 import {ChevronDown, ChevronUp} from "lucide-react";
 import dayjs from "dayjs";
@@ -11,6 +10,8 @@ import SendComment from "@/modules/truyen-tranh/Comment/SendComment";
 import useGetMethod from "@/hooks/common/useGetMethod";
 import {CommentService} from "@/services/api/comment";
 import LikeComment from "@/modules/truyen-tranh/Comment/LikeComment";
+import AvatarWithName from "@/modules/truyen-tranh/Comment/AvatarWithName";
+import CommentAction from "@/modules/truyen-tranh/Comment/CommentAction";
 
 type TCommentItem = {
     user: IUserComment;
@@ -81,47 +82,49 @@ const CommentItem = ({
 
     return (
         <li>
-            <div className='flex items-start'>
-                <div className='mx-2'>
-                    <AvatarWithFrame
-                        size={60}
-                        avatarName={user.name}
-                        avatarUrl={user.avatar?.url}
-                        frameName={user.avatar_frame?.name}
-                        frameUrl={user.avatar_frame?.image?.url}
-                    />
-                </div>
-                <div className='text-[#61666D] mt-3 text-[15px] truncate dark:text-gray-300'>
-                    {user.name}
+            <div className='group/header'>
+                <AvatarWithName
+                    size={60}
+                    name={user.name}
+                    avatarUrl={user.avatar?.url}
+                    frameName={user.avatar_frame?.name}
+                    frameUrl={user.avatar_frame?.image?.url}
+                />
+
+                <div className='ml-[76px]'>
+                    <div className='-mt-6 dark:text-gray-200'>
+                        {comment.content}
+                    </div>
+
+                    <div className='flex gap-5 text-sm mt-1 text-[#9499A0] dark:text-gray-400'>
+                        <div>{dayjs(comment.createdAt).format("DD-MM-YYYY HH:mm")}</div>
+                        <LikeComment
+                            likeCount={comment.likeCount}
+                            mutate={mutate}
+                            commentId={comment._id}
+                            isLiked={comment.isLiked}
+                            profile={profile}
+                        />
+                        <span
+                            onClick={() => handleToggleReply(
+                                PARENT_REPLY_ID(comment._id),
+                                comment.userId._id,
+                                comment.userId.name
+                            )}
+                            className='cursor-pointer hover:text-primary'
+                        >
+                        {activeCommentId === PARENT_REPLY_ID(comment._id) ? 'Huỷ' : 'Phản hồi'}
+                    </span>
+                        <CommentAction
+                            isOwner={profile?._id === comment.userId._id}
+                            commentId={comment._id}
+                            mutate={mutate}
+                        />
+                    </div>
                 </div>
             </div>
 
             <div className='ml-[76px]'>
-                <div className='-mt-6 dark:text-gray-200'>
-                    {comment.content}
-                </div>
-
-                <div className='flex gap-5 text-sm mt-1 text-[#9499A0] dark:text-gray-400'>
-                    <div>{dayjs(comment.createdAt).format("DD-MM-YYYY HH:mm")}</div>
-                    <LikeComment
-                        likeCount={comment.likeCount}
-                        mutate={mutate}
-                        commentId={comment._id}
-                        isLiked={comment.isLiked}
-                        profile={profile}
-                    />
-                    <span
-                        onClick={() => handleToggleReply(
-                            PARENT_REPLY_ID(comment._id),
-                            comment.userId._id,
-                            comment.userId.name
-                        )}
-                        className='cursor-pointer'
-                    >
-                        {activeCommentId === PARENT_REPLY_ID(comment._id) ? 'Huỷ' : 'Phản hồi'}
-                    </span>
-                </div>
-
                 {comment.replyCount > 0 && (
                     <button
                         onClick={handleToggleShowReplies}
@@ -145,6 +148,7 @@ const CommentItem = ({
                     onToggleReply={handleToggleReply}
                     mutateReply={handleMutateReply}
                     profile={profile}
+                    mutateDeleteReply={mutateReply}
                 />
 
                 {activeCommentId && activeCommentId.startsWith(`parent-${comment._id}`) ||
