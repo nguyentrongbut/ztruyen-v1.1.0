@@ -10,12 +10,13 @@ type TReplyItem = {
     reply: IComment;
     isReplyOpen: boolean;
     onToggleReply: () => void;
-    mutateReply: () => void;
+    mutateReply: () => Promise<unknown>;
     profile?: IUserProfile
-    mutateDeleteReply: () => void;
+    mutateDeleteReply: () => Promise<unknown>;
+    mutate: () => Promise<unknown>;
 }
 
-const ReplyItem = ({reply, isReplyOpen, onToggleReply, mutateReply, profile, mutateDeleteReply}: TReplyItem) => {
+const ReplyItem = ({reply, isReplyOpen, onToggleReply, mutateReply, profile, mutateDeleteReply, mutate}: TReplyItem) => {
 
     const isOwner = profile?._id === reply.userId._id
 
@@ -54,7 +55,8 @@ const ReplyItem = ({reply, isReplyOpen, onToggleReply, mutateReply, profile, mut
                         <CommentAction
                             isOwner={isOwner}
                             commentId={reply._id}
-                            mutate={mutateDeleteReply}
+                            mutate={mutate}
+                            mutateReply={mutateDeleteReply}
                             profile={profile}
                         />
                     </div>

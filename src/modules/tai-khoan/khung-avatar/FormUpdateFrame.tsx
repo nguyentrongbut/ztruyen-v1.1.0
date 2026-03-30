@@ -82,7 +82,6 @@ const FormUpdateFrame = () => {
     const { trigger, isMutating } = useMutateMethod<IUserProfile, void>({
         api: () => UserService.updateProfileImage({ avatar_frame: selectedId }),
         key: CONFIG_TAG.FRAME.UPDATE,
-        showToast: false,
         onSuccess: async () => {
             toast.success('Cập nhật khung thành công!')
             await mutate()

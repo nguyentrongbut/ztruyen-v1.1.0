@@ -28,7 +28,7 @@ type TLikeComment = {
     commentId: string;
     likeCount: number;
     isLiked: boolean;
-    mutate: () => void;
+    mutate: () => Promise<unknown>;
     profile?: IUserProfile
 }
 

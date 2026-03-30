@@ -1,5 +1,8 @@
 'use client'
 
+// ** SWR
+import {mutate} from "swr";
+
 // ** React
 import {useState} from "react";
 
@@ -58,8 +61,11 @@ const FormLogin = () => {
     const {trigger, isMutating} = useMutateMethod<ILogin, TLoginArgs>({
         api: (arg) => AuthService.login(arg.payload, arg.cfToken),
         key: CONFIG_TAG.AUTH.LOGIN,
-        onSuccess: data => {
+        onSuccess: async data => {
             toast.success(data.message)
+            await mutate(CONFIG_TAG.USER.PROFILE, undefined, {
+                revalidate: true,
+            })
             router.push("/")
         }
     })

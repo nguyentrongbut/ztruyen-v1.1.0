@@ -59,7 +59,6 @@ const FormUploadAvatar = () => {
             return UserService.updateProfileImage({ avatar: imageId })
         },
         key: CONFIG_TAG.IMAGE.UPLOAD,
-        showToast: false,
         onSuccess: async () => {
             toast.success('Cập nhật ảnh đại diện thành công')
             await mutate()

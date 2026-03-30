@@ -73,7 +73,6 @@ const DialogDeleteAccount = ({ userName }: TDialogDeleteAccount) => {
     const { trigger, isMutating } = useMutateMethod<void, void>({
         api: () => UserService.deleteProfile(),
         key: CONFIG_TAG.USER.DELETE_PROFILE,
-        showToast: false,
         onSuccess: async (data) => {
             toast.success(data.message)
             await mutate(CONFIG_TAG.USER.PROFILE, null, false)

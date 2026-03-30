@@ -1,5 +1,8 @@
 'use client'
 
+// ** SWR
+import {mutate} from "swr";
+
 // ** React
 import { useEffect } from 'react'
 
@@ -7,9 +10,12 @@ import { useEffect } from 'react'
 import { setAccessToken } from '@/lib/localStorage'
 import {setLoggedInCookie} from "@/lib/cookie-client";
 
+// ** Config
+import {CONFIG_TAG} from "@/configs/tag";
+
 export function ListenOAuthMessage() {
     useEffect(() => {
-        const handler = (event: MessageEvent) => {
+        const handler = async (event: MessageEvent) => {
             if (event.origin !== window.location.origin) return
 
             if (event.data?.type === 'OAUTH_LOGIN_SUCCESS') {
@@ -17,6 +23,10 @@ export function ListenOAuthMessage() {
 
                 setAccessToken(token)
                 setLoggedInCookie();
+
+                await mutate(CONFIG_TAG.USER.PROFILE, undefined, {
+                    revalidate: true,
+                })
 
                 window.location.href = '/'
             }

@@ -54,7 +54,6 @@ const FormDeleteMulti = (
     const {trigger: deleteMultiTrigger, isMutating} = useMutateMethod<void, string[]>({
         api: (ids) => FavoriteService.deleteMulti(ids),
         key: CONFIG_TAG.FAVORITE.DELETE_MULTI,
-        showToast: false,
         onSuccess: async (data) => {
             toast.success(data.message)
             setSelected([])

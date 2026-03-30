@@ -8,7 +8,7 @@ type TListComment = {
     listComment: IComment[];
     comicSlug: string;
     comicName: string;
-    mutate: () => void;
+    mutate: () => Promise<unknown>;
     profile?: IUserProfile
 }
 

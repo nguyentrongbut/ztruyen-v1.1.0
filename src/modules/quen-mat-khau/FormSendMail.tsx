@@ -51,7 +51,6 @@ const FormSendMail = () => {
     const { trigger, isMutating } = useMutateMethod<null, TForgotPasswordArgs>({
         api: (arg) => AuthService.forgotPassword(arg.payload, arg.cfToken),
         key: CONFIG_TAG.AUTH.FORGOT,
-        showToast: false,
         onSuccess: (data) => {
             toast.success(data.message)
             router.push('/')

@@ -17,9 +17,10 @@ type TReplyList = {
     onPageChange: (page: number) => void;
     activeReplyId: string | null;
     onToggleReply: (id: string, replyTo: string, name: string) => void;
-    mutateReply: () => void;
+    mutateReply: () => Promise<unknown>;
     profile?: IUserProfile
-    mutateDeleteReply: () => void;
+    mutateDeleteReply: () => Promise<unknown>;
+    mutate: () => Promise<unknown>;
 }
 
 const ReplyList = ({
@@ -33,7 +34,8 @@ const ReplyList = ({
                        onToggleReply,
                        mutateReply,
                        profile,
-                       mutateDeleteReply
+                       mutateDeleteReply,
+                       mutate
                    }: TReplyList) => {
 
     const isInitialLoading = isValidating && replies.length === 0;
@@ -62,6 +64,7 @@ const ReplyList = ({
                         mutateReply={mutateReply}
                         profile={profile}
                         mutateDeleteReply={mutateDeleteReply}
+                        mutate={mutate}
                     />
                 ))}
             </ul>

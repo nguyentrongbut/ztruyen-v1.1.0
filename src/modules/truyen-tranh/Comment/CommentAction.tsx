@@ -10,11 +10,12 @@ import {IUserProfile} from "@/types/api";
 type TCommentAction = {
     isOwner: boolean;
     commentId: string;
-    mutate: () => void
+    mutate: () => Promise<unknown>;
+    mutateReply?: () => Promise<unknown>;
     profile?: IUserProfile
 }
 
-const CommentAction = ({isOwner, commentId, mutate, profile}: TCommentAction) => {
+const CommentAction = ({isOwner, commentId, mutate, mutateReply, profile}: TCommentAction) => {
 
     if (!profile?._id) return null;
 
@@ -22,7 +23,7 @@ const CommentAction = ({isOwner, commentId, mutate, profile}: TCommentAction) =>
         <div className='ml-auto visible lg:invisible lg:group-hover/header:visible'>
             <div className='md:mr-5'>
                 {isOwner ? (
-                    <FormDeleteComment id={commentId} mutate={mutate}/>
+                    <FormDeleteComment id={commentId} mutate={mutate} mutateReply={mutateReply}/>
                 ) : (
                     <FormReportComment commentId={commentId}/>
                 )}

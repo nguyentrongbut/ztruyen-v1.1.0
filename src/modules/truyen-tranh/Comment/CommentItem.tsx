@@ -18,7 +18,7 @@ type TCommentItem = {
     comment: IComment;
     comicSlug: string;
     comicName: string;
-    mutate: () => void;
+    mutate: () => Promise<unknown>;
     activeCommentId: string | null;
     onSetActiveCommentId: (id: string | null) => void;
     profile?: IUserProfile
@@ -153,6 +153,7 @@ const CommentItem = ({
                     mutateReply={handleMutateReply}
                     profile={profile}
                     mutateDeleteReply={mutateReply}
+                    mutate={mutate}
                 />
 
                 {activeCommentId && activeCommentId.startsWith(`parent-${comment._id}`) ||

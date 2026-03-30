@@ -31,10 +31,9 @@ const Logout = () => {
     const {trigger, isMutating} = useMutateMethod<null, void>({
         api: () => AuthService.logout(),
         key: CONFIG_TAG.AUTH.LOGOUT,
-        showToast: false,
-        onSuccess: (res) => {
+        onSuccess: async (res) => {
             toast.success(res.message)
-            mutate(CONFIG_TAG.USER.PROFILE, null, false)
+            await mutate(CONFIG_TAG.USER.PROFILE, null, false)
             router.refresh()
         }
     })
@@ -42,7 +41,7 @@ const Logout = () => {
     return (
         <>
             <div
-                className={`text-destructive flex gap-2 cursor-pointer ${isMutating ? 'pointer-events-none opacity-50' : ''}`}
+                className={`text-destructive flex gap-2 cursor-pointer w-full ${isMutating ? 'pointer-events-none opacity-50' : ''}`}
                 onClick={() => trigger()}
             >
                 <LogOut className="text-inherit"/>

@@ -52,7 +52,6 @@ const FormDeleteFavorite = ({listFavorite, deleteMulti, setSelected, selected}: 
     const {trigger: deleteOne, isMutating} = useMutateMethod<void, string>({
         api: (id) => FavoriteService.delete(id),
         key: CONFIG_TAG.FAVORITE.DELETE,
-        showToast: false,
         onSuccess: async (data) => {
             toast.success(data.message)
         }

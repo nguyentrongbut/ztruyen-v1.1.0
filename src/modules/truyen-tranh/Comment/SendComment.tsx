@@ -59,8 +59,8 @@ export type TSendReplyPayload = {
 export type TSendComment = {
     comicSlug: string
     comicName: string
-    mutate: () => void
-    mutateReply?: () => void
+    mutate: () => Promise<unknown>
+    mutateReply?: () => Promise<unknown>
     parent?: string | null
     replyTo?: string | null
     user?: IUserProfile
@@ -91,10 +91,10 @@ const SendComment = ({
         onSuccess: async (data) => {
             toast.success(data.message)
             if (parent) {
-                mutateReply?.()
-                mutate()
+                await mutateReply?.()
+                await mutate()
             } else {
-                mutate()
+                await mutate()
             }
             setComment('')
         }

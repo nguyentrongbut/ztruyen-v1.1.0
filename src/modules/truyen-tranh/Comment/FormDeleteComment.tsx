@@ -25,18 +25,21 @@ import {CommentService} from "@/services/api/comment";
 
 type TFormDeleteComment = {
     id: string;
-    mutate: () => void
+    mutate: () => Promise<unknown>;
+    mutateReply?: () => Promise<unknown>;
 }
 
-const FormDeleteComment = ({id, mutate} :TFormDeleteComment) => {
+const FormDeleteComment = ({id, mutate, mutateReply} :TFormDeleteComment) => {
 
     const {trigger, isMutating} = useMutateMethod<void, string>({
         api: (id) => CommentService.delete(id),
         key: CONFIG_TAG.COMMENT.DELETE,
-        showToast: false,
         onSuccess: async (data) => {
+            await mutate()
+            if (mutateReply) {
+                await mutateReply()
+            }
             toast.success(data.message)
-            mutate()
         }
     })
 
