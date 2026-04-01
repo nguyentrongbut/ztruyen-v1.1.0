@@ -402,7 +402,7 @@
     }
 
     .desc {
-        @apply text-xs sm:text-sm text-muted-foreground
+        @apply text-xs sm:text-sm text-muted-foreground hidden md:block
     }
 
     /* End home */
