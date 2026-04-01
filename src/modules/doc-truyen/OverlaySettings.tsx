@@ -169,6 +169,7 @@ const OverlaySettings = ({
 
     return (
         <div
+            onClick={(e) => e.stopPropagation()}
             className="w-full absolute bottom-0 flex flex-col items-center left-1/2 -translate-x-1/2 transition-opacity duration-500 ease-in-out"
         >
             <div
@@ -344,16 +345,16 @@ const OverlaySettings = ({
                     <div className="bg-setting rounded-[40px] flex w-[120px] items-center justify-between">
                         <span
                             className="p-3 cursor-pointer"
-                            onClick={handlePlusChange}
+                            onClick={handleMinusChange}
                         >
-                            <Plus className="size-4"/>
+                            <Minus className="size-4"/>
                         </span>
                         <span className="text-[13px] text-setting">{`${imgWidth}%`}</span>
                         <span
                             className="p-3 cursor-pointer"
-                            onClick={handleMinusChange}
+                            onClick={handlePlusChange}
                         >
-                            <Minus className="size-4"/>
+                            <Plus className="size-4"/>
                         </span>
                     </div>
                 </div>
