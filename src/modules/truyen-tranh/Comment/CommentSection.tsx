@@ -1,23 +1,42 @@
 'use client'
 
+// ** React
 import {useState} from "react";
+
+// ** Modules
 import SendComment from "@/modules/truyen-tranh/Comment/SendComment";
 import ListComment from "@/modules/truyen-tranh/Comment/ListComment";
+
+// ** Services
 import {CommentService} from "@/services/api/comment";
+import {UserService} from "@/services/api/user";
+
+// ** Lib
 import {cn} from "@/lib/utils";
+
+// ** Types
 import {IComment, IUserProfile} from "@/types/api";
 import {TSortOption} from "@/types/component";
+
+// ** Tag
 import {CONFIG_TAG} from "@/configs/tag";
+
+// ** Hooks
 import useLazyLoad from "@/hooks/common/useLazyLoad";
 import useInfiniteLoad from "@/hooks/common/useInfiniteLoad";
 import useSentinel from "@/hooks/common/useSentinel";
 import useGetMethod from "@/hooks/common/useGetMethod";
-import {UserService} from "@/services/api/user";
+
+// ** Skeleton
 import {ListCommentSkeleton, CommentSectionSkeleton} from "@/skeletons/truyen-tranh/CommentSectionSkeleton";
 
 type TCommentSection = {
     slug: string;
     name: string;
+    type: "detail" | "reading";
+    chapterId?: string;
+    page?: number | null
+    chapterName?: string | null
 };
 
 const SORT_OPTIONS: TSortOption[] = [
@@ -27,7 +46,8 @@ const SORT_OPTIONS: TSortOption[] = [
 
 const LIMIT = 10;
 
-const CommentSection = ({name, slug}: TCommentSection) => {
+const CommentSection = (
+    {name, slug, chapterId, type = 'detail', page, chapterName}: TCommentSection) => {
     const [sort, setSort] = useState("-createdAt");
 
     const {ref: containerRef, enabled} = useLazyLoad({threshold: 0.1});
@@ -40,6 +60,10 @@ const CommentSection = ({name, slug}: TCommentSection) => {
 
     const profileReady = !isProfileLoading;
 
+    const detailKey = `${CONFIG_TAG.COMMENT.LIST}-detail-${slug}-${profile?._id ?? 'guest'}`
+
+    const isDetailKey = type === 'reading' ? detailKey : undefined;
+
     const {
         data: comments,
         meta,
@@ -50,7 +74,9 @@ const CommentSection = ({name, slug}: TCommentSection) => {
         loadMore,
         reset,
     } = useInfiniteLoad<IComment>({
-        key: `${CONFIG_TAG.COMMENT.LIST}-${slug}-${profile?._id ?? 'guest'}`,
+        key: type === 'detail'
+            ? detailKey
+            : `${CONFIG_TAG.COMMENT.LIST}-chapter-${chapterId}-${profile?._id ?? 'guest'}`,
         enabled: enabled && profileReady,
         sort,
         api: (page) =>
@@ -58,7 +84,12 @@ const CommentSection = ({name, slug}: TCommentSection) => {
                 page,
                 limit: LIMIT,
                 sort,
-                filters: {comicSlug: [slug]},
+                filters: {
+                    ...(type === 'detail'
+                            ? {comicSlug: [slug]}
+                            : chapterId ? {chapterId: [chapterId]} : {}
+                    )
+                },
                 userId: profile?._id,
             }).then(res => res.data as IModelPaginateComment<IComment>),
     });
@@ -72,7 +103,7 @@ const CommentSection = ({name, slug}: TCommentSection) => {
     return (
         <div ref={containerRef}>
             {/* Title Head */}
-            <div className="mt-10 flex justify-between sm:justify-start sm:gap-20">
+            <div className={cn("flex justify-between sm:justify-start sm:gap-20", type === 'detail' && 'mt-10')}>
                 <div className="relative inline-block">
                     <h2 className="text-lg font-medium">Bình luận</h2>
                     <span className="absolute top-2 left-full ml-2 -translate-y-1/2 text-sm text-img whitespace-nowrap">
@@ -107,7 +138,16 @@ const CommentSection = ({name, slug}: TCommentSection) => {
                 <CommentSectionSkeleton/>
             ) : (
                 <>
-                    <SendComment comicName={name} comicSlug={slug} mutate={() => mutate()} user={profile}/>
+                    <SendComment
+                        comicName={name}
+                        comicSlug={slug}
+                        chapterId={chapterId}
+                        chapterName={chapterName}
+                        page={page}
+                        mutate={() => mutate()}
+                        user={profile}
+                        detailKey={isDetailKey}
+                    />
 
                     <ListComment
                         listComment={comments}
@@ -115,6 +155,8 @@ const CommentSection = ({name, slug}: TCommentSection) => {
                         comicName={name}
                         mutate={() => mutate()}
                         profile={profile}
+                        detailKey={isDetailKey}
+                        type={type}
                     />
 
                     {/* Sentinel */}

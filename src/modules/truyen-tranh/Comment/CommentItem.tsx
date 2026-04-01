@@ -1,18 +1,33 @@
 'use client'
 
+// ** React
 import {useRef, useState} from "react";
+
+// ** Shadcn ui
 import {Separator} from "@/components/ui/separator";
+
+// ** Types
 import {IComment, IUserComment, IUserProfile} from "@/types/api";
+
+// ** Icons
 import {ChevronDown, ChevronUp} from "lucide-react";
+
+// ** Dayjs
 import dayjs from "dayjs";
+
+// ** Modules
 import ReplyList from "@/modules/truyen-tranh/Comment/ReplyList";
 import SendComment from "@/modules/truyen-tranh/Comment/SendComment";
-import useGetMethod from "@/hooks/common/useGetMethod";
-import {CommentService} from "@/services/api/comment";
 import LikeComment from "@/modules/truyen-tranh/Comment/LikeComment";
 import AvatarWithName from "@/modules/truyen-tranh/Comment/AvatarWithName";
 import CommentAction from "@/modules/truyen-tranh/Comment/CommentAction";
 import CommentContent from "@/modules/truyen-tranh/Comment/CommentContent";
+
+// ** Hooks
+import useGetMethod from "@/hooks/common/useGetMethod";
+
+// ** Service
+import {CommentService} from "@/services/api/comment";
 
 type TCommentItem = {
     user: IUserComment;
@@ -23,6 +38,8 @@ type TCommentItem = {
     activeCommentId: string | null;
     onSetActiveCommentId: (id: string | null) => void;
     profile?: IUserProfile
+    detailKey?: string
+    type: "detail" | "reading";
 }
 
 const REPLY_LIMIT = 10;
@@ -30,7 +47,8 @@ const PARENT_REPLY_ID = (commentId: string) => `parent-${commentId}`;
 
 const CommentItem = ({
                          user, comment, comicSlug, comicName, profile,
-                         mutate, activeCommentId, onSetActiveCommentId
+                         mutate, activeCommentId, onSetActiveCommentId,
+                         detailKey, type
                      }: TCommentItem) => {
     const [showReplies, setShowReplies] = useState(false);
     const [page, setPage] = useState(1);
@@ -90,6 +108,9 @@ const CommentItem = ({
                     avatarUrl={user.avatar?.url}
                     frameName={user.avatar_frame?.name}
                     frameUrl={user.avatar_frame?.image?.url}
+                    chapterName={comment.chapterName}
+                    chapterPage={comment.page}
+                    type={type}
                 />
 
                 <div className='ml-[70px] sm:ml-[76px]'>
@@ -105,6 +126,7 @@ const CommentItem = ({
                                 commentId={comment._id}
                                 isLiked={comment.isLiked}
                                 profile={profile}
+                                detailKey={detailKey}
                             />
                             <span
                                 onClick={() => handleToggleReply(
@@ -153,6 +175,7 @@ const CommentItem = ({
                     profile={profile}
                     mutateDeleteReply={mutateReply}
                     mutate={mutate}
+                    detailKey={detailKey}
                 />
 
                 {activeCommentId && activeCommentId.startsWith(`parent-${comment._id}`) ||
@@ -167,6 +190,7 @@ const CommentItem = ({
                             replyTo={activeReplyTo ?? undefined}
                             user={profile}
                             replyName={activeReplyName ?? comment.userId.name}
+                            detailKey={detailKey}
                         />
                     </div>
                 ) : null}

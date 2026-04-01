@@ -11,9 +11,17 @@ type TAvatarWithName = {
     frameName?: string
     frameUrl?: string
     className?: string
+    chapterPage?: number | null
+    chapterName?: string | null
+    type: "detail" | "reading";
 }
 
-const AvatarWithName = ({ size, name, avatarUrl, frameName, frameUrl, className }: TAvatarWithName) => {
+const AvatarWithName = (
+    {
+        size, name, avatarUrl, frameName, frameUrl,
+        className, chapterName, chapterPage, type
+    }
+    : TAvatarWithName) => {
     return (
         <div className='flex items-start'>
             <div className={cn('mr-2', size === 60 && 'mr-2 sm:mx-2')}>
@@ -31,7 +39,19 @@ const AvatarWithName = ({ size, name, avatarUrl, frameName, frameUrl, className 
                 className
             )}>
                 {name}
+                {chapterName && (
+                    <>
+                        <span
+                            className='inline-block mx-1.5 text-[13px]'>
+                            tại {type === 'detail' ? 'chương' : 'ảnh'}
+                        </span>
+                        <span className='text-link cursor-pointer text-sm'>
+                            {type === 'detail' && `Chương ${chapterName}`} {chapterPage}P
+                        </span>
+                    </>
+                )}
             </div>
+
         </div>
     )
 }

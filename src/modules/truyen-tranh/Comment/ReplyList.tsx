@@ -1,11 +1,24 @@
 'use client'
 
-import {IComment, IUserProfile} from "@/types/api";
-import ReplyItem from "@/modules/truyen-tranh/Comment/ReplyItem";
-import {ChevronLeft, ChevronRight} from "lucide-react";
-import {cn} from "@/lib/utils";
-import {getPaginationPages} from "@/utils/pagination";
+// ** React
 import {useEffect, useRef} from "react";
+
+// ** Types
+import {IComment, IUserProfile} from "@/types/api";
+
+// ** Module
+import ReplyItem from "@/modules/truyen-tranh/Comment/ReplyItem";
+
+// ** Icons
+import {ChevronLeft, ChevronRight} from "lucide-react";
+
+// ** Lib
+import {cn} from "@/lib/utils";
+
+// ** Utils
+import {getPaginationPages} from "@/utils/pagination";
+
+// ** Skeleton
 import {ListReplyCommentSkeleton} from "@/skeletons/truyen-tranh/CommentSectionSkeleton";
 
 type TReplyList = {
@@ -21,6 +34,9 @@ type TReplyList = {
     profile?: IUserProfile
     mutateDeleteReply: () => Promise<unknown>;
     mutate: () => Promise<unknown>;
+    detailKey?: string;
+    chapterPage?: number | null
+    chapterName?: string | null
 }
 
 const ReplyList = ({
@@ -35,7 +51,8 @@ const ReplyList = ({
                        mutateReply,
                        profile,
                        mutateDeleteReply,
-                       mutate
+                       mutate,
+                       detailKey
                    }: TReplyList) => {
 
     const isInitialLoading = isValidating && replies.length === 0;
@@ -65,6 +82,7 @@ const ReplyList = ({
                         profile={profile}
                         mutateDeleteReply={mutateDeleteReply}
                         mutate={mutate}
+                        detailKey={detailKey}
                     />
                 ))}
             </ul>

@@ -6,6 +6,9 @@ import {useRouter} from "next/navigation";
 // ** React hot toast
 import toast from "react-hot-toast";
 
+// ** SWR
+import { mutate as globalMutate } from 'swr'
+
 // ** Icon
 import {ThumbsUp} from "lucide-react";
 
@@ -30,9 +33,12 @@ type TLikeComment = {
     isLiked: boolean;
     mutate: () => Promise<unknown>;
     profile?: IUserProfile
+    detailKey?: string
 }
 
-const LikeComment = ({likeCount, commentId, isLiked, mutate, profile}: TLikeComment) => {
+const LikeComment = ({
+                         likeCount, commentId, isLiked, mutate, profile, detailKey
+}: TLikeComment) => {
 
 
     const router = useRouter();
@@ -40,8 +46,16 @@ const LikeComment = ({likeCount, commentId, isLiked, mutate, profile}: TLikeComm
     const { trigger, isMutating } = useMutateMethod<void, void>({
         api: () => CommentService.toggleLike(commentId),
         key: CONFIG_TAG.COMMENT.LIKE,
-        onSuccess: () => {
-            mutate()
+        onSuccess: async () => {
+            await mutate()
+
+            if (detailKey) {
+                await globalMutate(
+                    (key) => Array.isArray(key) && key[0] === detailKey,
+                    undefined,
+                    { revalidate: true }
+                )
+            }
         }
     })
 

@@ -10,11 +10,18 @@ import {Dispatch, RefObject, SetStateAction, useEffect, useRef, useState} from "
 import useTailwindBreakpoints from "@/hooks/common/useTailwindBreakpoints";
 
 // ** Icons
-import {BookOpenText, ChevronLeft, ChevronRight, Expand, Menu, Minus, Plus, Shrink} from "lucide-react";
+import {BookOpenText, ChevronLeft, ChevronRight, Expand, Menu, MessageSquare, Minus, Plus, Shrink} from "lucide-react";
 
 // ** Shadcn ui
 import {Slider} from "@/components/ui/slider";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
 
 // ** Config
 import {CONFIG_SLUG} from "@/configs/slug";
@@ -25,6 +32,7 @@ import {TOtruyenChapter} from "@/types/api.otruyen";
 // ** Util
 import {buildReadingUrl} from "@/utils/buildReadingUrl ";
 import getIdFromUrl from "@/utils/getIdFromUrl";
+import CommentSection from "@/modules/truyen-tranh/Comment/CommentSection";
 
 type TOverlaySettings = {
     imgWidth?: number
@@ -47,7 +55,7 @@ const OverlaySettings = ({
                              currentImageIndex, setCurrentImageIndex,
                              imgRefs, chapters, currentChapterId,
                              isDropdownOpen, setIsDropdownOpen,
-                             slugComic, nextChapter, prevChapter
+                             slugComic, nextChapter, prevChapter,
                          }: TOverlaySettings) => {
 
     // Hook
@@ -58,6 +66,13 @@ const OverlaySettings = ({
 
     // ** Ref
     const listRef = useRef<HTMLUListElement | null>(null);
+
+    const currentChapter = chapters.find((ch) =>
+        getIdFromUrl(
+            ch.chapter_api_data,
+            '/'
+        ) === currentChapterId
+    )
 
     // Dropdown menu
     const scrollToActive = () => {
@@ -158,6 +173,36 @@ const OverlaySettings = ({
         >
             <div
                 className="bg-setting rounded-[40px] text-white/90 flex items-center justify-center px-5 max-w-max pt-1 gap-1.5">
+                {/* Comment */}
+                <Dialog>
+                    <DialogTrigger asChild>
+                        <div className="flex flex-col items-center gap-1 p-2 cursor-pointer">
+                            <MessageSquare className="size-5 text-setting"/>
+                            <span className="text-xs">Bình luận</span>
+                        </div>
+                    </DialogTrigger>
+                    <DialogContent className='xl:!w-[60vw] xl:!max-w-[52vw]'>
+                        <DialogHeader>
+                            <DialogTitle className='text-sm text-setting mb-2'>
+                                Chương{' '}
+                                {currentChapter?.chapter_name || ''}
+                            </DialogTitle>
+                        </DialogHeader>
+
+                        {/* Scrollable Content */}
+                        <div className="flex-1 overflow-y-auto overflow-x-hidden px-2 h-[80vh]">
+                            <CommentSection
+                                type='reading'
+                                name={currentChapter?.filename as string}
+                                chapterId={currentChapterId}
+                                page={currentImageIndex + 1}
+                                chapterName={currentChapter?.chapter_name}
+                                slug={slugComic}
+                            />
+                        </div>
+                    </DialogContent>
+                </Dialog>
+
                 {/* Detail comic btn*/}
                 {!isMd && (
                     <Link

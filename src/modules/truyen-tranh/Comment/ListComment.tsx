@@ -1,7 +1,12 @@
 'use client'
 
+// ** React
 import {useState} from "react";
+
+// ** Types
 import {IComment, IUserProfile} from "@/types/api";
+
+// ** Module
 import CommentItem from "@/modules/truyen-tranh/Comment/CommentItem";
 
 type TListComment = {
@@ -10,9 +15,14 @@ type TListComment = {
     comicName: string;
     mutate: () => Promise<unknown>;
     profile?: IUserProfile
+    detailKey?: string
+    type: "detail" | "reading";
 }
 
-const ListComment = ({listComment, comicName, comicSlug, mutate, profile}: TListComment) => {
+const ListComment = ({
+                         listComment, comicName, comicSlug, mutate, profile,
+                         detailKey, type
+}: TListComment) => {
     const [activeCommentId, setActiveCommentId] = useState<string | null>(null);
 
     return (
@@ -28,6 +38,8 @@ const ListComment = ({listComment, comicName, comicSlug, mutate, profile}: TList
                     activeCommentId={activeCommentId}
                     onSetActiveCommentId={setActiveCommentId}
                     profile={profile}
+                    detailKey={detailKey}
+                    type={type}
                 />
             ))}
         </ul>

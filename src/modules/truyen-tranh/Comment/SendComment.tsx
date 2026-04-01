@@ -7,6 +7,9 @@ import Image from "next/image";
 // ** React
 import {useEffect, useRef, useState} from "react";
 
+// ** SWR
+import { mutate as globalMutate } from 'swr'
+
 // ** Hooks
 import useMutateMethod from "@/hooks/common/useMutateMethod";
 
@@ -48,6 +51,7 @@ export type TSendCommentPayload = {
     replyTo?: string | null
     chapterName?: string | null
     page?: number | null
+    chapterId: string | null
 }
 
 export type TSendReplyPayload = {
@@ -65,6 +69,10 @@ export type TSendComment = {
     replyTo?: string | null
     user?: IUserProfile
     replyName?: string | null
+    chapterId?: string | null
+    page?: number | null
+    chapterName?: string | null
+    detailKey?: string
 }
 
 const SendComment = ({
@@ -75,7 +83,11 @@ const SendComment = ({
                          parent = null,
                          replyTo = null,
                          user,
-                         replyName
+                         replyName,
+                         chapterId,
+                         page,
+                         chapterName,
+                         detailKey
                      }: TSendComment) => {
     const [isFocus, setIsFocus] = useState(false);
     const [comment, setComment] = useState<string>("");
@@ -96,6 +108,13 @@ const SendComment = ({
                 await mutate()
             } else {
                 await mutate()
+            }
+            if (detailKey) {
+                await globalMutate(
+                    (key) => Array.isArray(key) && key[0] === detailKey,
+                    undefined,
+                    { revalidate: true }
+                )
             }
             setComment('')
         }
@@ -137,7 +156,14 @@ const SendComment = ({
         await trigger(
             parent
                 ? {parent, replyTo, content: result.value} satisfies TSendReplyPayload
-                : {comicName, comicSlug, content: result.value} satisfies TSendCommentPayload
+                : {
+                    comicName,
+                    comicSlug,
+                    content: result.value,
+                    chapterId: chapterId ?? null,
+                    chapterName: chapterName ?? null,
+                    page: page ?? null,
+                } satisfies TSendCommentPayload
         )
     }
 

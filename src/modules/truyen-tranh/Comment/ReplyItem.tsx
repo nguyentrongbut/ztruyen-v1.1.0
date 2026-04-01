@@ -1,7 +1,12 @@
 'use client'
 
+// ** Types
 import {IComment, IUserProfile} from "@/types/api";
+
+// ** Dayjs
 import dayjs from "dayjs";
+
+// ** Modules
 import LikeComment from "@/modules/truyen-tranh/Comment/LikeComment";
 import AvatarWithName from "@/modules/truyen-tranh/Comment/AvatarWithName";
 import CommentAction from "@/modules/truyen-tranh/Comment/CommentAction";
@@ -15,6 +20,9 @@ type TReplyItem = {
     profile?: IUserProfile
     mutateDeleteReply: () => Promise<unknown>;
     mutate: () => Promise<unknown>;
+    detailKey?: string;
+    page?: number | null
+    chapterName?: string | null
 }
 
 const ReplyItem = ({
@@ -24,7 +32,7 @@ const ReplyItem = ({
                        mutateReply,
                        profile,
                        mutateDeleteReply,
-                       mutate
+                       mutate, detailKey
                    }: TReplyItem) => {
 
     const isOwner = profile?._id === reply.userId._id
@@ -55,6 +63,7 @@ const ReplyItem = ({
                             mutate={mutateReply}
                             isLiked={reply.isLiked}
                             profile={profile}
+                            detailKey={detailKey}
                         />
                         <span
                             onClick={onToggleReply}
