@@ -33,7 +33,7 @@ import {ListCommentSkeleton, CommentSectionSkeleton} from "@/skeletons/truyen-tr
 type TCommentSection = {
     slug: string;
     name: string;
-    type: "detail" | "reading";
+    type?: "detail" | "reading";
     chapterId?: string;
     page?: number | null
     chapterName?: string | null
