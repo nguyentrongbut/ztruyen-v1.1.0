@@ -28,7 +28,9 @@ import FavoriteBtnSkeleton from "@/skeletons/truyen-tranh/FavoriteBtnSkeleton";
 
 // ** Lib
 import {invalidateFavorite} from "@/lib/invalidate-cache/invalidateFavorite";
-import {getAccessToken} from "@/lib/localStorage";
+
+// ** Hook
+import {useAuth} from "@/hooks/common/useAuth";
 
 
 type TFavoriteBtn = {
@@ -47,7 +49,7 @@ const FavoriteBtn = ({slug, comicName, comicCover}: TFavoriteBtn) => {
 
     const router = useRouter()
 
-    const isLogin = getAccessToken()
+    const { isLogin, loading } = useAuth();
 
     const {data: favorite, isLoading} = useGetMethod<IFavoriteToggle>({
         api: () => FavoriteService.check(slug),
@@ -88,7 +90,7 @@ const FavoriteBtn = ({slug, comicName, comicCover}: TFavoriteBtn) => {
         )
     }
 
-    if (isLoading) return <FavoriteBtnSkeleton/>
+    if (isLoading || loading) return <FavoriteBtnSkeleton/>
 
     return (
         <Button

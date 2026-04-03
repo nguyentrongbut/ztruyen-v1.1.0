@@ -1,8 +1,5 @@
 'use client';
 
-// ** React
-import {useEffect, useState} from "react";
-
 // ** Next
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -19,20 +16,17 @@ import removeExtension from '@/utils/removeExtension';
 // ** Configs
 import {navHeader} from "@/configs/header";
 
-// ** lib
-import {getAccessToken} from "@/lib/localStorage";
+// ** Hooks
+import {useAuth} from "@/hooks/common/useAuth";
 
 const NavHeaderMobile = () => {
     const path = usePathname();
 
     const pathGenre = path.startsWith('/the-loai');
 
-    const [isLogin, setIsLogin] = useState(false)
+    const { isLogin, loading } = useAuth();
 
-    useEffect(() => {
-        const token = getAccessToken();
-        setIsLogin(Boolean(token))
-    }, [])
+    if (loading) return null;
 
     return (
         <>
