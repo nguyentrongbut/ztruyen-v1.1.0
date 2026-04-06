@@ -1,11 +1,25 @@
 'use client'
 
+// ** React
 import {useEffect} from 'react';
+
+// ** Lib
 import {onMessage, getFirebaseMessaging} from '@/lib/firebase';
+
+// ** React hot toast
 import toast from 'react-hot-toast';
+
+// ** Hook
 import {useAuth} from '@/hooks/common/useAuth';
+
+// ** Icons
 import {MessageCircle, Info, X, ThumbsUp} from 'lucide-react';
+
+// ** Component
 import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
+
+// ** Lib
+import {dispatchCommentRefresh, dispatchNotificationRefresh} from "@/lib/invalidate-cache/events";
 
 type NotifType = 'REPLY_COMMENT' | 'LIKE_COMMENT' | 'system';
 
@@ -67,11 +81,10 @@ const NotificationListener = () => {
         if (!messaging) return;
 
         const unsubscribe = onMessage(messaging, (payload) => {
-            console.log('payload', payload);
+            const data = (payload.data ?? {}) as Partial<INotificationFCM>;
 
             const title = payload.notification?.title || '';
             const body = payload.notification?.body || '';
-            const data = (payload.data ?? {}) as Partial<INotificationFCM>;
             const avatarUrl = data.senderAvatar ?? '';
             const type: NotifType = data.type ?? 'system';
             const senderName = data.senderName ?? '';
@@ -80,6 +93,12 @@ const NotificationListener = () => {
             const badge = BADGE[type];
             const avatar = getAvatarStyle(senderName);
             const initials = getInitials(senderName);
+
+            if (type === 'REPLY_COMMENT' || type === 'LIKE_COMMENT') {
+                dispatchCommentRefresh()
+            }
+
+            dispatchNotificationRefresh()
 
             toast.custom(
                 (t) => (

@@ -34,6 +34,9 @@ export const CONFIG_TAG = {
     EMOJI_CATEGORIES: {
         LIST: 'emoji-categories-list'
     },
+    NOTIFICATION: {
+        LIST: 'notification-list',
+    },
     IMAGE: {
         UPLOAD: 'upload-image',
     }
