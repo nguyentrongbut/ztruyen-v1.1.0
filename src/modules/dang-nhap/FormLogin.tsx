@@ -73,7 +73,6 @@ const FormLogin = () => {
                 revalidate: true,
             })
             window.dispatchEvent(new Event(AUTH_CHANGE_EVENT))
-            await initFCM();
             router.push("/")
         }
     })

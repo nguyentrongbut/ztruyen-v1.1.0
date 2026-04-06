@@ -193,7 +193,6 @@ const SendComment = ({
                             src={CONFIG_IMG.AVATAR_FALLBACK}
                             alt='ảnh đại diện dự phòng'
                             fill
-                            placeholder='blur'
                             className='object-cover rounded-full'
                         />
                     </div>

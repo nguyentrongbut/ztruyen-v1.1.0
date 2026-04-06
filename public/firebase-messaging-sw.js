@@ -1,18 +1,19 @@
 importScripts('https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/10.0.0/firebase-messaging-compat.js');
 
+const params = new URL(location.href).searchParams;
+
 firebase.initializeApp({
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID",
+    apiKey: params.get('apiKey'),
+    authDomain: params.get('authDomain'),
+    projectId: params.get('projectId'),
+    storageBucket: params.get('storageBucket'),
+    messagingSenderId: params.get('messagingSenderId'),
+    appId: params.get('appId'),
 });
 
 const messaging = firebase.messaging();
 
-// Background push — app đóng hoặc tab ẩn
 messaging.onBackgroundMessage((payload) => {
     const title = payload.notification?.title ?? 'Thông báo mới';
     const body = payload.notification?.body ?? '';
@@ -21,12 +22,11 @@ messaging.onBackgroundMessage((payload) => {
     self.registration.showNotification(title, {
         body,
         icon: '/favicon.ico',
-        badge: '/badge.png',  // icon nhỏ trên thanh status bar (Android)
+        badge: '/badge.png',
         data,
     });
 });
 
-// Click vào notification → mở đúng trang
 self.addEventListener('notificationclick', (event) => {
     event.notification.close();
 
@@ -54,4 +54,3 @@ self.addEventListener('notificationclick', (event) => {
             })
     );
 });
-

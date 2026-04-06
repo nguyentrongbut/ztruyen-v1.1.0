@@ -16,6 +16,7 @@ import {ThemeProvider} from "@/theme/ThemeProvider";
 import Toast from "@/components/common/Toast";
 import ProgressWrapper from "@/components/common/ProgressWrapper";
 import NotificationListener from "@/components/common/NotificationListener";
+import FCMInit from "@/components/common/FCMInit";
 
 // ** Styles global
 import "./globals.css";
@@ -140,6 +141,7 @@ export default function RootLayout({children,}: { children: ReactNode }) {
             <Toast/>
             <NotificationListener/>
         </ThemeProvider>
+        <FCMInit />
         <Script
             src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
             strategy="afterInteractive"
