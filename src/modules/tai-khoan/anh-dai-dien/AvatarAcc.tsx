@@ -10,8 +10,8 @@ import {IUserProfile} from "@/types/api";
 // ** Skeleton
 import HomeAccountSkeleton from "@/skeletons/tai-khoan/trang-chu/HomeAccountSkeleton";
 
-// ** Image
-import AvatarFallBack from "@/public/avatar-fallback.webp";
+// ** Config
+import {CONFIG_IMG} from "@/configs/img";
 
 type TAvatarAccount = {
     user: IUserProfile;
@@ -28,7 +28,8 @@ const AvatarAcc = ({user, isLoading}: TAvatarAccount) => {
         <Avatar className='size-15 lg:size-20'>
             <AvatarImage src={user.avatar?.url} alt={user.name}/>
             <AvatarFallback className='relative size-15 lg:size-20'>
-                <Image src={AvatarFallBack} alt='ảnh đại diện dự phòng' fill placeholder='blur'/>
+                <Image src={CONFIG_IMG.AVATAR_FALLBACK} alt='ảnh đại diện dự phòng' fill
+                       placeholder='blur'/>
             </AvatarFallback>
         </Avatar>
     );

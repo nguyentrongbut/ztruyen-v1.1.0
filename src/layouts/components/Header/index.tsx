@@ -10,7 +10,6 @@ import Logo from '@/components/common/Logo';
 import Search from '@/layouts/components/Header/Search';
 import NavHeader from '@/layouts/components/Header/NavHeader';
 import NavHeaderMobile from '@/layouts/components/Header/NavHeaderMobile';
-import AccountMenu from "@/layouts/components/Header/AccountMenu";
 import ReadingHistoryBtn from "@/layouts/components/Header/ReadingHistoryBtn";
 
 // ** Shadcn ui
@@ -25,8 +24,10 @@ import {
 // ** Lucide Icon
 import {Menu} from 'lucide-react';
 
-// ** Module
+// ** Layout components
 import ClientAuth from "@/layouts/components/Header/ClientAuth";
+import Notification from "@/layouts/components/Header/Notification";
+
 
 const Header = async ({
                           asChild = false,
@@ -52,6 +53,9 @@ const Header = async ({
                     <div className="hidden xl:block">
                         <ModeToggle/>
                     </div>
+
+                    <Notification/>
+
                     <ClientAuth/>
 
                     <div className="xl:hidden">

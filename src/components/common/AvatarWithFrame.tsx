@@ -7,8 +7,8 @@ import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 // ** Lib
 import {cn} from "@/lib/utils";
 
-// ** Image
-import AvatarFallBack from "@/public/avatar-fallback.webp";
+// ** Config
+import {CONFIG_IMG} from "@/configs/img";
 
 type TAvatarWithFrameProps = {
     avatarUrl?: string;
@@ -29,7 +29,7 @@ const AvatarWithFrame = ({
                          }: TAvatarWithFrameProps) => {
     const fallbackAvatar = (
         <Image
-            src={AvatarFallBack}
+            src={CONFIG_IMG.AVATAR_FALLBACK}
             alt="fallback"
             fill
             className="object-cover"

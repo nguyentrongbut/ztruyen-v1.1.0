@@ -6,7 +6,8 @@ import Image from 'next/image';
 // ** Shadcn ui
 import Button from "@/components/common/Button";
 
-import NotFoundImage from '@/public/notfound.webp'
+// ** Config
+import {CONFIG_IMG} from "@/configs/img";
 
 export const metadata: Metadata = {
     title: '404 - Không tìm thấy trang này',
@@ -18,7 +19,7 @@ export default function NotFound() {
         <div className="flex flex-col gap-4 sm:gap-6 justify-center items-center h-screen">
             <div className='relative size-[300px]'>
                 <Image
-                    src={NotFoundImage}
+                    src={CONFIG_IMG.NOT_FOUND}
                     fill
                     alt="404 - Ztruyện | ztruyen.io.vn"
                     placeholder="blur"

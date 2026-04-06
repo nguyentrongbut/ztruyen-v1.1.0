@@ -7,6 +7,7 @@ const favoriteUrl = baseUrl + '/favorite';
 const commentUrl = baseUrl + '/comment';
 const emojiUrl = baseUrl + '/emoji';
 const emojiCategoriesUrl = baseUrl + '/emoji-category';
+const notificationUrl = baseUrl + '/notification';
 
 export const CONFIG_API = {
     AUTH: {
@@ -21,6 +22,10 @@ export const CONFIG_API = {
     },
     USER: {
         PROFILE: `${userUrl}/profile`,
+        FCM: `${userUrl}/fcm-token`,
+        REMOVE: '/remove',
+        SUBSCRIBE_TOPIC: '/subscribe-topic',
+        UNSUBSCRIBE_TOPIC: '/unsubscribe-topic',
     },
     FRAME: {
         INDEX: frameUrl
@@ -44,6 +49,10 @@ export const CONFIG_API = {
     },
     EMOJI_CATEGORIES: {
         INDEX: emojiCategoriesUrl
+    },
+    NOTIFICATION: {
+        INDEX: notificationUrl,
+        STREAM: `${notificationUrl}/stream`
     },
     IMAGE: {
         INDEX: `${baseUrl}/image`,

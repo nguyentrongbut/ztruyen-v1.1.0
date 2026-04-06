@@ -27,9 +27,6 @@ import Button from "@/components/common/Button";
 import AvatarWithFrame from "@/components/common/AvatarWithFrame";
 import PopoverEmoji from "@/modules/truyen-tranh/Comment/PopoverEmoji";
 
-// ** Image
-import AvatarFallBack from "@/public/avatar-fallback.webp";
-
 // ** Icon
 import {Send} from "lucide-react";
 
@@ -42,6 +39,9 @@ import {Textarea} from "@/components/ui/textarea";
 // ** Lib
 import {cn} from "@/lib/utils";
 import {sanitizeComment} from "@/utils/sanitizeComment";
+
+// ** Config
+import {CONFIG_IMG} from "@/configs/img";
 
 export type TSendCommentPayload = {
     comicSlug: string
@@ -190,7 +190,7 @@ const SendComment = ({
                 <>
                     <div className='relative size-12 ml-2 mr-4 sm:mx-4 shrink-0'>
                         <Image
-                            src={AvatarFallBack}
+                            src={CONFIG_IMG.AVATAR_FALLBACK}
                             alt='ảnh đại diện dự phòng'
                             fill
                             placeholder='blur'

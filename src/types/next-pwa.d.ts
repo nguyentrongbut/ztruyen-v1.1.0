@@ -10,6 +10,7 @@ declare module 'next-pwa' {
         scope?: string;
         reloadOnOnline?: boolean;
         cacheOnFrontEndNav?: boolean;
+        buildExcludes?: Array<RegExp | string>;
         fallbacks?: {
             document?: string;
             image?: string;

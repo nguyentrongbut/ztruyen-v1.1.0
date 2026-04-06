@@ -11,6 +11,9 @@ import { cva, type VariantProps } from 'class-variance-authority';
 // ** utils
 import { cn } from '@/lib/utils';
 
+// ** Config
+import {CONFIG_IMG} from "@/configs/img";
+
 const logoVariants = cva(
     'font-bold first-letter:uppercase first-letter:text-primary font-ui',
     {
@@ -44,7 +47,7 @@ const Logo = (
         return (
             <Link href="/" className="inline-flex items-center">
                 <Image
-                    src='/logo.png'
+                    src={CONFIG_IMG.LOGO}
                     width={width}
                     height={height}
                     alt={websiteName}

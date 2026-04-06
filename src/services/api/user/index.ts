@@ -19,16 +19,16 @@ export type TUploadProfileImagePayload = {
 
 export const UserService = {
     getProfile: (): Promise<IApiRes<IUserProfile>> => {
-         return authFetcherWithRefresh<IApiRes<IUserProfile>>(CONFIG_API.USER.PROFILE)
+        return authFetcherWithRefresh<IApiRes<IUserProfile>>(CONFIG_API.USER.PROFILE)
     },
     updateProfile: (payload: TUpdateProfilePayload): Promise<IApiRes<IUserProfile>> => {
-         return authFetcherWithRefresh<IApiRes<IUserProfile>>(CONFIG_API.USER.PROFILE, {
+        return authFetcherWithRefresh<IApiRes<IUserProfile>>(CONFIG_API.USER.PROFILE, {
             method: 'PATCH',
             body: JSON.stringify(payload),
         })
     },
     updateProfileImage: (payload: TUploadProfileImagePayload): Promise<IApiRes<IUserProfile>> => {
-         return authFetcherWithRefresh<IApiRes<IUserProfile>>(CONFIG_API.USER.PROFILE, {
+        return authFetcherWithRefresh<IApiRes<IUserProfile>>(CONFIG_API.USER.PROFILE, {
             method: 'PATCH',
             body: JSON.stringify(payload),
         })
@@ -41,5 +41,26 @@ export const UserService = {
         removeAccessToken();
 
         return res
-    }
+    },
+    saveFcmToken: (token: string) =>
+        authFetcherWithRefresh(`${CONFIG_API.USER.FCM}`, {
+            method: 'POST',
+            body: JSON.stringify({token}),
+        }),
+    removeFcmToken: (token: string) =>
+        authFetcherWithRefresh(`${CONFIG_API.USER.FCM}${CONFIG_API.USER.REMOVE}`, {
+            method: 'PATCH',
+            body: JSON.stringify({token}),
+        }),
+    subscribeToTopic: (token: string, topic: string) =>
+        authFetcherWithRefresh(`${CONFIG_API.USER.FCM}${CONFIG_API.USER.SUBSCRIBE_TOPIC}`, {
+            method: 'POST',
+            body: JSON.stringify({token, topic}),
+        }),
+
+    unsubscribeFromTopic: (token: string, topic: string) =>
+        authFetcherWithRefresh(`${CONFIG_API.USER.FCM}${CONFIG_API.USER.UNSUBSCRIBE_TOPIC}`, {
+            method: 'POST',
+            body: JSON.stringify({token, topic}),
+        }),
 }

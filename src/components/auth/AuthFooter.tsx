@@ -6,6 +6,7 @@ import Image from "next/image";
 
 // ** Configs
 import {CONFIG_API} from "@/configs/api";
+import {CONFIG_IMG} from "@/configs/img";
 
 type TProvider = 'google' | 'facebook'
 
@@ -35,17 +36,17 @@ const AuthFooter = () => {
             <span>Các phương thức đăng nhập khác</span>
             {/*<div className='flex flex-col sm:flex-row gap-5 sm:gap-7 my-5 sm:my-3 justify-between'>*/}
             {/*    <div className='flex gap-2 items-center cursor-pointer' onClick={() => loginSocialUrl('google')}>*/}
-            {/*        <Image src='/google-icon.png' alt='Đăng nhập với Google' width={24} height={24}/>*/}
+            {/*        <Image src={CONFIG_IMG.GOOGLE} alt='Đăng nhập với Google' width={24} height={24}/>*/}
             {/*        Đăng nhập Google*/}
             {/*    </div>*/}
             {/*    <div className='flex gap-2 items-center cursor-pointer' onClick={() => loginSocialUrl('facebook')}>*/}
-            {/*        <Image src='/facebook-icon.png' alt='Đăng nhập với Google' width={24} height={24}/>*/}
+            {/*        <Image src={CONFIG_IMG.FACEBOOK} alt='Đăng nhập với Google' width={24} height={24}/>*/}
             {/*        Đăng nhập Facebook*/}
             {/*    </div>*/}
             {/*</div>*/}
             <div className='flex gap-2 items-center cursor-pointer my-6 sm:my-8'
                  onClick={() => loginSocialUrl('google')}>
-                <Image src='/google-icon.png' alt='Đăng nhập với Google' width={24} height={24}/>
+                <Image src={CONFIG_IMG.GOOGLE} alt='Đăng nhập với Google' width={24} height={24}/>
                 Đăng nhập bằng Google
             </div>
             <span className='text-center w-full md:w-[400px]'>Bằng cách đăng nhập hay hoàn tất đăng ký, bạn đã đồng ý với

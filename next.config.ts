@@ -18,6 +18,9 @@ export default withPWA({
     disable: process.env.NODE_ENV === 'development',
     register: true,
     skipWaiting: true,
+    buildExcludes: [
+        /firebase-messaging-sw\.js$/,
+    ],
     runtimeCaching: [
         {
             urlPattern: /^https:\/\/your-api\.com\/api\/.*/i,

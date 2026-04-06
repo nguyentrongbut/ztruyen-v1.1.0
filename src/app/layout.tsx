@@ -4,6 +4,7 @@ import {ReactNode} from "react";
 // ** Next js
 import type {Metadata, Viewport} from "next";
 import {Montserrat, Bangers, Nunito} from "next/font/google";
+import Script from "next/script";
 
 // ** Shadcn ui
 import {TooltipProvider} from "@/components/ui/tooltip";
@@ -14,10 +15,14 @@ import {ThemeProvider} from "@/theme/ThemeProvider";
 // ** Components
 import Toast from "@/components/common/Toast";
 import ProgressWrapper from "@/components/common/ProgressWrapper";
+import NotificationListener from "@/components/common/NotificationListener";
 
 // ** Styles global
 import "./globals.css";
+
+// ** Config
 import {VARIABLE} from "@/configs/variable";
+import {CONFIG_IMG} from "@/configs/img";
 
 // UI / Button / Filter
 const montserrat = Montserrat({
@@ -96,12 +101,12 @@ export const metadata: Metadata = {
     manifest: "/manifest.json",
     icons: {
         icon: [
-            { url: "favicon/favicon.ico" },
-            { url: "favicon/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-            { url: "favicon/favicon-32x32.png", sizes: "32x32", type: "image/png" }
+            { url: CONFIG_IMG.FAVICON },
+            { url: CONFIG_IMG.FAVICON_16, sizes: "16x16", type: "image/png" },
+            { url: CONFIG_IMG.FAVICON_32, sizes: "32x32", type: "image/png" }
         ],
         apple: [
-            { url: "/icons/apple-icon-180x180.png", sizes: "180x180" }
+            { url: CONFIG_IMG.ICON_APPLE, sizes: "180x180" }
         ]
     },
 };
@@ -133,8 +138,22 @@ export default function RootLayout({children,}: { children: ReactNode }) {
                 </TooltipProvider>
             </ProgressWrapper>
             <Toast/>
+            <NotificationListener />
         </ThemeProvider>
         </body>
+        <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+            strategy="afterInteractive"
+        />
+
+        <Script id="google-analytics" strategy="afterInteractive">
+            {`
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+  `}
+        </Script>
         </html>
     );
 }

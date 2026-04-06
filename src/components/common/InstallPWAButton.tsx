@@ -74,7 +74,7 @@ export default function InstallPWAButton() {
 
     return (
         <>
-            <span className="sm:text-white/20">|</span>
+            <span className="hidden sm:block sm:text-white/20">|</span>
             <button
                 onClick={handleInstall}
                 disabled={loading}

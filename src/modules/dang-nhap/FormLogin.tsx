@@ -41,6 +41,12 @@ import {AuthService} from "@/services/api/auth";
 // ** Type
 import {ILogin} from "@/types/api";
 
+// ** Event
+import {AUTH_CHANGE_EVENT} from "@/hooks/common/useAuth";
+
+// ** Lib
+import {initFCM} from "@/lib/fcm";
+
 const formSchema = z.object({
     email: z.string().email({message: 'Email không hợp lệ'}),
     password: z.string().min(1, 'Mật khẩu không được để trống'),
@@ -66,6 +72,8 @@ const FormLogin = () => {
             await mutate(CONFIG_TAG.USER.PROFILE, undefined, {
                 revalidate: true,
             })
+            window.dispatchEvent(new Event(AUTH_CHANGE_EVENT))
+            await initFCM();
             router.push("/")
         }
     })

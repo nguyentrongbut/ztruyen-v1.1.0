@@ -2,7 +2,7 @@
 import Image from "next/image";
 
 // ** Image
-import EmptyImage from '@/public/empty.webp'
+import {CONFIG_IMG} from "@/configs/img";
 
 const EmptyFavorite = () => {
 
@@ -10,7 +10,7 @@ const EmptyFavorite = () => {
         <div className="flex flex-col items-center justify-center text-center min-h-[50vh] -mt-20">
             <div className="relative size-[300px]">
                 <Image
-                    src={EmptyImage}
+                    src={CONFIG_IMG.EMPTY}
                     alt="Danh sách yêu thích trống"
                     fill
                     placeholder="blur"

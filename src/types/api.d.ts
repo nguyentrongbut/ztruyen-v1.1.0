@@ -140,3 +140,18 @@ export interface IEmoji {
     image?: IImage
     isGif: boolean
 }
+
+// ** Notification
+export interface INotificationSSEEvent {
+    type: 'NEW_NOTIFICATION';
+    unreadCount: number;
+    notification: INotification;
+}
+
+export interface INotification {
+    _id: string
+    type: string
+    content: string
+    isRead: boolean
+    createdAt: string
+}

@@ -24,6 +24,7 @@ import {IOtruyenDetailComic, TOtruyenChapter, TOtruyenChapterImage} from "@/type
 // ** Config
 import {CONFIG_API_OTRUYEN} from "@/configs/api-otruyen";
 import {CONFIG_IMAGE} from "@/configs/image";
+import {CONFIG_IMG} from "@/configs/img";
 
 // ** Util
 import {buildReadingUrl} from "@/utils/buildReadingUrl ";
@@ -172,7 +173,7 @@ const ListImageChapter = ({
                     >
                         <Image
                             className="rotate-90 filter brightness-0 dark:filter-none"
-                            src="/page.png"
+                            src={CONFIG_IMG.PAGE}
                             width={32}
                             height={32}
                             alt="currentpage"
