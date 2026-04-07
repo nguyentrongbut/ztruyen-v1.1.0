@@ -6,6 +6,8 @@ type TProvider = 'local' | 'google' | 'facebook';
 
 type TType = 'text' | 'image'
 
+export type NotificationType = 'REPLY_COMMENT' | 'LIKE_COMMENT';
+
 // Common
 interface IImage {
     _id: string;
@@ -142,16 +144,35 @@ export interface IEmoji {
 }
 
 // ** Notification
-export interface INotificationSSEEvent {
-    type: 'NEW_NOTIFICATION';
-    unreadCount: number;
-    notification: INotification;
+export interface INotificationFCM {
+    type: NotificationType;
+    senderName: string;
+    senderAvatar?: string;
+    targetUrl?: string;
+    comicSlug: string
+    replyId: string;
+    chapterId: string;
+    commentId: string;
+}
+
+export interface INotificationMeta {
+    senderName: string;
+    senderAvatar?: string;
+    comicName: string;
+    comicSlug: string;
+    chapterId?: string;
+    contentPreview: string;
 }
 
 export interface INotification {
-    _id: string
-    type: string
-    content: string
-    isRead: boolean
-    createdAt: string
+    _id: string;
+    recipientId: string;
+    senderId: string;
+    type: NotificationType;
+    commentId: string;
+    replyId: string;
+    isRead: boolean;
+    createdAt: string;
+    updatedAt: string;
+    meta: INotificationMeta
 }

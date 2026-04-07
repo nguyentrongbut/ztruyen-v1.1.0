@@ -19,6 +19,15 @@ type TAvatarWithFrameProps = {
     className?: string;
 };
 
+export const fallbackAvatar = (
+    <Image
+        src={CONFIG_IMG.AVATAR_FALLBACK}
+        alt="fallback"
+        fill
+        className="object-cover"
+    />
+);
+
 const AvatarWithFrame = ({
                              avatarUrl,
                              avatarName,
@@ -27,14 +36,6 @@ const AvatarWithFrame = ({
                              size = 48,
                              className
                          }: TAvatarWithFrameProps) => {
-    const fallbackAvatar = (
-        <Image
-            src={CONFIG_IMG.AVATAR_FALLBACK}
-            alt="fallback"
-            fill
-            className="object-cover"
-        />
-    );
 
     if (!frameUrl) {
         const avatarSize = size * 0.8;

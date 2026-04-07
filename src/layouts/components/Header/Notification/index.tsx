@@ -1,16 +1,20 @@
 'use client'
 
+// ** React
+import {useEffect, useState} from "react";
+
 // ** Hooks
 import {useAuth} from "@/hooks/common/useAuth";
 
 // ** Icons
-import {Bell, MessageCircle} from "lucide-react";
+import {Bell} from "lucide-react";
 
 // ** Shadcn ui
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuGroup, DropdownMenuItem,
+    DropdownMenuGroup,
+    DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
@@ -18,98 +22,128 @@ import {
 // ** Skeleton
 import ButtonSkeleton from "@/skeletons/layouts/ButtonSkeleton";
 
-// ** Component
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+// ** Hooks
+import useInfiniteLoad from "@/hooks/common/useInfiniteLoad";
+import useGetMethod from "@/hooks/common/useGetMethod";
+import useSentinel from "@/hooks/common/useSentinel";
+
+// ** Layout components
+import NotificationItem from "@/layouts/components/Header/Notification/NotificationItem";
+
+// ** Config
+import {CONFIG_TAG} from "@/configs/tag";
+
+// ** Service
+import {NotificationService} from "@/services/api/notification";
+
+// ** Skeleton
+import NotificationItemSkeleton from "@/skeletons/layouts/NotificationItemSkeleton";
+
+// ** Type
+import {INotification} from "@/types/api";
+
+// ** Lib
+import {REFRESH_EVENT} from "@/lib/invalidate-cache/events";
+
+const LIMIT = 10;
 
 const Notification = () => {
-
     const {isLogin, loading} = useAuth();
+    const [open, setOpen] = useState(false);
+    const [hasOpened, setHasOpened] = useState(false);
+
+    // Fetch count
+    const {data: firstPageMeta, mutate: mutateCount} = useGetMethod<IModelPaginateNotification<INotification>>({
+        api: () => NotificationService.list({page: 1, limit: 1}),
+        key: [CONFIG_TAG.NOTIFICATION.COUNT],
+        enabled: isLogin,
+    });
+
+    const totalCount = firstPageMeta?.meta.unreadCount ?? 0;
+
+    // Fetch list
+    const {data, isLoading, isValidating, loadMore, mutate: mutateList} = useInfiniteLoad<INotification>({
+        key: CONFIG_TAG.NOTIFICATION.LIST,
+        enabled: isLogin && hasOpened,
+        api: (page) =>
+            NotificationService.list({page, limit: LIMIT})
+                .then(res => res.data as IModelPaginateNotification<INotification>),
+    });
+
+    // Revalidate count and list
+    useEffect(() => {
+        const handler = async () => {
+            await Promise.all([mutateCount(), mutateList()]);
+        };
+        window.addEventListener(REFRESH_EVENT, handler);
+        return () => window.removeEventListener(REFRESH_EVENT, handler);
+    }, [mutateCount, mutateList]);
+
+    const handleOpenChange = (value: boolean) => {
+        if (value && !hasOpened) setHasOpened(true);
+        setOpen(value);
+    };
+
+    const {sentinelRef} = useSentinel({onIntersect: loadMore});
 
     if (loading) return <ButtonSkeleton/>;
 
     return (
-        <div className='ml-1'>
+        <div>
             {isLogin && (
-
-                <DropdownMenu modal={false}>
+                <DropdownMenu modal={false} open={open} onOpenChange={handleOpenChange}>
                     <DropdownMenuTrigger asChild>
                         <div className="relative p-2.5 cursor-pointer rounded-xl">
-
                             <Bell className="size-4"/>
-
-
-
-                            <span className="absolute -top-0.5 -right-0.5
-                                          min-w-4 h-4 px-[3px]
-                                          bg-red-500 dark:bg-amber-400/15 dark:text-amber-400 dark:border-amber-400/25
-                                          text-white text-[10px] font-semibold
-                                          rounded-full flex items-center justify-center
-                                          ring-2 ring-background shadow-sm shadow-red-500/50 dark:shadow-amber-400/10
-                                          animate-badge">
-                              3
-                            </span>
+                            {totalCount > 0 && (
+                                <span className="absolute -top-0.5 -right-0.5
+                                              min-w-4 h-4 px-[3px]
+                                              bg-red-500 dark:bg-amber-400/15 dark:text-amber-400 dark:border-amber-400/25
+                                              text-white text-[10px] font-semibold
+                                              rounded-full flex items-center justify-center
+                                              ring-2 ring-background shadow-sm shadow-red-500/50 dark:shadow-amber-400/10
+                                              animate-badge">
+                                  {totalCount}
+                                </span>
+                            )}
                         </div>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-90" align="center">
+                    <DropdownMenuContent className="w-90 p-0 max-h-[36vh] md:max-h-[90vh] overflow-y-auto"
+                                         align="center">
+                        <DropdownMenuLabel className='font-bold my-2 px-2'>
+                            Thông báo
+                        </DropdownMenuLabel>
+                        {data.length <= 0 && (
+                            <div className="pt-5 pb-8 text-center text-sm text-muted-foreground">
+                                Không có thông báo nào
+                            </div>
+                        )}
                         <DropdownMenuGroup>
-                            <DropdownMenuLabel className='font-bold my-2'>
-                                Thông báo
-                            </DropdownMenuLabel>
-
-                            <DropdownMenuItem>
-                                <div className='flex gap-3 items-center py-2'>
-                                    <div className='relative flex-shrink-0'>
-                                        <Avatar className='size-14'>
-                                            <AvatarImage src={''} alt='avatar'/>
-                                            <AvatarFallback>
-                                                <div>T</div>
-                                            </AvatarFallback>
-                                        </Avatar>
-                                        <div
-                                            className='absolute -bottom-1 -right-1 rounded-full size-6 bg-primary flex justify-center items-center'>
-                                            <MessageCircle className='size-3 text-white fill-white'/>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <p className='line-clamp-2'>
-                                            <span className='text-sm font-medium mr-2'>Nguyễn Văn A</span>
-                                            <span className='text-xs text-muted-foreground'>Đã phản hồi về bình luận của bạn tại truyện "One Piece": hay vãi</span>
-                                        </p>
-                                        <div className='text-primary text-xs mt-1'>2 giờ trước</div>
-                                    </div>
-                                    <div className='rounded-full size-2 bg-primary flex-shrink-0'/>
-                                </div>
-                            </DropdownMenuItem>
-
-                            <DropdownMenuItem>
-                                <div className='flex gap-3 items-center py-2'>
-                                    <div className='relative flex-shrink-0'>
-                                        <Avatar className='size-14'>
-                                            <AvatarImage src={''} alt='avatar'/>
-                                            <AvatarFallback>
-                                                <div>T</div>
-                                            </AvatarFallback>
-                                        </Avatar>
-                                        <div
-                                            className='absolute -bottom-1 -right-1 rounded-full size-6 bg-primary flex justify-center items-center'>
-                                            <MessageCircle className='size-3 text-white fill-white'/>
-                                        </div>
-                                    </div>
-                                    <div className='opacity-60'>
-                                        <p className='line-clamp-2'>
-                                            <span className='text-sm font-medium mr-2'>Nguyễn Văn A</span>
-                                            <span className='text-xs text-muted-foreground'>Đã phản hồi về bình luận của bạn tại truyện "One Piece": hay vãi</span>
-                                        </p>
-                                        <div className='text-xs mt-1'>2 giờ trước</div>
-                                    </div>
-                                </div>
-                            </DropdownMenuItem>
+                            {isLoading ? (
+                                <NotificationItemSkeleton/>
+                            ) : (
+                                data.map((item) => (
+                                    <DropdownMenuItem key={item._id}>
+                                        <NotificationItem
+                                            content={item.meta.contentPreview}
+                                            type={item.type}
+                                            comicName={item.meta.comicName}
+                                            isRead={item.isRead}
+                                            createdAt={item.createdAt}
+                                            senderName={item.meta.senderName}
+                                            senderAvatar={item.meta.senderAvatar || ''}
+                                        />
+                                    </DropdownMenuItem>
+                                ))
+                            )}
+                            {isValidating && <NotificationItemSkeleton/>}
+                            <div ref={sentinelRef}/>
                         </DropdownMenuGroup>
                     </DropdownMenuContent>
                 </DropdownMenu>
             )}
         </div>
-    )
-}
+    );
+};
 
-export default Notification
+export default Notification;

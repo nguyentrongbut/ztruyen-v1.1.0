@@ -28,7 +28,7 @@ import useGetMethod from "@/hooks/common/useGetMethod";
 
 // ** Service
 import {CommentService} from "@/services/api/comment";
-import {COMMENT_REFRESH_EVENT} from "@/lib/invalidate-cache/events";
+import {REFRESH_EVENT} from "@/lib/invalidate-cache/events";
 
 type TCommentItem = {
     user: IUserComment;
@@ -80,8 +80,8 @@ const CommentItem = ({
             await mutate()
             if (showReplies) await mutateReply()
         }
-        window.addEventListener(COMMENT_REFRESH_EVENT, handler)
-        return () => window.removeEventListener(COMMENT_REFRESH_EVENT, handler)
+        window.addEventListener(REFRESH_EVENT, handler)
+        return () => window.removeEventListener(REFRESH_EVENT, handler)
     }, [mutate, mutateReply, showReplies])
 
     const handleToggleReply = (id: string, replyTo: string, name: string) => {

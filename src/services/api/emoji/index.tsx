@@ -5,7 +5,7 @@ import {authFetcherWithRefresh} from "@/lib/auth-fetch";
 import {CONFIG_API} from "@/configs/api";
 
 // ** Type
-import {IComment, IEmoji} from "@/types/api";
+import {IEmoji} from "@/types/api";
 
 // ** Util and type
 import {buildQueryString, TQueryParams} from "@/utils/buildQueryString";

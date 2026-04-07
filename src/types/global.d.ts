@@ -29,6 +29,7 @@ declare global {
         result: T[]
     }
 
+    // Comment
     interface IModelPaginateComment<T> extends IModelPaginate<T> {
         meta: {
             page: number;
@@ -36,6 +37,17 @@ declare global {
             totalPages: number;
             totalItems: number;
             totalComments: number;
+        },
+    }
+
+    // Notification
+    interface IModelPaginateNotification<T> extends IModelPaginate<T> {
+        meta: {
+            page: number;
+            limit: number;
+            totalPages: number;
+            totalItems: number;
+            unreadCount: number;
         },
     }
 

@@ -36,6 +36,7 @@ export const CONFIG_TAG = {
     },
     NOTIFICATION: {
         LIST: 'notification-list',
+        COUNT: 'notification-count',
     },
     IMAGE: {
         UPLOAD: 'upload-image',

@@ -51,8 +51,7 @@ export const CONFIG_API = {
         INDEX: emojiCategoriesUrl
     },
     NOTIFICATION: {
-        INDEX: notificationUrl,
-        STREAM: `${notificationUrl}/stream`
+        INDEX: notificationUrl
     },
     IMAGE: {
         INDEX: `${baseUrl}/image`,

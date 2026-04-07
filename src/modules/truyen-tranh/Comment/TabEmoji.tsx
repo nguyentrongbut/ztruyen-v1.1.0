@@ -69,7 +69,7 @@ const TabEmoji = ({onEmojiSelect}: TTabEmoji) => {
 
     return (
         <>
-            <PopoverTitle className='pt-3.5 pb-1.5 text-sm px-[15px]'>
+            <PopoverTitle className='pt-3.5 pb-1.5 text-sm px-[15px] dark:text-white'>
                 {currentCategory.name}
             </PopoverTitle>
 
@@ -88,7 +88,7 @@ const TabEmoji = ({onEmojiSelect}: TTabEmoji) => {
                         emojis.map((emoji) => (
                             <div
                                 key={emoji._id}
-                                className='px-2 py-[5px] rounded-md hover:bg-[#e3e5e7] cursor-pointer'
+                                className='px-2 py-[5px] rounded-md hover:bg-[#e3e5e7] dark:hover:bg-[#3c3c3c] cursor-pointer'
                                 title={emoji.name}
                                 onMouseDown={(e) => e.preventDefault()}
                                 onClick={() => {
@@ -99,7 +99,7 @@ const TabEmoji = ({onEmojiSelect}: TTabEmoji) => {
                                 }}
                             >
                                 {emoji.type === 'text' ? (
-                                    <span className='text-xs'>{emoji.text}</span>
+                                    <span className='text-xs dark:text-white'>{emoji.text}</span>
                                 ) : (
                                     <div className={cn('relative size-6', emoji.isGif && 'size-20')}>
                                         <Image
@@ -127,22 +127,26 @@ const TabEmoji = ({onEmojiSelect}: TTabEmoji) => {
             </div>
 
             {/* Tab categories */}
-            <div className='flex bg-[#f1f2f3]'>
+            <div className='flex bg-[#f1f2f3] dark:bg-[#2c2c2c]'>
                 {emojiCategories.map((category) => (
                     <div
                         key={category._id}
                         onClick={() => setActiveCategory(category._id)}
                         className={cn(
-                            'w-[58px] h-[36px] cursor-pointer flex justify-center items-center hover:bg-[#E3E5E7]',
-                            activeCategoryId === category._id && 'bg-white'
+                            'w-[58px] h-[36px] cursor-pointer flex justify-center items-center hover:bg-[#E3E5E7] dark:hover:bg-[#3c3c3c]',
+                            activeCategoryId === category._id && 'bg-white dark:bg-[#3c3c3c]',
                         )}
                     >
-                        <Image
-                            src={category.image.url}
-                            alt={category.name}
-                            width={22}
-                            height={22}
-                        />
+                        {category.name === 'Kaomoji' ? (
+                            <span className="text-[10px] dark:text-white">(＾▽＾)</span>
+                        ) : (
+                            <Image
+                                src={category.image.url}
+                                alt={category.name}
+                                width={22}
+                                height={22}
+                            />
+                        )}
                     </div>
                 ))}
             </div>
