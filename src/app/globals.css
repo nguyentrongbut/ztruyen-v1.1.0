@@ -434,6 +434,32 @@
     }
 
     /* End reading page */
+    /* Notification */
+    .notification-wrapper {
+        @apply relative w-full sm:w-[380px] px-3.5 sm:px-4 py-3.5 pr-10 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-2xl shadow-sm cursor-pointer select-none
+    }
+
+    .notification-header {
+        @apply text-[10px] font-semibold tracking-widest uppercase text-zinc-400 dark:text-zinc-500 mb-3
+    }
+
+    .notification-body {
+        @apply flex gap-3 items-start
+    }
+
+    .notification-desc {
+        @apply text-[12px] text-zinc-500 dark:text-zinc-400 leading-relaxed
+    }
+
+    .notification-close {
+        @apply absolute top-2.5 right-2.5 size-5 sm:size-[22px] flex items-center justify-center rounded-full bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 transition-colors
+    }
+
+    .notification-close > svg {
+        @apply size-3 text-zinc-500;
+    }
+
+    /* End notification */
     /* Fav*/
     /* Sheet */
     [data-hide-close] > button.absolute.top-4.right-4 {

@@ -31,7 +31,7 @@ import {AuthService} from "@/services/api/auth";
 import {AUTH_CHANGE_EVENT} from "@/hooks/common/useAuth";
 
 // ** Lib
-import {destroyFCM} from "@/lib/fcm";
+import {destroyFCM} from "@/lib/fcm/fcm";
 
 const Logout = () => {
 

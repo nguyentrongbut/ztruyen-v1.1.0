@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 import { useAuth } from '@/hooks/common/useAuth'
 
 // ** Lib
-import {getSavedFcmToken, initFCM} from '@/lib/fcm'
+import {initFCM} from '@/lib/fcm/fcm'
 
 export function useFCMInit() {
     const { isLogin } = useAuth()
@@ -15,11 +15,8 @@ export function useFCMInit() {
     useEffect(() => {
         if (!isLogin) return
 
-        if (getSavedFcmToken()) return
-
-        const timer = setTimeout(() => {
+        if (Notification.permission === 'granted') {
             initFCM().catch(console.error)
-        }, 2000)
-        return () => clearTimeout(timer)
+        }
     }, [isLogin])
 }

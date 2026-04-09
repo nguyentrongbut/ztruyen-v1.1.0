@@ -45,7 +45,7 @@ import {ILogin} from "@/types/api";
 import {AUTH_CHANGE_EVENT} from "@/hooks/common/useAuth";
 
 // ** Lib
-import {initFCM} from "@/lib/fcm";
+import {askEnableNotification} from "@/lib/fcm/askEnalbleNotification";
 
 const formSchema = z.object({
     email: z.string().email({message: 'Email không hợp lệ'}),
@@ -73,7 +73,12 @@ const FormLogin = () => {
                 revalidate: true,
             })
             window.dispatchEvent(new Event(AUTH_CHANGE_EVENT))
+
             router.push("/")
+
+            setTimeout(() => {
+                askEnableNotification()
+            }, 1000)
         }
     })
 
