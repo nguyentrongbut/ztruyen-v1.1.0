@@ -1,6 +1,3 @@
-// ** React
-import {ReactNode} from 'react';
-
 // ** Components
 import {ModeToggle} from '@/components/common/ModeToggle';
 import Button from '@/components/common/Button';
@@ -29,10 +26,7 @@ import Notification from "@/layouts/components/Header/Notification";
 import SearchWrapper from "@/layouts/components/Header/Search/SearchWrapper";
 
 
-const Header = async ({asChild = false}: {
-    asChild?: boolean;
-    children?: ReactNode;
-}) => {
+const Header = async ({asChild = false}: { asChild?: boolean}) => {
 
     return (
         <header

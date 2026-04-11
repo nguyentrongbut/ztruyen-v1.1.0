@@ -32,6 +32,8 @@ import {buildReadingUrl} from "@/utils/buildReadingUrl ";
 // ** Icon
 import {SettingsIcon} from "lucide-react";
 
+export type TBannerMode = 'first-last' | 'all' | 'none';
+
 type TListImageChapter = {
     listImageChapter: TOtruyenChapterImage[]
     nextChapter: TOtruyenChapter
@@ -62,9 +64,51 @@ const ListImageChapter = ({
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [showGuide, setShowGuide] = useState(false);
+    const [revealedBanners, setRevealedBanners] = useState<Set<number>>(new Set());
+    const [bannerMode, setBannerMode] = useState<TBannerMode | null>(null);
+    const [bannerHeights, setBannerHeights] = useState<Record<number, number>>({});
 
     // Ref
     const imgRefs = useRef<(HTMLImageElement | null)[]>([]);
+
+    // bannerMode
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const stored = localStorage.getItem('ZTC-bannerMode') as TBannerMode;
+        if (stored === 'first-last' || stored === 'all' || stored === 'none') {
+            setBannerMode(stored);
+        } else {
+            setBannerMode('all');
+        }
+    }, []);
+
+    const handleReveal = (index: number) => {
+        setRevealedBanners(prev => new Set(prev).add(index));
+    };
+
+    const handleBannerMode = (mode: TBannerMode) => {
+        setBannerMode(mode);
+        localStorage.setItem('ZTC-bannerMode', mode);
+    };
+
+    const isBannerIndex = (index: number): boolean => {
+        switch (bannerMode) {
+            case 'all':
+                return true;
+            case 'first-last':
+                return index === 0 || index === listImageChapter.length - 1;
+            case 'none':
+                return false;
+            default:
+                return false;
+        }
+    };
+
+    const shouldBlur = (index: number): boolean => {
+        if (revealedBanners.has(index)) return false;
+        return isBannerIndex(index);
+    };
+    // End bannerMode
 
     // Toast Guide mobile
     useEffect(() => {
@@ -114,11 +158,16 @@ const ListImageChapter = ({
                 onContextMenu={handleRightClick}
                 onClick={handleOnClick}
             >
-                {
-                    listImageChapter.map((img, index) => {
-                        return (
+                {listImageChapter.map((img, index) => {
+                    const needBlur = shouldBlur(index);
+                    const overlayHeight = bannerHeights[index] || 0;
+                    return (
+                        <div
+                            key={`${img.image_file}-${index}`}
+                            className="relative"
+                            style={{width: `${imgWidth}%`}}
+                        >
                             <Image
-                                key={`${img.image_file}-${index}`}
                                 ref={(el) => {
                                     imgRefs.current[index] = el;
                                 }}
@@ -130,15 +179,39 @@ const ListImageChapter = ({
                                 onError={(e) => {
                                     e.currentTarget.src = CONFIG_IMAGE.BLUR_DATA_URL
                                 }}
+                                onLoad={(e) => {
+                                    const el = e.target as HTMLImageElement;
+                                    const height = el.getBoundingClientRect().height;
+
+                                    setBannerHeights(prev => ({
+                                        ...prev,
+                                        [index]: height * 0.15
+                                    }));
+                                }}
                                 sizes="(max-width: 50px) 2vw, (max-width: 1920px) 925px)"
                                 priority={index === 0}
                                 loading={index === 0 ? 'eager' : 'lazy'}
-                                className="bg-black dark:bg-white"
-                                style={{width: `${imgWidth}%`}}
+                                className="bg-black dark:bg-white w-full"
                             />
-                        )
-                    })
-                }
+                            {bannerMode !== null && needBlur && overlayHeight > 0 && (
+                                <div
+                                    className="absolute top-0 left-0 right-0 flex items-center justify-center cursor-pointer backdrop-blur-xl"
+                                    style={{ height: `${overlayHeight}px` }}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleReveal(index);
+                                    }}
+                                >
+                                   <span className="text-white text-xs bg-black/50 leading-snug px-6 py-2 rounded-md select-none mx-2 text-center whitespace-pre-line">
+                                      Có thể có banner quảng cáo.
+                                      Nếu ảnh bị cắt hoặc mờ, hãy nhấn để xem đầy đủ.
+                                      Bạn cũng có thể tắt trong cài đặt (ẩn ảnh đầu/cuối).
+                                    </span>
+                                </div>
+                            )}
+                        </div>
+                    )
+                })}
 
                 {/* Overlay settings */}
                 {
@@ -160,6 +233,8 @@ const ListImageChapter = ({
                             currentChapterId={currentChapterId}
                             isDropdownOpen={isDropdownOpen}
                             setIsDropdownOpen={setIsDropdownOpen}
+                            bannerMode={bannerMode}
+                            onBannerModeChange={handleBannerMode}
                         />
                     </Overlay>
                 }
@@ -210,15 +285,14 @@ const ListImageChapter = ({
                     )}
                 </div>
             </section>
+
             {/* Btn next chapter */}
             {nextChapter && (
                 <div className="text-center py-10">
                     <Link
                         href={buildReadingUrl(slugComic, nextChapter.chapter_name, nextChapter.chapter_api_data)}
                     >
-                        <Button
-                            sizeCustom='xs'
-                        >
+                        <Button sizeCustom='xs'>
                             Đọc chương tiếp theo thôi~ (≧▽≦)
                         </Button>
                     </Link>
@@ -229,10 +303,7 @@ const ListImageChapter = ({
             {showGuide && !isLg && listImageChapter && (
                 <div className="fixed top-1/4 left-1/2 -translate-x-1/2 pointer-events-none">
                     <div
-                        className="z-50 bg-primary text-white
-                 text-xs sm:text-sm w-fit text-center
-                 px-4 py-2 rounded-md shadow-lg
-                 animate-fade-in-out"
+                        className="z-50 bg-primary text-white text-xs sm:text-sm w-fit text-center px-4 py-2 rounded-md shadow-lg animate-fade-in-out"
                     >
                         Nhấp vào ảnh để hiển thị thanh công cụ nhé ~ (≧▽≦)
                     </div>

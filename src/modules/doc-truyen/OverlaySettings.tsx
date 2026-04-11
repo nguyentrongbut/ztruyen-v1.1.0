@@ -32,7 +32,11 @@ import {TOtruyenChapter} from "@/types/api.otruyen";
 // ** Util
 import {buildReadingUrl} from "@/utils/buildReadingUrl ";
 import getIdFromUrl from "@/utils/getIdFromUrl";
+
+// ** Modules
 import CommentSection from "@/modules/truyen-tranh/Comment/CommentSection";
+import Settings from "@/modules/doc-truyen/Settings";
+import {TBannerMode} from "@/modules/doc-truyen/ListImageChapter";
 
 type TOverlaySettings = {
     imgWidth?: number
@@ -48,6 +52,8 @@ type TOverlaySettings = {
     currentChapterId: string
     isDropdownOpen: boolean;
     setIsDropdownOpen: Dispatch<SetStateAction<boolean>>;
+    bannerMode: TBannerMode | null;
+    onBannerModeChange: (mode: TBannerMode) => void;
 }
 
 const OverlaySettings = ({
@@ -56,6 +62,7 @@ const OverlaySettings = ({
                              imgRefs, chapters, currentChapterId,
                              isDropdownOpen, setIsDropdownOpen,
                              slugComic, nextChapter, prevChapter,
+                             bannerMode, onBannerModeChange
                          }: TOverlaySettings) => {
 
     // Hook
@@ -214,6 +221,9 @@ const OverlaySettings = ({
                             Chi tiết truyện
                         </span>
                 </Link>
+
+                {/* Settings */}
+                <Settings bannerMode={bannerMode} onBannerModeChange={onBannerModeChange}/>
 
                 {/* Menu */}
                 <DropdownMenu

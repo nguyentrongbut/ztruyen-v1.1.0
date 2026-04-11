@@ -1,11 +1,7 @@
-// ** Next
-import Link from "next/link";
-
 // ** Component
 import ErrorText from "@/components/common/ErrorText";
 
 // ** Module componnets
-// import DevToolsDetection from "@/modules/doc-truyen/DevToolsDetection";
 import ListImageChapter from "@/modules/doc-truyen/ListImageChapter";
 
 // ** Layout component
@@ -14,9 +10,6 @@ import Header from "@/layouts/components/Header";
 // ** Services
 import {getListImageChapter} from "@/services/api-otruyen/chapter";
 import {getDetailComic} from "@/services/api-otruyen/comic";
-
-// ** Config
-import {CONFIG_SLUG} from "@/configs/slug";
 
 // ** Utils
 import removeExtension from "@/utils/removeExtension";
