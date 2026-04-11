@@ -10,7 +10,7 @@ import {Popover, PopoverContent, PopoverHeader, PopoverTrigger} from "@/componen
 import Button from "@/components/common/Button";
 
 // ** Module
-import TabEmoji from "@/modules/truyen-tranh/Comment/TabEmoji";
+import TabEmoji from "@/modules/truyen-tranh/Comment/Emoji/TabEmoji";
 
 // ** Icon
 import {SmilePlus} from "lucide-react";
@@ -37,9 +37,10 @@ const PopoverEmoji = ({inputRef, onEmojiSelect, open, onOpenChange, POPOVER_ATTR
                 </Button>
             </PopoverTrigger>
             <PopoverContent
+                align='start'
+                side='bottom'
                 {...{[POPOVER_ATTR]: ""}}
                 className='!w-[361.4px] text-[#61666D]'
-                align='start'
                 onMouseDown={(e) => e.preventDefault()}
                 onInteractOutside={(e) => {
                     const target = e.target as HTMLElement

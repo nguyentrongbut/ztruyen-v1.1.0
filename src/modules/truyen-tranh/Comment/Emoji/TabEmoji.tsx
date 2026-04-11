@@ -1,8 +1,5 @@
 'use client'
 
-// ** Next
-import Image from "next/image";
-
 // ** React
 import {useState} from "react";
 
@@ -24,10 +21,11 @@ import useSentinel from "@/hooks/common/useSentinel";
 // ** Tag
 import {CONFIG_TAG} from "@/configs/tag";
 
-// ** Lib
-import {cn} from "@/lib/utils";
+// ** Module
+import EmojiItem from "@/modules/truyen-tranh/Comment/Emoji/EmojiItem";
+import CategoryItem from "@/modules/truyen-tranh/Comment/Emoji/CategoryItem";
 
-const LIMIT = 10;
+const LIMIT = 48;
 
 type TTabEmoji = {
     onEmojiSelect: (value: string) => void
@@ -86,30 +84,7 @@ const TabEmoji = ({onEmojiSelect}: TTabEmoji) => {
                         ))
                     ) : (
                         emojis.map((emoji) => (
-                            <div
-                                key={emoji._id}
-                                className='px-2 py-[5px] rounded-md hover:bg-[#e3e5e7] dark:hover:bg-[#3c3c3c] cursor-pointer'
-                                title={emoji.name}
-                                onMouseDown={(e) => e.preventDefault()}
-                                onClick={() => {
-                                    const value = emoji.type === 'text'
-                                        ? emoji.text!
-                                        : `:${emoji.name}:`
-                                    onEmojiSelect(value)
-                                }}
-                            >
-                                {emoji.type === 'text' ? (
-                                    <span className='text-xs dark:text-white'>{emoji.text}</span>
-                                ) : (
-                                    <div className={cn('relative size-6', emoji.isGif && 'size-20')}>
-                                        <Image
-                                            src={emoji.image?.url || ''}
-                                            alt={emoji.name}
-                                            fill
-                                        />
-                                    </div>
-                                )}
-                            </div>
+                            <EmojiItem key={emoji._id} emoji={emoji} onEmojiSelect={onEmojiSelect}/>
                         ))
                     )}
 
@@ -129,25 +104,12 @@ const TabEmoji = ({onEmojiSelect}: TTabEmoji) => {
             {/* Tab categories */}
             <div className='flex bg-[#f1f2f3] dark:bg-[#2c2c2c]'>
                 {emojiCategories.map((category) => (
-                    <div
+                    <CategoryItem
                         key={category._id}
+                        category={category}
+                        isActive={activeCategoryId === category._id}
                         onClick={() => setActiveCategory(category._id)}
-                        className={cn(
-                            'w-[58px] h-[36px] cursor-pointer flex justify-center items-center hover:bg-[#E3E5E7] dark:hover:bg-[#3c3c3c]',
-                            activeCategoryId === category._id && 'bg-white dark:bg-[#3c3c3c]',
-                        )}
-                    >
-                        {category.name === 'Kaomoji' ? (
-                            <span className="text-[10px] dark:text-white">(＾▽＾)</span>
-                        ) : (
-                            <Image
-                                src={category.image.url}
-                                alt={category.name}
-                                width={22}
-                                height={22}
-                            />
-                        )}
-                    </div>
+                    />
                 ))}
             </div>
         </>

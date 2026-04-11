@@ -25,7 +25,7 @@ import {CONFIG_TAG} from "@/configs/tag";
 // ** Components
 import Button from "@/components/common/Button";
 import AvatarWithFrame from "@/components/common/AvatarWithFrame";
-import PopoverEmoji from "@/modules/truyen-tranh/Comment/PopoverEmoji";
+import PopoverEmoji from "@/modules/truyen-tranh/Comment/Emoji/PopoverEmoji";
 
 // ** Icon
 import {Send} from "lucide-react";

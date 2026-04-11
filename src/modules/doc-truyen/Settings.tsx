@@ -42,7 +42,7 @@ const Settings = ({bannerMode, onBannerModeChange}: TSettings) => {
                                 asChild
                             >
                                 <div
-                                    className={`px-5 sm:px-10 py-3 block text-xs sm:text-sm text-center hover:!bg-black cursor-pointer ${
+                                    className={`px-5 sm:px-10 py-3 block text-xs sm:text-sm text-center hover:!bg-black focus:!bg-black cursor-pointer ${
                                         bannerMode === option.value ? 'text-primary hover:!text-primary' : 'hover:!text-white'
                                     }`}>
                                     {option.label}
