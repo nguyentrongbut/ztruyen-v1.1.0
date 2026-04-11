@@ -62,9 +62,9 @@ const AccountMenu = () => {
                         className='mt-1'
                         size={40}
                         avatarName={user.name}
-                        avatarUrl={user.avatar?.url}
-                        frameName={user.avatar_frame?.name}
-                        frameUrl={user.avatar_frame?.image.url}
+                        avatarUrl={user?.avatar?.url}
+                        frameName={user?.avatar_frame?.name}
+                        frameUrl={user?.avatar_frame?.image.url}
                     />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-40" align="center">

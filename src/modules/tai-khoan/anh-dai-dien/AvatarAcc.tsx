@@ -26,7 +26,7 @@ const AvatarAcc = ({user, isLoading}: TAvatarAccount) => {
 
     return (
         <Avatar className='size-15 lg:size-20'>
-            <AvatarImage src={user.avatar?.url} alt={user.name}/>
+            <AvatarImage src={user?.avatar?.url} alt={user.name}/>
             <AvatarFallback className='relative size-15 lg:size-20'>
                 <Image src={CONFIG_IMG.AVATAR_FALLBACK} alt='ảnh đại diện dự phòng' fill/>
             </AvatarFallback>

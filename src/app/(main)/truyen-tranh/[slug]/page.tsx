@@ -94,7 +94,7 @@ const DetailComic = async ({params}: TDetailComicProps) => {
     return (
         <div className='bg-[#fafafa] dark:bg-background pt-5 pb-20 min-h-screen'>
             <section
-                className='bg-section-detail container flex flex-col items-center md:items-stretch md:flex-row gap-4 md:gap-7 p-5'>
+                className='bg-section-detail container flex flex-col items-center md:items-stretch md:flex-row gap-4 md:gap-7 p-5 relative'>
                 {/* Comic Image */}
                 <ComicImage
                     src={`${CONFIG_API_OTRUYEN.IMAGE_COMIC}/${detailComic.thumb_url}`}
@@ -138,7 +138,7 @@ const DetailComic = async ({params}: TDetailComicProps) => {
                     <DetailDesc desc={detailComic.content}/>
 
                     {/* Buttons */}
-                    {detailComic.chapters[0] && (
+                    {detailComic.chapters[0] ? (
                         <div className='flex gap-3 mt-4 w-full'>
                             <ReadingBtn slug={slugComic}
                                         chapter={detailComic.chapters[0].server_data?.[0] as TOtruyenChapter}/>
@@ -146,6 +146,15 @@ const DetailComic = async ({params}: TDetailComicProps) => {
                                 slug={slugComic}
                                 comicName={detailComic.name}
                                 comicCover={detailComic.thumb_url}
+                            />
+                        </div>
+                    ) : (
+                        <div className='absolute top-5 right-5'>
+                            <FavoriteBtn
+                                slug={slugComic}
+                                comicName={detailComic.name}
+                                comicCover={detailComic.thumb_url}
+                                isBorder={false}
                             />
                         </div>
                     )}

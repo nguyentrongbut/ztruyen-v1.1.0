@@ -122,9 +122,9 @@ const CommentItem = ({
                     size={60}
                     mobileSize={45}
                     name={user?.name}
-                    avatarUrl={user.avatar?.url}
-                    frameName={user.avatar_frame?.name}
-                    frameUrl={user.avatar_frame?.image?.url}
+                    avatarUrl={user?.avatar?.url}
+                    frameName={user?.avatar_frame?.name}
+                    frameUrl={user?.avatar_frame?.image?.url}
                     chapterName={comment.chapterName}
                     chapterPage={comment.page}
                     type={type}
@@ -156,7 +156,7 @@ const CommentItem = ({
                             {activeCommentId === PARENT_REPLY_ID(comment._id) ? 'Huỷ' : 'Phản hồi'}
                         </span>
                             <CommentAction
-                                isOwner={profile?._id === comment.userId._id}
+                                isOwner={profile?._id === comment.userId?._id}
                                 commentId={comment._id}
                                 mutate={mutate}
                                 profile={profile}

@@ -13,11 +13,14 @@ type TDetailListChapterProps = {
 const DetailListChapter = ({listChapter, slug, name}: TDetailListChapterProps) => {
 
     if (listChapter.length === 0) return (
-        <section className='p-5 lg:w-[70%] xl:w-[76%] h-min bg-section-detail'>
-            <p className="text-center m-6 text-sm">
-                Hiện tại truyện đang cập nhật, hãy quay lại sau nhé !
-            </p>
-        </section>
+        <>
+            <section className='p-5 lg:w-[70%] xl:w-[76%] h-min bg-section-detail'>
+                <p className="text-center m-6 text-sm py-12 sm:py-20">
+                    Hiện tại truyện đang cập nhật, hãy quay lại sau nhé !
+                </p>
+                <CommentSection name={name} slug={slug}/>
+            </section>
+        </>
     );
 
     return (

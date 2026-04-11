@@ -357,6 +357,10 @@
 
     /* End Header*/
     /* common */
+    .section-list-comic {
+        @apply container pt-2 pb-20
+    }
+
     .filter-img {
         @apply grayscale brightness-90 dark:invert object-contain
     }

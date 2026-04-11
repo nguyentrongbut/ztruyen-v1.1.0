@@ -37,6 +37,7 @@ type TFavoriteBtn = {
     slug: string
     comicName: string
     comicCover: string
+    isBorder?: boolean
 }
 
 export type TFavoriteBtnPayload = {
@@ -45,7 +46,7 @@ export type TFavoriteBtnPayload = {
     comic_cover: string
 }
 
-const FavoriteBtn = ({slug, comicName, comicCover}: TFavoriteBtn) => {
+const FavoriteBtn = ({slug, comicName, comicCover, isBorder = true}: TFavoriteBtn) => {
 
     const router = useRouter()
 
@@ -94,7 +95,7 @@ const FavoriteBtn = ({slug, comicName, comicCover}: TFavoriteBtn) => {
     return (
         <Button
             size="icon"
-            variant="outline"
+            variant={isBorder ? 'outline' : 'ghost'}
             disabled={isMutating}
             onClick={handleToggleFavorite}
         >
