@@ -15,16 +15,18 @@ import {CONFIG_IMG} from "@/configs/img";
 
 const EmptyPage = () => {
     return (
-        <div className="flex flex-col gap-4 justify-center items-center mt-10">
-            <Image
-                src={CONFIG_IMG.EMPTY}
-                alt="Ảnh không tìm thấy lịch sử đọc truyện tại Ztruyện - ztruyen.io.vn"
-                width={256}
-                height={256}
-                placeholder={CONFIG_IMAGE.BLUR_DATA_URL as 'data:image/'}
-                className="object-cover hover:scale-105 transition-transform"
-            />
-            <h2 className="text-lg sm:text-xl font-bold mt-2 text-center">
+        <div className="flex flex-col gap-4 justify-center items-center">
+
+            <div className="relative size-[300px]">
+                <Image
+                    src={CONFIG_IMG.EMPTY}
+                    alt="Ảnh không tìm thấy lịch sử đọc truyện tại Ztruyện - ztruyen.io.vn"
+                    fill
+                    placeholder={CONFIG_IMAGE.BLUR_DATA_URL as 'data:image/'}
+                    className="hover:scale-105 transition-transform filter-img"
+                />
+            </div>
+            <h2 className="text-lg sm:text-xl font-bold text-center">
                 (¬‿¬) Bắt quả tang nha! Bạn chưa đọc truyện nào ở Ztruyện
             </h2>
             <p className="text-xs sm:text-sm mt-2 max-w-md text-center">
