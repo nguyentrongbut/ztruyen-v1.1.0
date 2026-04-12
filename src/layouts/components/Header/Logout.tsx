@@ -3,9 +3,6 @@
 // ** Next
 import {useRouter} from "next/navigation";
 
-// ** React
-import {useState} from "react";
-
 // ** React hot toast
 import toast from "react-hot-toast";
 
@@ -36,14 +33,13 @@ import {destroyFCM} from "@/lib/fcm/fcm";
 const Logout = () => {
 
     const router = useRouter();
-    const [isLoggingOut, setIsLoggingOut] = useState(false);
 
     const {trigger, isMutating} = useMutateMethod<null, void>({
         api: () => AuthService.logout(),
         key: CONFIG_TAG.AUTH.LOGOUT,
         onSuccess: async (res) => {
             toast.success(res.message)
-            await mutate(CONFIG_TAG.USER.PROFILE, null, {revalidate: false})
+            await mutate(() => true, undefined, {revalidate: false})
             window.dispatchEvent(new Event(AUTH_CHANGE_EVENT))
             router.refresh()
         }
@@ -51,25 +47,23 @@ const Logout = () => {
 
 
     const handleLogout = async () => {
-        setIsLoggingOut(true)
-        await destroyFCM()
-        await trigger()
-        setIsLoggingOut(false)
+        await Promise.allSettled([
+            destroyFCM(),
+            trigger()
+        ])
     }
-
-    const isPending = isMutating || isLoggingOut
 
     return (
         <>
             <div
-                className={`text-destructive flex gap-2 cursor-pointer w-full ${isPending ? 'pointer-events-none opacity-50' : ''}`}
+                className={`text-destructive flex gap-2 cursor-pointer w-full ${isMutating ? 'pointer-events-none opacity-50' : ''}`}
                 onClick={handleLogout}
             >
                 <LogOut className="text-inherit"/>
                 Đăng xuất
             </div>
 
-            {isPending  && <Loading/>}
+            {isMutating && <Loading/>}
         </>
     )
 }
