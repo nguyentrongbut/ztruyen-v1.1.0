@@ -57,7 +57,7 @@ const Notification = () => {
     // Fetch count
     const {data: firstPageMeta, mutate: mutateCount} = useGetMethod<IModelPaginateNotification<INotification>>({
         api: () => NotificationService.list({page: 1, limit: 1}),
-        key: [CONFIG_TAG.NOTIFICATION.COUNT],
+        key: CONFIG_TAG.NOTIFICATION.COUNT,
         enabled: isLogin,
     });
 

@@ -9,6 +9,9 @@ import Script from "next/script";
 // ** Shadcn ui
 import {TooltipProvider} from "@/components/ui/tooltip";
 
+// ** Component
+import NotificationRevalidate from "@/components/common/NotificationRevalidate";
+
 // ** Theme provider
 import {ThemeProvider} from "@/theme/ThemeProvider";
 
@@ -140,8 +143,9 @@ export default function RootLayout({children,}: { children: ReactNode }) {
             </ProgressWrapper>
             <Toast/>
             <NotificationListener/>
+            <NotificationRevalidate/>
         </ThemeProvider>
-        <FCMInit />
+        <FCMInit/>
         <Script
             src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
             strategy="afterInteractive"

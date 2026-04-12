@@ -7,7 +7,7 @@ import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
 import {Bolt} from "lucide-react";
 
 // ** Type
-import {TBannerMode} from "@/modules/doc-truyen/ListImageChapter";
+import {TBannerMode} from "@/hooks/common/useBannerMode";
 
 // ** Config
 import {BANNER_OPTIONS} from "@/configs/page";

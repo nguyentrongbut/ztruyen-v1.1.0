@@ -3,6 +3,7 @@ import Link from "next/link";
 
 // ** Type
 import type {IOtruyenDetailComic} from '@/types/api.otruyen'
+import {TBannerMode} from "@/hooks/common/useBannerMode";
 
 // ** Icon
 import {CalendarRange, CircleUser, Frame, Heart, Home, Tag, User, UserRoundCog, Wifi} from "lucide-react";
@@ -15,7 +16,6 @@ import {convertStatusToVi} from "@/utils/convertStatusComicToVi";
 
 // ** Enum
 import {ESortOrder} from "@/types/enum";
-import {TBannerMode} from "@/modules/doc-truyen/ListImageChapter";
 
 export const navAccount: TLinkWithIcon[] = [
     {

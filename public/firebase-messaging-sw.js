@@ -27,30 +27,39 @@ messaging.onBackgroundMessage((payload) => {
     });
 });
 
+function buildUrl(data) {
+    if (data.type === 'REPLY_COMMENT' || data.type === 'LIKE_COMMENT') {
+        return data.comicSlug ? `/truyen-tranh/${data.comicSlug}.html` : '/';
+    }
+    if (data.type === 'ANNOUNCEMENT') {
+        return '/';
+    }
+    return '/';
+}
+
 self.addEventListener('notificationclick', (event) => {
     event.notification.close();
 
     const data = event.notification.data ?? {};
-    let url = '/';
+    const url = buildUrl(data);
 
-    if (data.type === 'REPLY_COMMENT' || data.type === 'LIKE_COMMENT') {
-        if (data.comicSlug && data.chapterId) {
-            url = `/truyen-tranh/${data.comicSlug}.html`;
-        }
-    }
-
-    if (data.type === 'ANNOUNCEMENT') {
-        url = '/';
-    }
+    // Gửi signal revalidate cho tất cả tab
+    const channel = new BroadcastChannel('notification-click');
+    channel.postMessage({type: 'REVALIDATE', url});
+    channel.close();
 
     event.waitUntil(
         clients
-            .matchAll({ type: 'window', includeUncontrolled: true })
+            .matchAll({type: 'window', includeUncontrolled: true})
             .then((clientList) => {
                 for (const client of clientList) {
-                    if ('focus' in client) return client.focus();
+                    if ('focus' in client) {
+                        return client.focus().then(() => {
+                            if ('navigate' in client) return client.navigate(url)
+                        })
+                    }
                 }
-                return clients.openWindow(url);
+                return clients.openWindow(url)
             })
     );
 });

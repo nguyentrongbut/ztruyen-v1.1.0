@@ -28,13 +28,21 @@ import {getBadgeNotification} from "@/utils/getBadgeNotification";
 
 // ** Hook
 import useMutateMethod from "@/hooks/common/useMutateMethod";
+import useGetMethod from "@/hooks/common/useGetMethod";
 
 // ** Service
 import {NotificationService} from "@/services/api/notification";
+import {CommentService} from "@/services/api/comment";
 
 // ** Config
 import {CONFIG_TAG} from "@/configs/tag";
 import {VisuallyHidden} from "@radix-ui/react-visually-hidden";
+
+// ** React
+import {useState} from "react";
+
+// ** Type
+import {IComment} from "@/types/api";
 
 type TNotificationItem = {
     id: string;
@@ -59,12 +67,10 @@ const NotificationItem = ({
                           }: TNotificationItem) => {
 
     const badge = getBadgeNotification[type];
+    const [open, setOpen] = useState(false);
+    const [commentError, setCommentError] = useState(false);
 
-    // Mutate methods
-    const {
-        trigger: readTrigger,
-        isMutating: isReadMutating
-    } = useMutateMethod({
+    const {trigger: readTrigger, isMutating: isReadMutating} = useMutateMethod({
         api: () => NotificationService.read(id),
         key: CONFIG_TAG.NOTIFICATION.READ,
         onSuccess: async () => {
@@ -72,10 +78,8 @@ const NotificationItem = ({
             await mutateCount()
         }
     })
-    const {
-        trigger: deleteTrigger,
-        isMutating: isDeleteMutating
-    } = useMutateMethod({
+
+    const {trigger: deleteTrigger, isMutating: isDeleteMutating} = useMutateMethod({
         api: () => NotificationService.delete(id),
         key: CONFIG_TAG.NOTIFICATION.DELETE,
         onSuccess: async () => {
@@ -84,10 +88,26 @@ const NotificationItem = ({
         }
     })
 
+    const handleOpen = async () => {
+        setCommentError(false)
+        try {
+            await CommentService.detail(parentId)
+            if (!isRead) await readTrigger()
+            setOpen(true)
+        } catch {
+            setCommentError(true)
+            setOpen(true)
+            if (!isRead) await readTrigger()
+        }
+    }
+
     return (
-        <Dialog>
-            <DialogTrigger asChild onClick={() => !isRead && readTrigger()}>
-                <div className="px-2 py-1.5 text-sm cursor-pointer hover:bg-accent rounded-sm">
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+                <div
+                    onClick={handleOpen}
+                    className="px-2 py-1.5 text-sm cursor-pointer hover:bg-accent rounded-sm"
+                >
                     <div className='flex gap-3 items-center py-2 relative'>
                         <div className='relative flex-shrink-0'>
                             <Avatar className='size-14'>
@@ -96,7 +116,6 @@ const NotificationItem = ({
                                     <div className="relative size-full">{fallbackAvatar}</div>
                                 </AvatarFallback>
                             </Avatar>
-
                             <div
                                 className='absolute -bottom-1 -right-1 rounded-full size-6 bg-primary flex justify-center items-center'
                                 style={{background: badge.bg}}
@@ -109,12 +128,11 @@ const NotificationItem = ({
                                 <span className='text-sm font-medium'>{senderName}</span>
                                 {' '}
                                 <span className='text-xs text-muted-foreground'>
-                        {type === 'REPLY_COMMENT' ? 'đã phản hồi về ' : 'đã thích '}
+                                    {type === 'REPLY_COMMENT' ? 'đã phản hồi về ' : 'đã thích '}
                                     bình luận của bạn tại truyện {' '}
                                     <span className='text-primary'>{comicName}</span>
-
-                        : {content}
-                    </span>
+                                    : {content}
+                                </span>
                             </p>
                         </div>
                         {!isRead && <div className='rounded-full size-2 bg-primary flex-shrink-0'/>}
@@ -132,13 +150,21 @@ const NotificationItem = ({
                 <VisuallyHidden>
                     <DialogTitle>{comicName}</DialogTitle>
                 </VisuallyHidden>
-                <DialogNotificationContent
-                    comicName={comicName}
-                    comicSlug={comicSlug}
-                    parentId={parentId}
-                    replyId={replyId}
-                    type={chapterId ? 'reading' : 'detail'}
-                />
+                {commentError ? (
+                    <div className="flex flex-col items-center justify-center h-[50vh] gap-3 text-center px-4">
+                        <p className="text-muted-foreground text-sm">
+                            Bình luận này đã bị xóa hoặc không còn tồn tại (ฅ^ω^ฅ)
+                        </p>
+                    </div>
+                ) : (
+                    <DialogNotificationContent
+                        comicName={comicName}
+                        comicSlug={comicSlug}
+                        parentId={parentId}
+                        replyId={replyId}
+                        type={chapterId ? 'reading' : 'detail'}
+                    />
+                )}
             </DialogContent>
         </Dialog>
     )

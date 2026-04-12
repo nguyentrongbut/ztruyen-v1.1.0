@@ -36,7 +36,7 @@ import getIdFromUrl from "@/utils/getIdFromUrl";
 // ** Modules
 import CommentSection from "@/modules/truyen-tranh/Comment/CommentSection";
 import Settings from "@/modules/doc-truyen/Settings";
-import {TBannerMode} from "@/modules/doc-truyen/ListImageChapter";
+import {TBannerMode} from "@/hooks/common/useBannerMode";
 
 type TOverlaySettings = {
     imgWidth?: number

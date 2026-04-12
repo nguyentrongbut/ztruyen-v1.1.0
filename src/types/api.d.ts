@@ -150,13 +150,16 @@ export interface IEmoji {
 // ** Notification
 export interface INotificationFCM {
     type: NotificationType;
+    title: string;
+    body: string;
     senderName: string;
     senderAvatar?: string;
-    targetUrl?: string;
-    comicSlug: string
-    replyId: string;
+    comicSlug: string;
+    comicName: string;
+    replyId?: string;
     chapterId: string;
-    commentId: string;
+    commentId?: string;
+    notificationId: string;
 }
 
 export interface INotificationMeta {
