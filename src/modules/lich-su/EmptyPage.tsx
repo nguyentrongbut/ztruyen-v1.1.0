@@ -11,12 +11,13 @@ import {CONFIG_SLUG} from "@/configs/slug";
 
 // ** Enum
 import {ESlug} from "@/types/enum";
+import {CONFIG_IMG} from "@/configs/img";
 
 const EmptyPage = () => {
     return (
         <div className="flex flex-col gap-4 justify-center items-center mt-10">
             <Image
-                src="/readinghistory.png"
+                src={CONFIG_IMG.EMPTY}
                 alt="Ảnh không tìm thấy lịch sử đọc truyện tại Ztruyện - ztruyen.io.vn"
                 width={256}
                 height={256}
@@ -27,9 +28,8 @@ const EmptyPage = () => {
                 (¬‿¬) Bắt quả tang nha! Bạn chưa đọc truyện nào ở Ztruyện
             </h2>
             <p className="text-xs sm:text-sm mt-2 max-w-md text-center">
-                Bạn chưa đọc bộ truyện nào, nên lịch sử vẫn còn để trống. Hãy
-                bắt đầu khám phá một bộ truyện mới để Ztruyện ghi nhớ hành trình
-                và lần sau có thể tiếp tục ngay từ chỗ đã dừng nhé!
+                Chưa đọc truyện nào hết! Chọn một bộ bất kỳ để bắt đầu,
+                tụi mình sẽ ghi nhớ giúp bạn để lần sau đọc tiếp nha
             </p>
             <Link href={`/${CONFIG_SLUG.LIST}/${ESlug.NEW}.html`}>
                 <Button sizeCustom='xs'>

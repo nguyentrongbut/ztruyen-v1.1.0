@@ -41,19 +41,19 @@ import {Trash, X} from "lucide-react";
 // ** Configs
 import {CONFIG_API_OTRUYEN} from "@/configs/api-otruyen";
 import {CONFIG_SLUG} from "@/configs/slug";
+import FormDeleteMultiHistory from "@/modules/lich-su/FormDeleteMultiHistory";
 
 
 const ListComicHistory = () => {
 
-    // States
-    const [deleteAll, setDeleteAll] = useState(false);
+    // ** States
+    const [deleteMulti, setDeleteMulti] = useState(false);
     const [selected, setSelected] = useState<string[]>([]);
     const [listHistory, setListHistory] = useState<IHistory[] | IHistoryStorage[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const isHistory = listHistory.length > 0
 
-    // Load history when mount
     useEffect(() => {
         setListHistory(historyService.getAll());
         setIsLoading(false);
@@ -69,15 +69,6 @@ const ListComicHistory = () => {
         );
     };
 
-    const handleSelectAll = () => {
-        if (selected.length === listHistory.length) {
-            setSelected([]);
-        } else {
-            setSelected(listHistory.map((item) => item.chapter_id));
-        }
-    };
-
-    // delete
     const handleDelete = (chapter_id: string) => {
         try {
             historyService.delete(chapter_id);
@@ -88,118 +79,33 @@ const ListComicHistory = () => {
         }
     }
 
-    const handleDeleteMultiple = () => {
-        if (selected.length > 0) {
-            historyService.deleteMany(selected)
-            refreshHistory()
-            toast.success("Meow~ Tất cả đã biến mất như phép màu ")
-            setDeleteAll(false);
-            setSelected([]);
-        } else {
-            toast.error('Hãy chọn ít nhất 1 truyện nhé...')
-        }
-    };
-
-    if (isLoading) return <ListComicHistorySkeleton />
+    if (isLoading) return <ListComicHistorySkeleton/>
 
     return (
         <section className="min-h-[54vh] container pt-2 pb-20">
             <div className="flex flex-col lg:flex-row justify-between lg:items-baseline">
-               <div className='section-header gap-2.5 sm:gap-4 flex-col md:flex-row py-5'>
-                   <h1 className='heading py-0'>Lịch sử đọc truyện</h1>
-                   <p className='desc'>Xem lại những bộ truyện bạn đã đọc (ง •̀_•́)ง</p>
-               </div>
+                <div className='section-header gap-2.5 sm:gap-4 flex-col md:flex-row py-5'>
+                    <h1 className='heading py-0'>Lịch sử đọc truyện</h1>
+                    <p className='desc'>Xem lại những bộ truyện bạn đã đọc (ง •̀_•́)ง</p>
+                </div>
 
-                {/*  Btns  */}
                 {listHistory.length > 1 && (
                     <div className="flex gap-4 md:gap-2 items-center">
-                        {
-                            isHistory &&
-                            // ** Btn Action delete all
-                            (deleteAll ? (
-                                <AlertDialog>
-                                    <AlertDialogTrigger asChild>
-                                        <Button
-                                            sizeCustom='xs'
-                                            variant='ghost'
-                                            className="text-red-600 dark:text-red-400 hover:text-red-600"
-                                        >
-                                            <Trash className="size-3 sm:size-4"/>
-                                            Xác nhận xoá
-                                        </Button>
-                                    </AlertDialogTrigger>
-                                    <AlertDialogContent>
-                                        <AlertDialogHeader>
-                                            <AlertDialogTitle>
-                                                Meoow… Bạn chắc chắn muốn xóa hết đống truyện chưa đọc hết này hả? (=^･ω･^=)
-                                            </AlertDialogTitle>
-                                            <AlertDialogDescription>
-                                                Xóa là biến mất vĩnh viễn khỏi thư viện của bạn luôn nha… ~ (≧ᆺ≦)
-                                            </AlertDialogDescription>
-                                        </AlertDialogHeader>
-                                        <AlertDialogFooter>
-                                            <AlertDialogCancel variant='outline'>
-                                                Thôi, tớ đổi ý rồi~ (ฅ^ω^ฅ)
-                                            </AlertDialogCancel>
-                                            <AlertDialogAction onClick={handleDeleteMultiple} variant='destructive'>
-                                                Đúng vậy! (=^･ｪ･^=)/
-                                            </AlertDialogAction>
-                                        </AlertDialogFooter>
-                                    </AlertDialogContent>
-                                </AlertDialog>
-                            ) : (
-                                <Button
-                                    sizeCustom='xs'
-                                    variant='ghost'
-                                    className="text-red-600 dark:text-red-400 hover:text-red-600"
-                                    onClick={() => setDeleteAll(true)}
-                                >
-                                    <Trash className="size-3 sm:size-4"/>
-                                    Xoá nhiều truyện
-                                </Button>
-                            ))
-                            // ** End Btn Action delete all
-                        }
-
-                        {deleteAll && isHistory && (
-                            <>
-                                {/* Selected/unSelected all Btn*/}
-                                <Button
-                                    sizeCustom='xs'
-                                    variant='ghost'
-                                    onClick={handleSelectAll}
-                                    className={`${selected.length === listHistory.length ? 'text-black/80 dark:text-white/80 hover:opacity-80' : 'text-primary opacity-80'}`}
-                                >
-                                    {selected.length === listHistory.length
-                                        ? 'Bỏ chọn tất cả'
-                                        : 'Chọn tất cả'}
-                                </Button>
-                                {/* End Selected/unSelected all Btn*/}
-
-                                {/* Cancel Btn*/}
-                                <Button
-                                    sizeCustom='xs'
-                                    variant='ghost'
-                                    onClick={() => {
-                                        setDeleteAll(false);
-                                        setSelected([]);
-                                    }}
-                                >
-                                    Huỷ
-                                </Button>
-                                {/* End Cancel Btn*/}
-                            </>
-                        )}
+                        <FormDeleteMultiHistory
+                            listHistory={listHistory}
+                            deleteMulti={deleteMulti}
+                            setDeleteMulti={setDeleteMulti}
+                            selected={selected}
+                            setSelected={setSelected}
+                            onRefresh={refreshHistory}
+                        />
                     </div>
                 )}
             </div>
 
-
-            {/*  List Comic  */}
             {isHistory ? (
                 <div className='mt-4'>
-                    <div
-                        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-y-4 gap-2 md:gap-2.5 lg:gap-3 mb-8">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-y-4 gap-2 md:gap-2.5 lg:gap-3 mb-8">
                         {listHistory.map((item, i) => (
                             <figure
                                 key={item.chapter_id}
@@ -208,16 +114,11 @@ const ListComicHistory = () => {
                             >
                                 <div
                                     onClick={() => {
-                                        if (deleteAll) {
-                                            toggleSelect(
-                                                item.chapter_id,
-                                                !selected.includes(item.chapter_id)
-                                            );
+                                        if (deleteMulti) {
+                                            toggleSelect(item.chapter_id, !selected.includes(item.chapter_id));
                                         }
                                     }}
-                                    className={
-                                        deleteAll ? 'cursor-pointer' : ''
-                                    }
+                                    className={`${deleteMulti ? 'cursor-pointer' : ''} relative`}
                                 >
                                     <ComicImage
                                         src={`${CONFIG_API_OTRUYEN.IMAGE_COMIC}/${item.thumb}`}
@@ -225,6 +126,7 @@ const ListComicHistory = () => {
                                         size='full'
                                         priority={i <= 0}
                                     />
+                                    {deleteMulti && <div className='bg-black/60 absolute inset-0'/>}
                                 </div>
 
                                 <figcaption
@@ -244,21 +146,17 @@ const ListComicHistory = () => {
                                 </figcaption>
 
                                 <div className="absolute right-0 sm:right-1.5 top-0 sm:top-1.5 p-1.5 cursor-pointer">
-                                    {deleteAll ? (
+                                    {deleteMulti ? (
                                         <Checkbox
                                             checked={selected.includes(item.chapter_id)}
                                             onCheckedChange={(checked) =>
-                                                toggleSelect(
-                                                    item.chapter_id,
-                                                    checked === true
-                                                )
+                                                toggleSelect(item.chapter_id, checked === true)
                                             }
                                         />
                                     ) : (
                                         <AlertDialog>
                                             <AlertDialogTrigger asChild>
-                                                <div
-                                                    className="bg-red-500/60 rounded-full hover:bg-red-400 p-1 sm:p-1.5">
+                                                <div className="bg-red-500/60 rounded-full hover:bg-red-400 p-1 sm:p-1.5">
                                                     <X className="size-2.5 sm:size-3 text-white"/>
                                                 </div>
                                             </AlertDialogTrigger>
@@ -286,12 +184,6 @@ const ListComicHistory = () => {
                             </figure>
                         ))}
                     </div>
-
-                    {/*<PaginationWithLinks*/}
-                    {/*    page={1}*/}
-                    {/*    pageSize={1}*/}
-                    {/*    totalCount={10}*/}
-                    {/*/>*/}
                 </div>
             ) : (
                 <EmptyPage/>
