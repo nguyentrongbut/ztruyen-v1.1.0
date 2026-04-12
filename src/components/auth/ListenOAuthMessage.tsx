@@ -9,6 +9,7 @@ import { useEffect } from 'react'
 // ** Lib
 import { setAccessToken } from '@/lib/localStorage'
 import {setLoggedInCookie} from "@/lib/cookie-client";
+import {askEnableNotification} from "@/lib/fcm/askEnalbleNotification";
 
 // ** Config
 import {CONFIG_TAG} from "@/configs/tag";
@@ -29,6 +30,10 @@ export function ListenOAuthMessage() {
                 })
 
                 window.location.href = '/'
+
+                setTimeout(() => {
+                    askEnableNotification()
+                }, 1000)
             }
         }
 

@@ -5,7 +5,7 @@ import Link from "next/link";
 import type {IOtruyenDetailComic} from '@/types/api.otruyen'
 
 // ** Icon
-import {CalendarRange, CircleUser, Frame, Heart, Home, Tag, User, Wifi} from "lucide-react";
+import {CalendarRange, CircleUser, Frame, Heart, Home, Tag, User, UserRoundCog, Wifi} from "lucide-react";
 
 // ** Config
 import {CONFIG_SLUG} from "@/configs/slug";
@@ -15,6 +15,7 @@ import {convertStatusToVi} from "@/utils/convertStatusComicToVi";
 
 // ** Enum
 import {ESortOrder} from "@/types/enum";
+import {TBannerMode} from "@/modules/doc-truyen/ListImageChapter";
 
 export const navAccount: TLinkWithIcon[] = [
     {
@@ -41,6 +42,11 @@ export const navAccount: TLinkWithIcon[] = [
         title: 'Khung avatar',
         href: '/tai-khoan/khung-avatar',
         icon: Frame,
+    },
+    {
+        title: 'Cài đặt chung',
+        href: '/tai-khoan/cai-dat-chung',
+        icon: UserRoundCog,
     }
 ]
 
@@ -123,4 +129,23 @@ export const listSortByDate = [
         value: ESortOrder.UPDATED_AT_ASC
     }
 ]
+
+// ** Settings
+export const BANNER_OPTIONS: { label: string; value: TBannerMode; description: string }[] = [
+    {
+        label: 'Ẩn ảnh đầu & cuối 💫',
+        value: 'first-last',
+        description: 'Ẩn banner quảng cáo ở ảnh đầu tiên và cuối cùng của chương — thường là vị trí hay xuất hiện nhất.',
+    },
+    {
+        label: 'Ẩn tất cả ảnh',
+        value: 'all',
+        description: 'Ẩn toàn bộ banner quảng cáo có thể xuất hiện ở bất kỳ vị trí nào trong chương.',
+    },
+    {
+        label: 'Không ẩn',
+        value: 'none',
+        description: 'Giữ nguyên tất cả ảnh, bao gồm cả banner quảng cáo từ nguồn đăng tải.',
+    },
+];
 

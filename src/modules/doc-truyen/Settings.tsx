@@ -9,11 +9,8 @@ import {Bolt} from "lucide-react";
 // ** Type
 import {TBannerMode} from "@/modules/doc-truyen/ListImageChapter";
 
-const BANNER_OPTIONS: { label: string; value: TBannerMode }[] = [
-    {label: 'Ẩn ảnh đầu & cuối 💫', value: 'first-last'},
-    {label: 'Ẩn tất cả ảnh', value: 'all'},
-    {label: 'Không ẩn', value: 'none'},
-];
+// ** Config
+import {BANNER_OPTIONS} from "@/configs/page";
 
 type TSettings = {
     bannerMode: TBannerMode | null;
