@@ -20,7 +20,6 @@ import {
 import {Checkbox} from "@/components/ui/checkbox";
 
 // ** Components
-import Button from "@/components/common/Button";
 import ComicImage from "@/components/common/ComicImage";
 
 // ** Module component
@@ -36,7 +35,7 @@ import {historyService, IHistoryStorage} from "@/localStorage/historyServices";
 import ListComicHistorySkeleton from "@/skeletons/lich-su/ListComicHistorySkeleton";
 
 // ** icons
-import {Trash, X} from "lucide-react";
+import {X} from "lucide-react";
 
 // ** Configs
 import {CONFIG_API_OTRUYEN} from "@/configs/api-otruyen";
