@@ -106,8 +106,7 @@ const FormDeleteMulti = (
                         </AlertDialogCancel>
                         <AlertDialogAction asChild>
                             <Button
-                                sizeCustom='xs'
-                                className='bg-red-600 hover:bg-red-500'
+                                variant='destructive'
                                 isLoading={isMutating}
                                 onClick={handleMultiDelete}
                             >

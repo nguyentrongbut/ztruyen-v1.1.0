@@ -71,6 +71,7 @@ const ListFavorite = () => {
 
     const list = data?.result || [];
     const total = data?.meta?.totalItems || 0;
+    const totalItem = data?.meta?.totalItems || 0;
     const currentSort = SORT_OPTIONS.find(o => o.value === sort)?.label ?? "Sắp xếp";
 
     const renderContent = () => {
@@ -111,7 +112,7 @@ const ListFavorite = () => {
                         {!isLoading && (
                             <InputGroupAddon align="inline-end">
                                   <span className="text-xs text-muted-foreground">
-                                    {list.length} truyện
+                                    {totalItem} truyện
                                   </span>
                             </InputGroupAddon>
                         )}

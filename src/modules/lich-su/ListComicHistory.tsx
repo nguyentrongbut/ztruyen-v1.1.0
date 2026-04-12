@@ -199,7 +199,7 @@ const ListComicHistory = () => {
             {isHistory ? (
                 <div className='mt-4'>
                     <div
-                        className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-y-4 gap-2 md:gap-2.5 lg:gap-3 mb-8">
+                        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-y-4 gap-2 md:gap-2.5 lg:gap-3 mb-8">
                         {listHistory.map((item, i) => (
                             <figure
                                 key={item.chapter_id}
@@ -265,7 +265,7 @@ const ListComicHistory = () => {
                                             <AlertDialogContent>
                                                 <AlertDialogHeader>
                                                     <AlertDialogTitle>
-                                                        Hic… {item.title} sắp bị xóa khỏi bookmark của bạn thật hả? (=^･ω･^=)
+                                                        Hic… <span className='text-primary dark:text-amber-500'>{item.title}</span> sắp bị xóa khỏi lịch sử của bạn thật hả? (=^･ω･^=)
                                                     </AlertDialogTitle>
                                                     <AlertDialogDescription>
                                                         Xóa là không còn thấy nó trong thư viện nữa đâu… (ฅ^ω^ฅ)
@@ -275,7 +275,7 @@ const ListComicHistory = () => {
                                                     <AlertDialogCancel variant='outline'>
                                                         Thôi, tớ đổi ý rồi~ (=^･^=)
                                                     </AlertDialogCancel>
-                                                    <AlertDialogAction onClick={() => handleDelete(item.chapter_id)}>
+                                                    <AlertDialogAction onClick={() => handleDelete(item.chapter_id)} variant='destructive'>
                                                         Đúng vậy! (=^･ｪ･^=)/
                                                     </AlertDialogAction>
                                                 </AlertDialogFooter>

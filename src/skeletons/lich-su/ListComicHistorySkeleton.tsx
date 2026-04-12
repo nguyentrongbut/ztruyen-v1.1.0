@@ -21,7 +21,7 @@ const ListComicHistorySkeleton = () => {
 
             {/* Grid list */}
             <div className="mt-4">
-                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-y-4 gap-2 md:gap-2.5 lg:gap-3 mb-8">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-y-4 gap-2 md:gap-2.5 lg:gap-3 mb-8">
                     {Array.from({ length: 12 }).map((_, i) => (
                         <figure key={i} className="flex flex-col relative">
                             {/* Image */}

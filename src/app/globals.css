@@ -144,7 +144,7 @@
 
 @layer base {
     * {
-        @apply border-border outline-ring/50;
+        @apply border-border outline-none;
     }
 
     * {
@@ -183,6 +183,13 @@
 }
 
 @layer utilities {
+
+    *:focus,
+    *:focus-visible {
+        outline: none !important;
+        box-shadow: none !important;
+        ring: 0 !important;
+    }
 
     .icon-text {
         @apply whitespace-nowrap ml-1
@@ -235,6 +242,15 @@
     }
 
     /* Shadcn ui component*/
+    /* Alert Dialog */
+    [data-slot="alert-dialog-title"] {
+        @apply text-base sm:text-lg font-semibold
+    }
+
+    [data-slot="alert-dialog-description"] {
+        @apply text-[13px] sm:text-sm text-[#777]
+    }
+
     /* form */
     .form {
         @apply w-full flex flex-col gap-y-4;
@@ -411,7 +427,7 @@
     }
 
     .desc {
-        @apply text-xs sm:text-sm text-muted-foreground hidden md:block
+        @apply text-xs sm:text-sm text-[#777] hidden md:block
     }
 
     /* End home */

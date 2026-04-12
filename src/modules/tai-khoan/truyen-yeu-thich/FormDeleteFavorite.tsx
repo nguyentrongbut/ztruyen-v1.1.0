@@ -70,7 +70,7 @@ const FormDeleteFavorite = ({listFavorite, deleteMulti, setSelected, selected}: 
 
     return (
         <div
-            className='grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-y-4 gap-2 md:gap-2.5 lg:gap-3 mb-4'>
+            className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-y-4 gap-2 md:gap-2.5 lg:gap-3 mb-4'>
             {
                 listFavorite.map((item: IFavorite, i) => (
                     <figure
@@ -114,7 +114,7 @@ const FormDeleteFavorite = ({listFavorite, deleteMulti, setSelected, selected}: 
                             className="mt-1.5 text-center"
                             title={item.comic_name}
                         >
-                            <h2 className='text-sm line-clamp-2'>
+                            <h2 className='text-xs sm:text-[13px] line-clamp-2'>
                                 <Link href={`/${CONFIG_SLUG.DETAIL}/${item.comic_slug}`}>
                                     {item.comic_name}
                                 </Link>
@@ -145,7 +145,7 @@ const FormDeleteFavorite = ({listFavorite, deleteMulti, setSelected, selected}: 
                                     <AlertDialogContent>
                                         <AlertDialogHeader>
                                             <AlertDialogTitle>
-                                                Hic… <span className='text-primary mx-'>{item.comic_name}</span> sắp bị xóa khỏi danh sách yêu thích của bạn
+                                                Hic… <span className='text-primary dark:text-amber-500'>{item.comic_name}</span> sắp bị xóa khỏi danh sách yêu thích của bạn
                                                 thật hả? (=^･ω･^=)
                                             </AlertDialogTitle>
                                             <AlertDialogDescription>
@@ -159,7 +159,7 @@ const FormDeleteFavorite = ({listFavorite, deleteMulti, setSelected, selected}: 
                                             <AlertDialogAction asChild>
                                                 <Button
                                                     sizeCustom='xs'
-                                                    className='bg-red-600 hover:bg-red-500'
+                                                    variant='destructive'
                                                     isLoading={isMutating}
                                                     onClick={() => handleDelete(item._id, item.comic_slug)}
                                                 >

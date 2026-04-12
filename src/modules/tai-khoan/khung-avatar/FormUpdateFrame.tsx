@@ -79,8 +79,8 @@ const FormUpdateFrame = () => {
         revalidateIfStale: false,
     })
 
-    const { trigger, isMutating } = useMutateMethod<IUserProfile, void>({
-        api: () => UserService.updateProfileImage({ avatar_frame: selectedId }),
+    const {trigger, isMutating} = useMutateMethod<IUserProfile, void>({
+        api: () => UserService.updateProfileImage({avatar_frame: selectedId}),
         key: CONFIG_TAG.FRAME.UPDATE,
         onSuccess: async () => {
             toast.success('Cập nhật khung thành công!')
@@ -97,6 +97,7 @@ const FormUpdateFrame = () => {
     }, [user])
 
     const listFrame = frame?.result;
+    const totalItem = frame?.meta?.totalItems ?? 0;
     const currentSortLabel = SORT_OPTIONS.find(o => o.value === sort)?.label ?? "Sắp xếp";
 
     const handleSubmit = async () => {
@@ -119,7 +120,7 @@ const FormUpdateFrame = () => {
                     {!isFrameLoading && (
                         <InputGroupAddon align="inline-end">
                             <span className="text-xs text-muted-foreground">
-                                {listFrame?.length ?? 0} khung
+                                {totalItem} khung
                             </span>
                         </InputGroupAddon>
                     )}
@@ -155,7 +156,7 @@ const FormUpdateFrame = () => {
                     {search ? `Không tìm thấy khung "${search}"` : "Không có khung nào."}
                 </div>
             ) : (
-                <div className='grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3'>
+                <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3'>
                     {listFrame.map((frame: IFrame) => {
                         const isSelected = selectedId === frame._id;
                         return (

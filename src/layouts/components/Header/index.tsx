@@ -23,7 +23,7 @@ import {Menu} from 'lucide-react';
 // ** Layout components
 import ClientAuth from "@/layouts/components/Header/ClientAuth";
 import Notification from "@/layouts/components/Header/Notification";
-import SearchWrapper from "@/layouts/components/Header/Search/SearchWrapper";
+import Search from "@/layouts/components/Header/Search";
 
 
 const Header = async ({asChild = false}: { asChild?: boolean}) => {
@@ -38,7 +38,9 @@ const Header = async ({asChild = false}: { asChild?: boolean}) => {
                     {!asChild && <NavHeader/>}
                 </div>
                 <div className="flex items-center gap-2">
-                    <SearchWrapper/>
+                    <div className='hidden sm:block'>
+                        <Search/>
+                    </div>
                     <ReadingHistoryBtn/>
                     <div className="hidden xl:block">
                         <ModeToggle/>

@@ -8,16 +8,20 @@ const Toast = () => {
             toastOptions={{
                 className:
                     '!max-w-none !bg-primary !text-white px-4 py-2 font-ui !flex-nowrap',
-                duration: 1500,
+                duration: 2000,
 
                 success: {
-                    className: '!max-w-none !text-xs !bg-primary !text-white font-ui',
-                    icon: '(=^･ｪ･^=)/',
+                    className: '!max-w-none !text-xs !bg-primary !text-white font-ui !items-center',
+                    iconTheme: {
+                        primary: 'white',
+                        secondary: 'transparent',
+                    },
+                    icon: <span className="shrink-0">(=^･ｪ･^=)/</span>,
                 },
 
                 error: {
-                    className: '!max-w-none !text-xs !bg-red-400 !text-white font-ui',
-                    icon: '(=ＴェＴ=)',
+                    className: '!max-w-none !text-xs !bg-red-400 !text-white font-ui !items-center',
+                    icon: <span className="shrink-0">(=ＴェＴ=)</span>,
                 },
             }}
         />
