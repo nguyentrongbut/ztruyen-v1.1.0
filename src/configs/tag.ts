@@ -43,6 +43,9 @@ export const CONFIG_TAG = {
         READ_ALL: 'notification-read-all',
         DELETE_ALL: 'notification-delete-all',
     },
+    ANNOUNCEMENT: {
+        ACTIVE: 'active-announcement',
+    },
     IMAGE: {
         UPLOAD: 'upload-image',
     }

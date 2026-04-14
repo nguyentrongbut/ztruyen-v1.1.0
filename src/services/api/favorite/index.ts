@@ -13,6 +13,14 @@ import {buildQueryString, TQueryParams} from "@/utils/buildQueryString";
 // ** Type
 import {TFavoriteBtnPayload} from "@/modules/truyen-tranh/FavoriteBtn";
 
+export type TReadingProgressPayload = {
+    comic_slug: string;
+    chapter_id: string;
+    chapter_name: string;
+    path: string;
+    image_name: number;
+}
+
 export const FavoriteService = {
     list: (params: TQueryParams): Promise<IApiRes<IModelPaginate<IFavorite>>> => {
         const query = buildQueryString(params)
@@ -45,5 +53,11 @@ export const FavoriteService = {
             method: 'DELETE',
             body: JSON.stringify({ids: ids})
         })
-    }
+    },
+    readingProgress: (payload: TReadingProgressPayload) => {
+        return authFetcherWithRefresh<IApiRes<void>>(CONFIG_API.FAVORITE.READING_PROGRESS, {
+            method: 'PATCH',
+            body: JSON.stringify(payload),
+        })
+    },
 }

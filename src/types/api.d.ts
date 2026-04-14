@@ -8,6 +8,8 @@ type TType = 'text' | 'image'
 
 export type NotificationType = 'REPLY_COMMENT' | 'LIKE_COMMENT';
 
+export type AnnouncementType = 'info' | 'warning' | 'maintenance' | 'event';
+
 // Common
 interface IImage {
     _id: string;
@@ -182,4 +184,15 @@ export interface INotification {
     createdAt: string;
     updatedAt: string;
     meta: INotificationMeta
+}
+
+// Announcement
+export interface IAnnouncement {
+    _id: string;
+    title: string;
+    content: string;
+    type: AnnouncementType;
+    isActive: boolean;
+    createdAt: string;
+    updatedAt: string;
 }

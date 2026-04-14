@@ -82,7 +82,7 @@ const NotificationListener = () => {
         if (!messaging) return;
 
         const unsubscribe = onMessage(messaging, (payload) => {
-            // BE gửi data-only payload → title/body nằm trong payload.data
+
             const data = (payload.data ?? {}) as Partial<INotificationFCM> & {
                 title?: string;
                 body?: string;

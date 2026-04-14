@@ -8,6 +8,7 @@ const commentUrl = baseUrl + '/comment';
 const emojiUrl = baseUrl + '/emoji';
 const emojiCategoriesUrl = baseUrl + '/emoji-category';
 const notificationUrl = baseUrl + '/notification';
+const announcementUrl = baseUrl + '/announcement';
 
 export const CONFIG_API = {
     AUTH: {
@@ -35,7 +36,8 @@ export const CONFIG_API = {
         CHECK: `${favoriteUrl}/check`,
         TOGGLE: `${favoriteUrl}/toggle`,
         DELETE: `${favoriteUrl}/delete`,
-        DELETE_MULTI: `${favoriteUrl}/delete-multi`
+        DELETE_MULTI: `${favoriteUrl}/delete-multi`,
+        READING_PROGRESS: `${favoriteUrl}/reading-progress`
     },
     COMMENT: {
         INDEX: commentUrl,
@@ -55,6 +57,10 @@ export const CONFIG_API = {
         INDEX: notificationUrl,
         READ_ALL: `${notificationUrl}/read-all`,
         DELETE_ALL: `${notificationUrl}/all`
+    },
+    ANNOUNCEMENT: {
+        INDEX: announcementUrl,
+        ACTIVE: `${announcementUrl}/active`,
     },
     IMAGE: {
         INDEX: `${baseUrl}/image`,

@@ -94,7 +94,6 @@ export async function initFCM(): Promise<void> {
         const savedToken = localStorage.getItem(FCM_TOKEN_KEY);
 
         if (savedToken === token) {
-            console.log('[FCM] Token unchanged');
             return;
         }
 

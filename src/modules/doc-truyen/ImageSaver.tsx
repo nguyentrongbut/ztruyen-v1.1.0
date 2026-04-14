@@ -35,7 +35,7 @@ const ImageSaver = ({
                 const imgEl = imgRefs.current?.[index];
 
                 if (imgEl && imgEl.getBoundingClientRect().top + window.scrollY > window.scrollY) {
-                    const HEADER_OFFSET = 56;
+                    const HEADER_OFFSET = 62;
                     const top = imgEl.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
                     window.scrollTo({ top, behavior: 'instant' });
                     return;

@@ -108,7 +108,7 @@ const DetailComic = async ({params}: TDetailComicProps) => {
                 {/* Right Content */}
                 <div className="flex flex-col md:items-start justify-between w-full">
                     {/* Title */}
-                    <h1 className='heading-detail text-center'>
+                    <h1 className='heading-detail text-center md:mr-10'>
                         {detailComic.name}
                     </h1>
 

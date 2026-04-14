@@ -165,8 +165,7 @@ const ListImageChapter = ({
                                     }}
                                 >
                                     <span className="text-white text-xs bg-black/50 leading-snug px-6 py-2 rounded-md select-none mx-2 text-center whitespace-pre-line">
-                                        Có thể có banner quảng cáo.{'\n'}
-                                        Nếu ảnh bị cắt hoặc mờ, hãy nhấn để xem đầy đủ.
+                                        Có thể có banner quảng cáo. Nếu ảnh bị cắt hoặc mờ, hãy nhấn để xem đầy đủ. Bạn cũng có thể tắt trong cài đặt (ẩn ảnh đầu/cuối).
                                     </span>
                                 </div>
                             )}
