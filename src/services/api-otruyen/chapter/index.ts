@@ -14,15 +14,19 @@ import {CACHE_TIME} from "@/configs/cache-time";
 // ** Type
 import {IOTruyenChapter} from "@/types/api.otruyen";
 
-export const getListImageChapter = (id: string) =>
-    unstable_cache(
+export async function getListImageChapter(id: string) {
+    return unstable_cache(
         async () => {
             return fetcher<IApiOtruyenResDetail<IOTruyenChapter>>(
                 `${CONFIG_API_OTRUYEN.CHAPTER}/${id}`
             );
         },
-        [CONFIG_TAG_OTRUYEN.CHAPTER, id],
+        [
+            CONFIG_TAG_OTRUYEN.CHAPTER,
+            id,
+        ],
         {
             revalidate: 365 * CACHE_TIME.DAY,
         }
     )();
+}

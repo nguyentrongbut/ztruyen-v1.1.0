@@ -25,13 +25,13 @@ export const getListGenre = unstable_cache(
     }
 )
 
-export const getListByGender = (
+export async function getListByGender(
     slug: string,
     pageQuery: number = 1,
     sortField: ESortField = ESortField.UPDATED_AT,
     sortType: ESortType = ESortType.DESC
-) =>
-    unstable_cache(
+) {
+    return unstable_cache(
         async () => {
             return fetcher<IApiOtruyenResWPagination<IOtruyenListComic[]>>(
                 `${CONFIG_API_OTRUYEN.CATEGORY}/${slug}?page=${pageQuery}&sort_field=${sortField}&sort_type=${sortType}`
@@ -40,7 +40,7 @@ export const getListByGender = (
         [
             CONFIG_TAG_OTRUYEN.CATEGORY,
             slug,
-            String(pageQuery),
+            pageQuery.toString(),
             sortField,
             sortType,
         ],
@@ -48,3 +48,4 @@ export const getListByGender = (
             revalidate: CACHE_TIME.MINUTE,
         }
     )();
+}

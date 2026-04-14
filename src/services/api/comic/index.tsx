@@ -17,16 +17,21 @@ import {buildQueryString, TQueryParams} from "@/utils/buildQueryString";
 // ** Type
 import {IComic} from "@/types/api";
 
-export const getTopComic = (params: TQueryParams) =>
-    unstable_cache(
+export async function getTopComic(params: TQueryParams) {
+    const query = buildQueryString(params);
+
+    return unstable_cache(
         async () => {
-            const query = buildQueryString(params);
             return fetcher<IApiRes<IModelPaginate<IComic>>>(
                 `${CONFIG_API.COMIC}?${query}`
             );
         },
-        [CONFIG_TAG.COMIC, JSON.stringify(params)],
+        [
+            CONFIG_TAG.COMIC.LIST,
+            query,
+        ],
         {
             revalidate: 7 * CACHE_TIME.DAY,
         }
     )();
+}

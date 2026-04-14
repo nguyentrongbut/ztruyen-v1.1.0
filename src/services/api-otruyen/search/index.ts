@@ -1,5 +1,8 @@
 'use server'
 
+// ** Next
+import {unstable_cache} from "next/cache";
+
 // ** lib
 import {fetcher} from "@/lib/fetcher";
 
@@ -11,15 +14,23 @@ import {CONFIG_TAG_OTRUYEN} from "@/configs/tag-otruyen";
 // ** Type
 import {IOtruyenSearchComic} from "@/types/api.otruyen";
 
-export const getListBySearch = (keyword: string, pageQuery = 1) =>
-    unstable_cache(
+export async function getListBySearch(
+    keyword: string,
+    pageQuery: number = 1
+) {
+    return unstable_cache(
         async () => {
             return fetcher<IApiOtruyenResWPagination<IOtruyenSearchComic[]>>(
                 `${CONFIG_API_OTRUYEN.SEARCH}?keyword=${keyword}&page=${pageQuery}`
             );
         },
-        [CONFIG_TAG_OTRUYEN.SEARCH, keyword, String(pageQuery)],
+        [
+            CONFIG_TAG_OTRUYEN.SEARCH,
+            keyword,
+            String(pageQuery),
+        ],
         {
             revalidate: 3 * CACHE_TIME.SECOND,
         }
     )();
+}
