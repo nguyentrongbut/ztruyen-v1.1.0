@@ -6,7 +6,7 @@ import type {IOtruyenDetailComic} from '@/types/api.otruyen'
 import {TBannerMode} from "@/hooks/common/useBannerMode";
 
 // ** Icon
-import {CalendarRange, CircleUser, Frame, Heart, Home, Tag, User, UserRoundCog, Wifi} from "lucide-react";
+import {Bolt, CalendarRange, CircleUser, Frame, Heart, Home, Tag, User, Wifi} from "lucide-react";
 
 // ** Config
 import {CONFIG_SLUG} from "@/configs/slug";
@@ -46,7 +46,7 @@ export const navAccount: TLinkWithIcon[] = [
     {
         title: 'Cài đặt chung',
         href: '/tai-khoan/cai-dat-chung',
-        icon: UserRoundCog,
+        icon: Bolt,
     }
 ]
 

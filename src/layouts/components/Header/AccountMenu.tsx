@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 // ** Icons
-import {Heart, User} from "lucide-react";
+import {Bolt, Heart, User} from "lucide-react";
 
 // ** Skeleton
 import AvatarSkeleton from "@/skeletons/layouts/AvatarSkeleton";
@@ -81,6 +81,12 @@ const AccountMenu = () => {
                             <DropdownMenuItem>
                                 <Heart className="text-inherit"/>
                                 Yêu thích
+                            </DropdownMenuItem>
+                        </Link>
+                        <Link href="/tai-khoan/cai-dat-chung">
+                            <DropdownMenuItem>
+                                <Bolt className="text-inherit"/>
+                                Cài đặt chung
                             </DropdownMenuItem>
                         </Link>
                     </DropdownMenuGroup>

@@ -60,7 +60,7 @@ const Login = async ({searchParams}: { searchParams: Promise<TLoginSearchParams>
                         </Link>
                     </div>
                     <div
-                        className='bg-background rounded-lg pt-12 pb-8 px-8 sm:px-14 lg:px-16 flex flex-col justify-center items-center'>
+                        className='bg-background rounded-lg pt-10 pb-6 px-6 sm:px-14 lg:px-16 flex flex-col justify-center items-center'>
                         <h1 className='text-primary capitalize font-semibold text-base lg:text-lg dark:text-white'>Đăng nhập</h1>
                         <FormLogin/>
                         <AuthFooter/>
