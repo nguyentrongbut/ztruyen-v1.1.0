@@ -27,11 +27,12 @@ const EmptyPage = () => {
                 />
             </div>
             <h2 className="text-lg sm:text-xl font-bold text-center">
-                (¬‿¬) Bắt quả tang nha! Bạn chưa đọc truyện nào ở Ztruyện
+                (¬‿¬) Ủa gì zậy? Chưa đọc truyện nào ở Ztruyện luôn hả cưng?
             </h2>
             <p className="text-xs sm:text-sm mt-2 max-w-md text-center">
-                Chưa đọc truyện nào hết! Chọn một bộ bất kỳ để bắt đầu,
-                tụi mình sẽ ghi nhớ giúp bạn để lần sau đọc tiếp nha
+                Lịch sử đọc truyện của cưng trống trơn như ví của cưng vậy á.
+                Chọn một bộ đi chứ? Shop sẽ nhớ giúp cho lần sau đọc tiếp,
+                khỏi có quên rồi lại bảo “tui chưa từng đọc” nha~
             </p>
             <Link href={`/${CONFIG_SLUG.LIST}/${ESlug.NEW}.html`}>
                 <Button sizeCustom='xs'>

@@ -51,5 +51,8 @@ export const CONFIG_TAG = {
     },
     IMAGE: {
         UPLOAD: 'upload-image',
+    },
+    DISCORD: {
+        WIDGET: 'discord-widget'
     }
 } as const

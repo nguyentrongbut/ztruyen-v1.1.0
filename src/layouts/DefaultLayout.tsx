@@ -12,7 +12,8 @@ const DefaultLayout = ({children}: { children: React.ReactNode }) => {
             <main className='flex flex-col min-h-[70vh] mt-header'>
                 {children}
             </main>
-            <Footer/>
+            <Footer
+            />
         </>
     );
 };

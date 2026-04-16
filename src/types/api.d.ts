@@ -218,3 +218,28 @@ export interface IComic {
     country: TCountry;
     rank: number;
 }
+
+// Widget Discord
+export interface IDiscordChannel {
+    id: string;
+    name: string;
+    position: number;
+}
+
+export interface IDiscordMember {
+    id: string;
+    username: string;
+    discriminator: string;
+    avatar: string | null;
+    status: 'online' | 'idle' | 'dnd';
+    avatar_url: string;
+}
+
+export interface IDiscordWidget {
+    id: string;
+    name: string;
+    instant_invite: string;
+    channels: IDiscordChannel[];
+    members: IDiscordMember[];
+    presence_count: number;
+}

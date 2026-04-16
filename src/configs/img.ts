@@ -13,6 +13,7 @@ export const CONFIG_IMG = {
     EMPTY: `${baseUrlImg}/empty.webp`,
     FACEBOOK: `${baseUrlImg}/facebook-icon.png`,
     GOOGLE: `${baseUrlImg}/google-icon.png`,
+    DISCORD: `${baseUrlImg}/discord-icon.webp`,
     LOGO: `${baseUrlImg}/logo.png`,
     NOT_FOUND: `${baseUrlImg}/notfound.webp`,
     PAGE: `${baseUrlImg}/page.png`,

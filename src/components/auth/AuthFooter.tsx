@@ -63,7 +63,7 @@ const AuthFooter = () => {
                 </div>
                 <div className='flex gap-2 items-center cursor-pointer' onClick={() => loginSocialUrl('discord')}>
                     <div className='relative size-9'>
-                        <Image src='/discord-icon.webp' alt='Đăng nhập với Discord' fill/>
+                        <Image src={CONFIG_IMG.DISCORD} alt='Đăng nhập với Discord' fill/>
                     </div>
                     Đăng nhập Discord
                 </div>

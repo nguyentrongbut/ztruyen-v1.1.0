@@ -11,6 +11,10 @@ const notificationUrl = baseUrl + '/notification';
 const announcementUrl = baseUrl + '/announcement';
 const comicUrl = baseUrl + '/comic';
 
+// ** Discord
+const discordId = process.env.NEXT_PUBLIC_DISCORD_ID;
+const discordUrl = 'https://discord.com/api'
+
 export const CONFIG_API = {
     AUTH: {
         LOGIN: `${authUrl}/login`,
@@ -71,4 +75,7 @@ export const CONFIG_API = {
         INDEX: `${baseUrl}/image`,
         UPLOAD: `${baseUrl}/upload`,
     },
+    DISCORD: {
+        WIDGET: `${discordUrl}/guilds/${discordId}/widget.json`,
+    }
 } as const
