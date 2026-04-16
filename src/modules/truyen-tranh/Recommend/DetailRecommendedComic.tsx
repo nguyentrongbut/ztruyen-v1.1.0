@@ -6,6 +6,7 @@ import ErrorText from "@/components/common/ErrorText";
 import ComicImage from "@/components/common/ComicImage";
 
 // ** Services
+import {getListByGender} from "@/services/api-otruyen/categories";
 import {getListByStatus} from "@/services/api-otruyen/list";
 
 // ** Enum
@@ -24,9 +25,15 @@ import {CalendarRange, Wifi} from "lucide-react";
 import {convertStatusToVi} from "@/utils/convertStatusComicToVi";
 import {CONFIG_API_OTRUYEN} from "@/configs/api-otruyen";
 
-const DetailRecommendedComic = async () => {
+type TDetailRecommendedComic = {
+    gender?: string;
+}
 
-    const res = await getListByStatus(ESlug.NEW);
+const DetailRecommendedComic = async ({gender} : TDetailRecommendedComic) => {
+
+    const res = gender
+        ? await getListByGender(gender)
+        : await getListByStatus(ESlug.NEW);
 
     const listRecommendedComic = res.data?.items.slice(0, 6)
 
@@ -35,8 +42,9 @@ const DetailRecommendedComic = async () => {
     return (
         <section className="bg-section-detail p-5 lg:w-[29%] xl:w-[23%] h-min">
             <div className="flex items-center justify-between">
-                <h2 className='text-lg font-medium'>Đề xuất</h2>
-                <Link href={`/${CONFIG_SLUG.LIST}/truyen-moi`} className="text-sm">
+                <h2 className='text-lg font-medium'>Cùng thể loại</h2>
+                <Link href={`${gender ? `/${CONFIG_SLUG.GENRE}/${gender}` : `/${CONFIG_SLUG.LIST}/${ESlug.NEW}`}`}
+                      className="text-sm">
                     Xem thêm
                 </Link>
             </div>

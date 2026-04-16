@@ -50,7 +50,7 @@ const FavoriteBtn = ({slug, comicName, comicCover, isBorder = true}: TFavoriteBt
 
     const router = useRouter()
 
-    const { isLogin, loading } = useAuth();
+    const {isLogin, loading} = useAuth();
 
     const {data: favorite, isLoading} = useGetMethod<IFavoriteToggle>({
         api: () => FavoriteService.check(slug),
@@ -94,16 +94,25 @@ const FavoriteBtn = ({slug, comicName, comicCover, isBorder = true}: TFavoriteBt
 
     return (
         <Button
-            size="icon"
-            variant={isBorder ? 'outline' : 'ghost'}
+            sizeCustom='xs'
+            variant='outline'
             disabled={isMutating}
+            className='rounded-xs w-full sm:max-w-[140px]'
+            width='full'
             onClick={handleToggleFavorite}
         >
             {favorite?.isFavorite ? (
-                <HeartCrack className="text-red-500 dark:fill-red-500" />
+               <>
+                   <Heart className="text-red-500 fill-red-500"/>
+                   <span>Bỏ yêu thích</span>
+               </>
             ) : (
-                <Heart />
+                <>
+                    <Heart/>
+                    <span>Yêu thích</span>
+                </>
             )}
+
         </Button>
     )
 }

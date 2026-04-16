@@ -15,7 +15,7 @@ const ProgressWrapper = ({ children }: { children: React.ReactNode }) => {
                     height="2px"
                     color="var(--primary)"
                     options={{ showSpinner: false }}
-                    shallowRouting
+                    // shallowRouting
                 />
             </Suspense>
         </>

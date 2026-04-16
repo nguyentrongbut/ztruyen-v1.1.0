@@ -21,8 +21,8 @@ type TAvatarWithName = {
     chapterName?: string | null
     type?: "detail" | "reading";
     mobileSize?: number
-    slug: string
-    chapterId: string
+    slug?: string
+    chapterId?: string
 }
 
 const AvatarWithName = (
@@ -51,7 +51,7 @@ const AvatarWithName = (
                 className
             )}>
                 {name}
-                {chapterName && chapterId && (
+                {chapterName && chapterId && slug && (
                     <Link href={`${buildReadingUrl(slug, chapterName, chapterId)}?anh=${chapterPage}`}>
                         <span
                             className='inline-block mx-1 sm:mx-1.5 text-xs sm:text-[13px]'>

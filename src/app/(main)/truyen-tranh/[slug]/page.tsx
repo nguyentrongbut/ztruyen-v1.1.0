@@ -91,6 +91,8 @@ const DetailComic = async ({params}: TDetailComicProps) => {
 
     const metaList = buildMetaList(detailComic)
 
+    const firstCategory = detailComic.category[0].slug
+
     return (
         <div className='bg-[#fafafa] dark:bg-background pt-5 pb-20 min-h-screen'>
             <section
@@ -137,12 +139,13 @@ const DetailComic = async ({params}: TDetailComicProps) => {
                     {/* Description */}
                     <DetailDesc desc={detailComic.content}/>
 
-                    {/* Buttons */}
-                    <div className='mt-4 w-full'>
-                        <ReadingBtn slug={slugComic}
-                                    chapter={detailComic.chapters[0].server_data?.[0] as TOtruyenChapter}/>
-                    </div>
-                    <div className='absolute top-2 right-2 sm:top-5 sm:right-5'>
+                    <div className="flex items-center gap-3 mt-4 flex-wrap w-full">
+                        {detailComic.chapters[0] && (
+                            <ReadingBtn
+                                slug={slugComic}
+                                chapter={detailComic.chapters[0].server_data?.[0] as TOtruyenChapter}
+                            />
+                        )}
                         <FavoriteBtn
                             slug={slugComic}
                             comicName={detailComic.name}
@@ -157,7 +160,7 @@ const DetailComic = async ({params}: TDetailComicProps) => {
                 <DetailListChapter listChapter={detailComic.chapters} slug={slugComic} name={detailComic.name}/>
 
                 <Suspense fallback={<DetailRecommendedComicSkeleton/>}>
-                    <DetailRecommendedComic/>
+                    <DetailRecommendedComic gender={firstCategory}/>
                 </Suspense>
             </div>
         </div>

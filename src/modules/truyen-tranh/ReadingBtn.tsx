@@ -43,8 +43,8 @@ const ReadingBtn = ({chapter, slug}: TReadingBtnProps) => {
 
     if (!history)
         return (
-            <Link href={hrefFirstChapter} className='w-full'>
-                <Button sizeCustom='xs' width='full'>
+            <Link href={hrefFirstChapter} className='w-full sm:max-w-[158px]'>
+                <Button sizeCustom='xs' width='full' className='rounded-xs'>
                     <BookOpen/>
                     Đọc từ đầu
                 </Button>
@@ -52,24 +52,23 @@ const ReadingBtn = ({chapter, slug}: TReadingBtnProps) => {
         );
 
     return (
-        <div className='flex flex-col gap-2 w-full'>
+        <>
             {/* Current chapter */}
-            <Link href={`/${CONFIG_SLUG.READING}/${history.path}`} className='w-full'>
-                <Button sizeCustom='xs' width='full'>
+            <Link href={`/${CONFIG_SLUG.READING}/${history.path}`} className='w-full sm:max-w-[158px]'>
+                <Button sizeCustom='xs' width='full' className='rounded-xs'>
                     Đọc tiếp chương {history.chapter_name}
-                    <span className='hidden sm:inline-block'>thôi nào ~~ (=^･ｪ･^=)</span>
                 </Button>
             </Link>
 
             {/* Lastet chapter */}
             {history.maxReadPath && (
-                <Link href={`/${CONFIG_SLUG.READING}/${history.maxReadPath}`} className='w-full'>
-                    <Button sizeCustom='xs' width='full' variant='outline'>
+                <Link href={`/${CONFIG_SLUG.READING}/${history.maxReadPath}`} className='w-full sm:max-w-[180px]'>
+                    <Button sizeCustom='xs' width='full' variant='outline' className='rounded-xs'>
                         Đã đọc đến chương {history.maxReadChapterName}
                     </Button>
                 </Link>
             )}
-        </div>
+        </>
     )
 }
 

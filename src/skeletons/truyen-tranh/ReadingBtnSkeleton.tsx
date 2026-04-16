@@ -3,7 +3,7 @@ import {Skeleton} from "@/components/ui/skeleton";
 
 const ReadingBtnSkeleton = () => {
     return (
-        <Skeleton className='h-9 w-full rounded-md'/>
+        <Skeleton className="h-[36px] rounded-xs w-full  sm:w-[158px]"/>
     )
 }
 
