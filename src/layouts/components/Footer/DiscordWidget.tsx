@@ -14,7 +14,7 @@ import useSWR from "swr";
 import useLazyLoad from "@/hooks/common/useLazyLoad";
 
 // ** Services
-import { DiscordService } from "@/services/api/discord";
+import {DiscordService} from "@/services/api/discord";
 
 // ** shadcn/ui
 import {
@@ -24,7 +24,7 @@ import {
     AvatarGroupCount,
     AvatarImage,
 } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import {Button} from "@/components/ui/button";
 
 // ** Skeleton
 import DiscordWidgetSkeleton from "@/skeletons/layouts/DiscordWidgetSkeleton";
@@ -37,7 +37,7 @@ const DiscordWidget = () => {
 
     const [shouldFetch, setShouldFetch] = useState(false);
 
-    const { ref, enabled } = useLazyLoad({
+    const {ref, enabled} = useLazyLoad({
         threshold: 0.1,
         rootMargin: '100px',
     });
@@ -46,8 +46,8 @@ const DiscordWidget = () => {
         if (enabled) setShouldFetch(true);
     }, [enabled]);
 
-    const { data, error, isLoading, mutate } = useSWR(
-        shouldFetch ? CONFIG_TAG.DISCORD.WIDGET: null,
+    const {data, error, isLoading, mutate} = useSWR(
+        shouldFetch ? CONFIG_TAG.DISCORD.WIDGET : null,
         () => DiscordService.widget(),
         {
             refreshInterval: 30000,
@@ -63,7 +63,7 @@ const DiscordWidget = () => {
     if (!enabled) {
         return (
             <div ref={ref} className="min-h-[65.6px] w-fit">
-                <DiscordWidgetSkeleton />
+                <DiscordWidgetSkeleton/>
             </div>
         );
     }
@@ -71,7 +71,7 @@ const DiscordWidget = () => {
     if (isLoading || !data) {
         return (
             <div className="w-fit">
-                <DiscordWidgetSkeleton />
+                <DiscordWidgetSkeleton/>
             </div>
         );
     }
@@ -101,7 +101,7 @@ const DiscordWidget = () => {
             {/* Icon + tên + online */}
             <div className="flex items-center gap-2 flex-shrink-0 min-w-0">
                 <div className="relative size-10 flex-shrink-0">
-                    <Image src={CONFIG_IMG.DISCORD} alt="discord" fill />
+                    <Image src={CONFIG_IMG.DISCORD} alt="discord" fill/>
                 </div>
 
                 <div className="min-w-0">
@@ -111,8 +111,9 @@ const DiscordWidget = () => {
 
                     <div className="flex items-center gap-1.5 mt-0.5">
                         <span className="relative flex h-1.5 w-1.5">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500" />
+                            <span
+                                className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"/>
+                            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"/>
                         </span>
 
                         <span className="text-[11px] text-white/50">
@@ -123,7 +124,7 @@ const DiscordWidget = () => {
             </div>
 
             {/* Divider */}
-            <div className="w-px h-8 bg-white/10 flex-shrink-0" />
+            <div className="w-px h-8 bg-white/10 flex-shrink-0"/>
 
             {/* Avatar group */}
             {data.members?.length > 0 && (
@@ -145,7 +146,8 @@ const DiscordWidget = () => {
                         ))}
 
                         {remainingCount > 0 && (
-                            <AvatarGroupCount className="size-7 border-2 border-[#212121] bg-white/10 text-white/50 text-[10px]">
+                            <AvatarGroupCount
+                                className="size-7 border-2 text-xs">
                                 +{remainingCount}
                             </AvatarGroupCount>
                         )}
@@ -160,7 +162,7 @@ const DiscordWidget = () => {
                 className="text-white border-0 flex-shrink-0 text-xs h-8"
             >
                 <Link
-                    href={data.instant_invite}
+                    href={data.instant_invite || ''}
                     target="_blank"
                     rel="noopener noreferrer"
                 >

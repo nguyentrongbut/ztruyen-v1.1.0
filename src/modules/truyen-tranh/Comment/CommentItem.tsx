@@ -199,7 +199,6 @@ const CommentItem = ({
                     detailKey={detailKey}
                     highlightReplyId={highlightReplyId}
                     onHighlightReady={onHighlightReady}
-                    comicSlug={comicSlug}
                 />
 
                 {activeCommentId && activeCommentId.startsWith(`parent-${comment._id}`) ||

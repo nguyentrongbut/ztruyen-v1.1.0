@@ -14,62 +14,32 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-messaging.onBackgroundMessage((payload) => {
-    const data = payload.data ?? {};
-    const senderName = data.senderName ?? 'nguời dùng';
-    const comicName = data.comicName ?? 'một truyện nào đó';
-
-    let title = 'Thông báo mới';
-    if (data.type === 'REPLY_COMMENT') {
-        title = `Người dùng ${senderName} đã phản hồi bình luận của bạn tại truyện ${comicName}`;
-    } else if (data.type === 'LIKE_COMMENT') {
-        title = `Người dùng ${senderName} đã thích bình luận của bạn tại truyện ${comicName}`;
-    } else {
-        title = data.title ?? 'Thông báo mới';
-    }
-
-    const body = data.body ?? '';
-
-    self.registration.showNotification(title, {
-        body,
-        icon: '/favicon.ico',
-        badge: '/badge.png',
-        data,
-    });
-});
-
-function buildUrl(data) {
-    if (data.type === 'REPLY_COMMENT' || data.type === 'LIKE_COMMENT') {
-        return data.comicSlug ? `/truyen-tranh/${data.comicSlug}.html` : '/';
-    }
-    if (data.type === 'ANNOUNCEMENT') {
-        return '/';
-    }
-    return '/';
-}
-
 self.addEventListener('notificationclick', (event) => {
     event.notification.close();
 
-    const data = event.notification.data ?? {};
-    const url = buildUrl(data);
+    const data = event.notification.data || {};
+    let url = '/';
 
-    const channel = new BroadcastChannel('notification-click');
-    channel.postMessage({type: 'REVALIDATE', url});
-    channel.close();
+    if (data.type === 'REPLY_COMMENT' || data.type === 'LIKE_COMMENT') {
+        url = data.comicSlug
+            ? `/truyen-tranh/${data.comicSlug}.html`
+            : '/';
+    }
+
+    const fullUrl = `${self.location.origin}${url}`;
 
     event.waitUntil(
-        clients
-            .matchAll({type: 'window', includeUncontrolled: true})
-            .then((clientList) => {
-                for (const client of clientList) {
-                    if ('focus' in client) {
-                        return client.focus().then(() => {
-                            if ('navigate' in client) return client.navigate(url);
-                        });
-                    }
+        clients.matchAll({ type: 'window', includeUncontrolled: true })
+            .then(async (clientsArr) => {
+                const existingClient = clientsArr.find(client =>
+                    client.url.includes(self.location.origin)
+                );
+
+                if (existingClient) {
+                    await existingClient.focus();
+                } else {
+                    await clients.openWindow(fullUrl);
                 }
-                return clients.openWindow(url);
             })
     );
 });
