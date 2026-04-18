@@ -12,6 +12,7 @@ import useSWR from "swr";
 
 // ** Hooks
 import useLazyLoad from "@/hooks/common/useLazyLoad";
+import useTailwindBreakpoints from "@/hooks/common/useTailwindBreakpoints";
 
 // ** Services
 import {DiscordService} from "@/services/api/discord";
@@ -33,9 +34,12 @@ import DiscordWidgetSkeleton from "@/skeletons/layouts/DiscordWidgetSkeleton";
 import {CONFIG_TAG} from "@/configs/tag";
 import {CONFIG_IMG} from "@/configs/img";
 
+
 const DiscordWidget = () => {
 
     const [shouldFetch, setShouldFetch] = useState(false);
+
+    const {isSm} = useTailwindBreakpoints()
 
     const {ref, enabled} = useLazyLoad({
         threshold: 0.1,
@@ -55,9 +59,10 @@ const DiscordWidget = () => {
         }
     );
 
-    const visibleMembers = data?.members?.slice(0, 4) ?? [];
+    const maxVisible = !isSm ? 1 : 4;
+    const visibleMembers = data?.members?.slice(0, maxVisible) ?? [];
     const remainingCount = data?.members
-        ? Math.max(0, data.members.length - 4)
+        ? Math.max(0, data.members.length - maxVisible)
         : 0;
 
     if (!enabled) {

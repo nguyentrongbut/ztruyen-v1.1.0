@@ -4,7 +4,7 @@
 import {usePathname, useRouter, useSearchParams} from 'next/navigation';
 
 // ** React
-import { type ReactNode, useCallback } from 'react';
+import { type ReactNode, useCallback, useState } from 'react';
 
 // ** Shadcn ui
 import {
@@ -23,6 +23,7 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 
 // ** Utils
 import { cn } from '@/lib/utils';
@@ -50,6 +51,8 @@ export function Pagination({
     const searchParams = useSearchParams();
 
     const totalPageCount = Math.ceil(totalCount / pageSize);
+
+    const [jumpValue, setJumpValue] = useState('');
 
     const buildLink = useCallback(
         (newPage: number) => {
@@ -82,6 +85,43 @@ export function Pagination({
         },
         [searchParams, pathname, pageSizeSelectOptions, pageSearchParam, router]
     );
+
+    const handleJumpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const raw = e.target.value;
+
+        // Only allow digits
+        if (raw !== '' && !/^\d+$/.test(raw)) return;
+
+        if (raw === '') {
+            setJumpValue('');
+            return;
+        }
+
+        let num = parseInt(raw, 10);
+
+        // Clamp to valid range
+        if (num < 1) num = 1;
+        if (num > totalPageCount) num = totalPageCount;
+
+        setJumpValue(String(num));
+    };
+
+    const handleJumpSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        const num = parseInt(jumpValue, 10);
+        if (!isNaN(num) && num >= 1 && num <= totalPageCount) {
+            goToPage(num);
+            setJumpValue('');
+        }
+    };
+
+    const handleJumpBlur = () => {
+        const num = parseInt(jumpValue, 10);
+        if (!isNaN(num) && num >= 1 && num <= totalPageCount) {
+            goToPage(num);
+            setJumpValue('');
+        }
+    };
 
     const renderPageNumbers = () => {
         const items: ReactNode[] = [];
@@ -235,6 +275,23 @@ export function Pagination({
                     </PaginationItem>
                 </PaginationContent>
             </ShadcnPagination>
+
+            {/* Jump to page */}
+            <form onSubmit={handleJumpSubmit} action="." className="flex items-center gap-2 text-sm whitespace-nowrap">
+                <span>Đến trang</span>
+                <Input
+                    type="text"
+                    inputMode="numeric"
+                    value={jumpValue}
+                    onChange={handleJumpChange}
+                    onBlur={handleJumpBlur}
+                    placeholder={String(page)}
+                    className="w-14 h-8 text-center px-1"
+                />
+                <span className="text-setting">/ {totalPageCount}</span>
+                {/* Hidden submit — triggers "Go/Done" on iOS/Android virtual keyboard */}
+                <button type="submit" className="sr-only" aria-hidden="true" />
+            </form>
         </div>
     );
 }

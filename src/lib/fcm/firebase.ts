@@ -20,7 +20,13 @@ const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
 
 export const getFirebaseMessaging = (): Messaging | null => {
     if (typeof window === 'undefined') return null;
-    return getMessaging(app);
+
+    try {
+        return getMessaging(app);
+    } catch (err) {
+        console.warn('[FCM] Messaging not supported:', err);
+        return null;
+    }
 };
 
 export const VAPID_KEY = process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY!;
