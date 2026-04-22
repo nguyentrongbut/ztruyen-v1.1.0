@@ -1,10 +1,16 @@
+// ** Lib
 import {
     getFirebaseMessaging,
     getToken,
     deleteToken,
     VAPID_KEY,
 } from '@/lib/fcm/firebase';
+
+// ** Service
 import { UserService } from '@/services/api/user';
+
+// ** Util
+import {isIOSSafariBrowser} from "@/utils/platform";
 
 const FCM_TOKEN_KEY = 'fcm_token';
 
@@ -46,19 +52,27 @@ export async function requestNotificationPermission(): Promise<boolean> {
 /**
  * Get or register service worker safely
  */
-async function getOrRegisterServiceWorker(): Promise<ServiceWorkerRegistration | null> {
+async function getOrRegisterServiceWorker() {
     try {
-        let registration = await navigator.serviceWorker.getRegistration();
+        if (!('serviceWorker' in navigator)) return null
+        if (isIOSSafariBrowser()) return null
 
+        let registration = await navigator.serviceWorker.getRegistration()
         if (!registration) {
-            registration = await navigator.serviceWorker.register(buildSwUrl());
+            registration = await navigator.serviceWorker.register(buildSwUrl())
         }
 
-        await navigator.serviceWorker.ready;
-        return registration;
+        await Promise.race([
+            navigator.serviceWorker.ready,
+            new Promise<never>((_, reject) =>
+                setTimeout(() => reject(new Error('SW ready timeout')), 5000)
+            ),
+        ])
+
+        return registration
     } catch (err) {
-        console.error('[FCM] SW registration failed:', err);
-        return null;
+        console.warn('[FCM] SW registration failed:', err)
+        return null
     }
 }
 

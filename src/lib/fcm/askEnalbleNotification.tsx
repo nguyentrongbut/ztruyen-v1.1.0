@@ -13,6 +13,9 @@ import { Bell, X, Loader2 } from 'lucide-react'
 import { requestNotificationPermission, initFCM } from '@/lib/fcm/fcm'
 import { cn } from '@/lib/utils'
 
+// ** Util
+import {isIOSSafariBrowser} from "@/utils/platform";
+
 const TOAST_ID = 'fcm-notification-prompt'
 const AUTO_DISMISS_MS = 8000
 
@@ -21,15 +24,13 @@ export function askEnableNotification() {
     if (Notification.permission === 'granted') return
     if (localStorage.getItem('fcm_asked')) return
 
+    if (isIOSSafariBrowser()) return
+
     localStorage.setItem('fcm_asked', 'true')
 
     toast.custom(
         (t) => <NotificationToast t={t} />,
-        {
-            id: TOAST_ID,
-            duration: Infinity,
-            position: 'top-right',
-        }
+        { id: TOAST_ID, duration: Infinity, position: 'top-right' }
     )
 }
 

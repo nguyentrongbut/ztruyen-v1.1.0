@@ -1,6 +1,9 @@
 // ** Next
 import Link from 'next/link';
 
+// ** React
+import {Fragment} from "react";
+
 // ** Components
 import Tag from '@/components/common/Tag';
 import Logo from '@/components/common/Logo';
@@ -12,10 +15,8 @@ import DiscordWidget from "@/layouts/components/Footer/DiscordWidget";
 // ** Configs
 import {tagsFooter} from '@/configs/footer';
 
-// ** Icons (dùng lucide-react hoặc react-icons tùy project)
 import {Facebook, Youtube} from 'lucide-react';
 
-// TikTok không có trong lucide, dùng SVG inline
 const TikTokIcon = () => (
     <svg viewBox="0 0 24 24" className="size-4 fill-current" xmlns="http://www.w3.org/2000/svg">
         <path
@@ -40,6 +41,12 @@ const socials = [
         icon: <TikTokIcon/>,
     },
 ];
+
+const footerLinks = [
+    { href: "/thoa-thuan-nguoi-dung", label: "Thỏa thuận người dùng" },
+    { href: "/chinh-sach-bao-mat", label: "Chính sách bảo mật" },
+    { href: "/huong-dan", label: "Hướng dẫn" },
+]
 
 const Footer = () => {
     return (
@@ -116,22 +123,21 @@ const Footer = () => {
                         {/* Bottom */}
                         <div className="flex flex-wrap items-center justify-between gap-y-3 text-sm">
                             <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
-                                <Link
-                                    href="/thoa-thuan-nguoi-dung"
-                                    target="_blank"
-                                    className="hover:text-white/80 transition-colors"
-                                >
-                                    Thỏa thuận người dùng
-                                </Link>
-                                <span className="text-white/20">|</span>
-                                <Link
-                                    href="/chinh-sach-bao-mat"
-                                    target="_blank"
-                                    className="hover:text-white/80 transition-colors"
-                                >
-                                    Chính sách bảo mật
-                                </Link>
-                                <InstallPWAButton/>
+                                {footerLinks.map((link, index) => (
+                                    <Fragment key={link.href}>
+                                        <Link
+                                            href={link.href}
+                                            target="_blank"
+                                            className="hover:text-white/80 transition-colors"
+                                        >
+                                            {link.label}
+                                        </Link>
+                                        {index < footerLinks.length - 1 && (
+                                            <span className="text-white/20 hidden sm:block">|</span>
+                                        )}
+                                    </Fragment>
+                                ))}
+                                <InstallPWAButton />
                             </div>
 
                             <p className="text-sm font-medium">

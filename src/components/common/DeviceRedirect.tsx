@@ -13,7 +13,7 @@ export default async function DeviceRedirect() {
     const isSafari = /^((?!chrome|android).)*safari/i.test(userAgent);
 
     if (isIphone || isSafari) {
-        redirect(`${VARIABLE.BASE_URL_FE}/huong-dan`);
+        redirect(`${VARIABLE.BASE_URL_FE}/huong-dan/cai-pwa-iphone`);
     }
 
     return null;

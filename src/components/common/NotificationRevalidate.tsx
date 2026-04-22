@@ -12,32 +12,41 @@ import {CONFIG_TAG} from "@/configs/tag";
 // ** Lib
 import {REFRESH_EVENT} from "@/lib/invalidate-cache/events";
 
+// ** Utils
+import {isIOSSafariBrowser} from "@/utils/platform";
+
 const NotificationRevalidate = () => {
 
     useEffect(() => {
-        if (!('serviceWorker' in navigator)) return;
+        try {
+            if (!('serviceWorker' in navigator)) return;
 
-        const handler = (event: MessageEvent) => {
-            const msg = event.data;
+            if (isIOSSafariBrowser()) return
 
-            // Bắt message từ Firebase SDK
-            if (msg?.isFirebaseMessaging && msg?.messageType === 'notification-clicked') {
-                void mutate(CONFIG_TAG.NOTIFICATION.COUNT);
-                window.dispatchEvent(new Event(REFRESH_EVENT));
-                return;
-            }
+            const handler = (event: MessageEvent) => {
+                const msg = event.data;
 
-            // Bắt message từ SW custom (fallback)
-            if (msg?.type === 'NAVIGATE') {
-                void mutate(CONFIG_TAG.NOTIFICATION.COUNT);
-                window.dispatchEvent(new Event(REFRESH_EVENT));
-            }
-        };
+                // Bắt message từ Firebase SDK
+                if (msg?.isFirebaseMessaging && msg?.messageType === 'notification-clicked') {
+                    void mutate(CONFIG_TAG.NOTIFICATION.COUNT);
+                    window.dispatchEvent(new Event(REFRESH_EVENT));
+                    return;
+                }
 
-        navigator.serviceWorker.addEventListener('message', handler);
-        return () => {
-            navigator.serviceWorker.removeEventListener('message', handler);
-        };
+                // Bắt message từ SW custom (fallback)
+                if (msg?.type === 'NAVIGATE') {
+                    void mutate(CONFIG_TAG.NOTIFICATION.COUNT);
+                    window.dispatchEvent(new Event(REFRESH_EVENT));
+                }
+            };
+
+            navigator.serviceWorker.addEventListener('message', handler);
+            return () => {
+                navigator.serviceWorker.removeEventListener('message', handler);
+            };
+        } catch (err) {
+            console.warn('[SW] NotificationRevalidate setup failed:', err);
+        }
     }, []);
 
     return null;
